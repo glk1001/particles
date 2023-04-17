@@ -1,6 +1,4 @@
 #include "fountainEffect.h"
-#include "main.h"
-#include "UIWrapper.h"
 #include <cmath>
 
 bool FountainEffect::initialize(size_t numParticles)
@@ -70,26 +68,6 @@ bool FountainEffect::initializeRenderer()
 void FountainEffect::clean()
 {
 	if (m_renderer) m_renderer->destroy();
-}
-
-void FountainEffect::addUI()
-{
-	ui::AddTweakColor4f("start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
-	ui::AddTweakColor4f("start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
-	ui::AddTweakColor4f("end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
-	ui::AddTweakColor4f("end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
-	ui::AddTweak("gravity", &m_eulerUpdater->m_globalAcceleration.y, "group=effect min=-20 max=0 step=0.05");
-	ui::AddTweak("bounce", &m_floorUpdater->m_bounceFactor, "group=effect min=0 max=1 step=0.05");
-}
-
-void FountainEffect::removeUI()
-{
-	ui::RemoveVar("start col min");
-	ui::RemoveVar("start col max");
-	ui::RemoveVar("end col min");
-	ui::RemoveVar("end col max");
-	ui::RemoveVar("gravity");
-	ui::RemoveVar("bounce");
 }
 
 void FountainEffect::update(double dt)

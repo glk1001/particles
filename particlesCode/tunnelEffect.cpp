@@ -1,6 +1,4 @@
 #include "tunnelEffect.h"
-#include "main.h"
-#include "UIWrapper.h"
 #include <cmath>
 
 bool TunnelEffect::initialize(size_t numParticles)
@@ -54,7 +52,7 @@ bool TunnelEffect::initialize(size_t numParticles)
 
 	auto eulerUpdater = std::make_shared<particles::updaters::EulerUpdater>();
 	eulerUpdater->m_globalAcceleration = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
-	m_system->addUpdater(eulerUpdater);	
+	m_system->addUpdater(eulerUpdater);
 
 	return true;
 }
@@ -70,22 +68,6 @@ bool TunnelEffect::initializeRenderer()
 void TunnelEffect::clean()
 {
 	if (m_renderer) m_renderer->destroy();
-}
-
-void TunnelEffect::addUI()
-{
-	ui::AddTweakColor4f("start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
-	ui::AddTweakColor4f("start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
-	ui::AddTweakColor4f("end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
-	ui::AddTweakColor4f("end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
-}
-
-void TunnelEffect::removeUI()
-{
-	ui::RemoveVar("start col min");
-	ui::RemoveVar("start col max");
-	ui::RemoveVar("end col min");
-	ui::RemoveVar("end col max");
 }
 
 void TunnelEffect::update(double dt)

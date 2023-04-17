@@ -1,5 +1,5 @@
 #include "attractorEffect.h"
-#include "UIWrapper.h"
+
 #include <cmath>
 
 bool AttractorEffect::initialize(size_t numParticles)
@@ -21,7 +21,7 @@ bool AttractorEffect::initialize(size_t numParticles)
 
 	auto velGenerator = std::make_shared<particles::generators::SphereVelGen>();
 	velGenerator->m_minVel = 0.1f;
-	velGenerator->m_maxVel = 0.1f;	
+	velGenerator->m_maxVel = 0.1f;
 
 	auto timeGenerator = std::make_shared<particles::generators::BasicTimeGen>();
 	timeGenerator->m_minTime = 1.6f;
@@ -39,7 +39,7 @@ bool AttractorEffect::initialize(size_t numParticles)
 		m_posGenerators[0]->m_pos = glm::vec4{ 0.0, 0.0, -0.25, 0.0 };
 		m_posGenerators[0]->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
 		particleEmitter->addGenerator(m_posGenerators[0]);
-		
+
 		particleEmitter->addGenerator(m_colGenerator);
 		particleEmitter->addGenerator(velGenerator);
 		particleEmitter->addGenerator(timeGenerator);
@@ -57,7 +57,7 @@ bool AttractorEffect::initialize(size_t numParticles)
 		m_posGenerators[1]->m_pos = glm::vec4{ 0.0, 0.0, 0.25, 0.0 };
 		m_posGenerators[1]->m_maxStartPosOffset = glm::vec4{ 0.0, 0.0, 0.0, 0.0 };
 		particleEmitter2->addGenerator(m_posGenerators[1]);
-		
+
 		particleEmitter2->addGenerator(m_colGenerator);
 		particleEmitter2->addGenerator(velGenerator);
 		particleEmitter2->addGenerator(timeGenerator);
@@ -120,28 +120,6 @@ bool AttractorEffect::initializeRenderer()
 void AttractorEffect::clean()
 {
 	if (m_renderer) m_renderer->destroy();
-}
-
-void AttractorEffect::addUI()
-{
-	ui::AddTweakColor4f("start col min", &m_colGenerator->m_minStartCol.x, "group=effect");
-	ui::AddTweakColor4f("start col max", &m_colGenerator->m_maxStartCol.x, "group=effect");
-	ui::AddTweakColor4f("end col min", &m_colGenerator->m_minEndCol.x, "group=effect");
-	ui::AddTweakColor4f("end col max", &m_colGenerator->m_maxEndCol.x, "group=effect");
-	ui::AddTweak("z scale", &m_zScale, "min=0.0 max=1.0 step=0.05 group=effect");
-	for (size_t i = 0; i < m_attractors->collectionSize(); ++i)
-		ui::AddTweak(("attr " + std::to_string(i + 1)).c_str(), &(m_attractors->get(i)).w, "min=-1.0 max=1.0 step=0.05 group=effect");
-}
-
-void AttractorEffect::removeUI()
-{
-	ui::RemoveVar("start col min");
-	ui::RemoveVar("start col max");
-	ui::RemoveVar("end col min");
-	ui::RemoveVar("end col max");
-	ui::RemoveVar("z scale");
-	for (size_t i = 0; i < m_attractors->collectionSize(); ++i)
-		ui::RemoveVar(("attr " + std::to_string(i + 1)).c_str());
 }
 
 void AttractorEffect::update(double dt)
