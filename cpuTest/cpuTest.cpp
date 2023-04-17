@@ -1,7 +1,6 @@
 #include <iostream>
-#include <Windows.h>
 
-#include "glm\glm.hpp"
+#include "glm/glm.hpp"
 
 #include "particles.h"
 #include "effect.h"
