@@ -4,25 +4,19 @@
 namespace particles
 {
 
-	void GLParticleRenderer::generate(ParticleSystem *sys, bool)
-	{
-		assert(sys != nullptr);
+auto GLParticleRenderer::generate(ParticleSystem* sys, [[maybe_unused]] bool useQuads) -> void
+{
+  assert(sys != nullptr);
 
-		m_system = sys;
-	}
-
-	void GLParticleRenderer::destroy()
-	{
-	
-	}
-
-	void GLParticleRenderer::update()
-	{
-		
-	}
-
-	void GLParticleRenderer::render()
-	{
-		
-	}
+  m_system = sys;
 }
+
+auto GLParticleRenderer::update() -> void
+{
+}
+
+auto GLParticleRenderer::render() -> void
+{
+}
+
+} // namespace particles

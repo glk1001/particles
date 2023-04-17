@@ -1,90 +1,85 @@
-#include <iostream>
-
-#include "glm/glm.hpp"
-
-#include "particles.h"
 #include "effect.h"
+#include "particles.h"
 
 #include <chrono>
-
-using namespace particles;
+#include <iostream>
 
 class CpuTimeQuery
 {
-protected:
-	double m_time; 
-
-protected:
-	std::chrono::time_point<std::chrono::high_resolution_clock> m_cpuTimePointStart;
-
 public:
-	void begin()
-	{
-		m_cpuTimePointStart = std::chrono::high_resolution_clock::now();
-	}
+  auto begin() -> void { m_cpuTimePointStart = std::chrono::high_resolution_clock::now(); }
 
-	void end()
-	{
-		auto diff = std::chrono::high_resolution_clock::now() - m_cpuTimePointStart;
-		auto mili = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
-		m_time = 0.5*(m_time + (double)mili);
-	}
+  auto end() -> void
+  {
+    auto diff  = std::chrono::high_resolution_clock::now() - m_cpuTimePointStart;
+    auto milli = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
+    m_time     = 0.5 * (m_time + static_cast<double>(milli));
+  }
 
-	double timeInMilisec() const { return m_time;  }
-	double timeInSeconds() const { return m_time*0.001; }
+  double GetTimeInMilliseconds() const { return m_time; }
+  double GetTimeInSeconds() const { return m_time * 0.001; }
+
+private:
+  double m_time{};
+  std::chrono::time_point<std::chrono::high_resolution_clock> m_cpuTimePointStart;
 };
 
 int main()
 {
-	const std::vector<std::string> EFFECTS_NAME { "tunnel", "attractors", "fountain" };
-	const size_t START_NUM_PARTICLES{ 1000 };
-	const size_t END_NUM_PARTICLES{ 301000 };
-	const size_t PARTICLES_NUM_STEPS{ 30 };	
-	const size_t NUM_PARTICLES_STEP{ (END_NUM_PARTICLES - START_NUM_PARTICLES) / PARTICLES_NUM_STEPS };
-	
-	const double DELTA_TIME{ 1.0 / 60.0 };	// 60 fps
-	const size_t FRAME_COUNT{ 200 };
+  static const std::vector<std::string> s_EFFECTS_NAME{"tunnel", "attractors", "fountain"};
 
-	CpuTimeQuery timer;
+  static constexpr auto START_NUM_PARTICLES = 1000U;
+  static constexpr auto END_NUM_PARTICLES   = 301000U;
+  static constexpr auto PARTICLES_NUM_STEPS = 30U;
+  static constexpr auto NUM_PARTICLES_STEP =
+      (END_NUM_PARTICLES - START_NUM_PARTICLES) / PARTICLES_NUM_STEPS;
 
-	std::cout << "count | ";
-	for (const auto &n : EFFECTS_NAME)
-		std::cout << n.c_str() << " | ";
-	std::cout << std::endl;
-	std::cout << "-------|----------" << std::endl;
+  static constexpr auto DELTA_TIME  = 1.0 / 60.0; // 60 fps
+  static constexpr auto FRAME_COUNT = 200U;
 
-	std::cout.setf(std::ios::fixed, std::ios::floatfield);
-	std::cout.precision(3);
-	std::wcout << std::fixed;
+  CpuTimeQuery timer;
 
-	for (size_t step = 0; step < PARTICLES_NUM_STEPS; ++step)
-	{
-		size_t numParticles{ START_NUM_PARTICLES + step*NUM_PARTICLES_STEP };
-		
-		if (numParticles < 150000 || numParticles > 200000)
-			continue;
-		
-		std::cout << numParticles << " | ";		
+  std::cout << "count | ";
+  for (const auto& n : s_EFFECTS_NAME)
+  {
+    std::cout << n.c_str() << " | ";
+  }
+  std::cout << "\n";
+  std::cout << "-------|----------\n";
 
-		for (const auto &n : EFFECTS_NAME)
-		{
-			auto e = EffectFactory::create(n.c_str());
-			e->initialize(numParticles);
+  std::cout.setf(std::ios::fixed, std::ios::floatfield);
+  std::cout.precision(3);
+  std::wcout << std::fixed;
 
-			timer.begin();
+  for (auto step = 0U; step < PARTICLES_NUM_STEPS; ++step)
+  {
+    const auto numParticles = START_NUM_PARTICLES + (step * NUM_PARTICLES_STEP);
 
-			for (size_t frame = 0; frame < FRAME_COUNT; ++frame)
-			{
-				e->cpuUpdate(DELTA_TIME);
-			}
-			timer.end();
+    if ((numParticles < 150000) or (numParticles > 200000))
+    {
+      continue;
+    }
 
-			std::cout << timer.timeInMilisec() << " | ";
-		}
-		std::cout << std::endl;
-	}	
+    std::cout << numParticles << " | ";
 
-	std::cout << "time in miliseconds" << std::endl;
+    for (const auto& n : s_EFFECTS_NAME)
+    {
+      const auto effect = EffectFactory::create(n.c_str());
+      effect->initialize(numParticles);
 
-	return 0;
+      timer.begin();
+      for (auto frame = 0U; frame < FRAME_COUNT; ++frame)
+      {
+        effect->cpuUpdate(DELTA_TIME);
+      }
+      timer.end();
+
+      std::cout << timer.GetTimeInMilliseconds() << " | ";
+    }
+    std::cout << "\n";
+  }
+
+  std::cout << "time in milliseconds\n";
+
+  return 0;
 }
