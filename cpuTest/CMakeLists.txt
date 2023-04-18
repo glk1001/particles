@@ -1,69 +1,54 @@
 set(PROJECT_NAME cpuTest)
 
-################################################################################
+cmake_path(GET CMAKE_CURRENT_SOURCE_DIR PARENT_PATH PARENT_DIR)
+
 # Source groups
-################################################################################
 set(no_group_source_files
-    "cpuTest.cpp"
-)
+        "cpuTest.cpp"
+        )
 source_group("" FILES ${no_group_source_files})
 
 set(effects
-    "../particlesCode/attractorEffect.cpp"
-    "../particlesCode/attractorEffect.h"
-    "../particlesCode/effect.cpp"
-    "../particlesCode/effect.h"
-    "../particlesCode/fountainEffect.cpp"
-    "../particlesCode/fountainEffect.h"
-    "../particlesCode/tunnelEffect.cpp"
-    "../particlesCode/tunnelEffect.h"
-)
+        "${PARENT_DIR}/particlesCode/attractorEffect.cpp"
+        "${PARENT_DIR}/particlesCode/effect.cpp"
+        "${PARENT_DIR}/particlesCode/fountainEffect.cpp"
+        "${PARENT_DIR}/particlesCode/tunnelEffect.cpp"
+        )
 source_group("effects" FILES ${effects})
 
 set(particles
-    "../particlesCode/particleGenerators.cpp"
-    "../particlesCode/particleGenerators.h"
-    "../particlesCode/particleRenderer.cpp"
-    "../particlesCode/particleRenderer.h"
-    "../particlesCode/particles.cpp"
-    "../particlesCode/particles.h"
-    "../particlesCode/particleUpdaters.cpp"
-    "../particlesCode/particleUpdaters.h"
-    "fake_glParticleRenderer.cpp"
-)
+        "${PARENT_DIR}/particlesCode/particleGenerators.cpp"
+        "${PARENT_DIR}/particlesCode/particleRenderer.cpp"
+        "${PARENT_DIR}/particlesCode/particles.cpp"
+        "${PARENT_DIR}/particlesCode/particleUpdaters.cpp"
+        "fake_glParticleRenderer.cpp"
+        )
 source_group("particles" FILES ${particles})
 
 set(ALL_FILES
-    ${no_group_source_files}
-    ${effects}
-    ${particles}
-)
+        ${no_group_source_files}
+        ${effects}
+        ${particles}
+        )
 
-################################################################################
 # Target
-################################################################################
 add_executable(${PROJECT_NAME} ${ALL_FILES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
-)
-################################################################################
-# Include directories
-################################################################################
+        INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
+        )
+
 target_include_directories(${PROJECT_NAME} PUBLIC
-    "${CMAKE_CURRENT_SOURCE_DIR}/../particlesCode"
-)
+        "${PARENT_DIR}"
+        )
 
-################################################################################
-# Compile definitions
-################################################################################
 target_compile_definitions(${PROJECT_NAME} PRIVATE
-    "$<$<CONFIG:Debug>:"
+        "$<$<CONFIG:Debug>:"
         "_DEBUG"
-    ">"
-    "$<$<CONFIG:Release>:"
+        ">"
+        "$<$<CONFIG:Release>:"
         "NDEBUG"
-    ">"
-)
+        ">"
+        )
 
-# set_project_warnings(cpuTest)
+set_project_warnings(cpuTest)

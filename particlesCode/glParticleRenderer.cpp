@@ -1,112 +1,115 @@
 #include "glParticleRenderer.h"
+
+#include "gl_includes.h"
 #include "particles.h"
 
 #include <assert.h>
-#include "gl_includes.h"
 
 namespace particles
 {
 
-	void GLParticleRenderer::generate(ParticleSystem *sys, bool)
-	{
-		assert(sys != nullptr);
+void GLParticleRenderer::generate(ParticleSystem* sys, bool)
+{
+  assert(sys != nullptr);
 
-		m_system = sys;
+  m_system = sys;
 
-		const size_t count = sys->numAllParticles();
+  const size_t count = sys->numAllParticles();
 
-		glGenVertexArrays(1, &m_vao);
-		glBindVertexArray(m_vao);
+  glGenVertexArrays(1, &m_vao);
+  glBindVertexArray(m_vao);
 
-		glGenBuffers(1, &m_bufPos);
-		glBindBuffer(GL_ARRAY_BUFFER, m_bufPos);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* 4 * count, nullptr, GL_STREAM_DRAW);
-		glEnableVertexAttribArray(0);
+  glGenBuffers(1, &m_bufPos);
+  glBindBuffer(GL_ARRAY_BUFFER, m_bufPos);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STREAM_DRAW);
+  glEnableVertexAttribArray(0);
 
-		if (ogl_ext_ARB_vertex_attrib_binding)
-		{
-			glBindVertexBuffer(0, m_bufPos, 0, sizeof(float)* 4);
-			glVertexAttribFormat(0, 4, GL_FLOAT, GL_FALSE, 0);
-			glVertexAttribBinding(0, 0);
-		}
-		else
-			glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, (4)*sizeof(float), (void *)((0)*sizeof(float)));
-		
+  if (ogl_ext_ARB_vertex_attrib_binding)
+  {
+    glBindVertexBuffer(0, m_bufPos, 0, sizeof(float) * 4);
+    glVertexAttribFormat(0, 4, GL_FLOAT, GL_FALSE, 0);
+    glVertexAttribBinding(0, 0);
+  }
+  else
+    glVertexAttribPointer(
+        0, 4, GL_FLOAT, GL_FALSE, (4) * sizeof(float), (void*)((0) * sizeof(float)));
 
-		glGenBuffers(1, &m_bufCol);
-		glBindBuffer(GL_ARRAY_BUFFER, m_bufCol);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* 4 * count, nullptr, GL_STREAM_DRAW);
-		glEnableVertexAttribArray(1);
 
-		if (ogl_ext_ARB_vertex_attrib_binding)
-		{
-			glBindVertexBuffer(1, m_bufCol, 0, sizeof(float)* 4);
-			glVertexAttribFormat(1, 4, GL_FLOAT, GL_FALSE, 0);
-			glVertexAttribBinding(1, 1);
-		}
-		else
-			glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, (4)*sizeof(float), (void *)((0)*sizeof(float)));
-		
+  glGenBuffers(1, &m_bufCol);
+  glBindBuffer(GL_ARRAY_BUFFER, m_bufCol);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 4 * count, nullptr, GL_STREAM_DRAW);
+  glEnableVertexAttribArray(1);
 
-		//glBindVertexBuffer(0, positionBufferHandle, 0, sizeof(GLfloat)* 3);
-		//glBindVertexBuffer(1, colorBufferHandle, 0, sizeof(GLfloat)* 3);
+  if (ogl_ext_ARB_vertex_attrib_binding)
+  {
+    glBindVertexBuffer(1, m_bufCol, 0, sizeof(float) * 4);
+    glVertexAttribFormat(1, 4, GL_FLOAT, GL_FALSE, 0);
+    glVertexAttribBinding(1, 1);
+  }
+  else
+    glVertexAttribPointer(
+        1, 4, GL_FLOAT, GL_FALSE, (4) * sizeof(float), (void*)((0) * sizeof(float)));
 
-		//glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
-		//glVertexAttribBinding(0, 0);
-		//glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 0);
-		//glVertexAttribBinding(1, 1);
 
-		glBindVertexArray(0);
+  //glBindVertexBuffer(0, positionBufferHandle, 0, sizeof(GLfloat)* 3);
+  //glBindVertexBuffer(1, colorBufferHandle, 0, sizeof(GLfloat)* 3);
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-	}
+  //glVertexAttribFormat(0, 3, GL_FLOAT, GL_FALSE, 0);
+  //glVertexAttribBinding(0, 0);
+  //glVertexAttribFormat(1, 3, GL_FLOAT, GL_FALSE, 0);
+  //glVertexAttribBinding(1, 1);
 
-	void GLParticleRenderer::destroy()
-	{
-		if (m_bufPos != 0)
-		{
-			glDeleteBuffers(1, &m_bufPos);
-			m_bufPos = 0;
-		}
+  glBindVertexArray(0);
 
-		if (m_bufCol != 0)
-		{
-			glDeleteBuffers(1, &m_bufCol);
-			m_bufCol = 0;
-		}
-	}
-
-	void GLParticleRenderer::update()
-	{
-		assert(m_system != nullptr);
-		assert(m_bufPos > 0 && m_bufCol > 0);
-
-		const size_t count = m_system->numAliveParticles();
-		if (count > 0)
-		{
-			glBindBuffer(GL_ARRAY_BUFFER, m_bufPos);
-			float *ptr = (float *)(m_system->finalData()->m_pos.get());
-			glBufferSubData(GL_ARRAY_BUFFER, 0, count*sizeof(float)* 4, ptr);
-
-			glBindBuffer(GL_ARRAY_BUFFER, m_bufCol);
-			ptr = (float*)(m_system->finalData()->m_col.get());
-			glBufferSubData(GL_ARRAY_BUFFER, 0, count*sizeof(float)* 4, ptr);
-
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
-		}
-	}
-
-	void GLParticleRenderer::render()
-	{
-		glBindVertexArray(m_vao);
-
-		const size_t count = m_system->numAliveParticles();
-		if (count > 0)
-			glDrawArrays(GL_POINTS, 0, count);
-
-		glBindVertexArray(0);
-	}
+  glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+void GLParticleRenderer::destroy()
+{
+  if (m_bufPos != 0)
+  {
+    glDeleteBuffers(1, &m_bufPos);
+    m_bufPos = 0;
+  }
+
+  if (m_bufCol != 0)
+  {
+    glDeleteBuffers(1, &m_bufCol);
+    m_bufCol = 0;
+  }
+}
+
+void GLParticleRenderer::update()
+{
+  assert(m_system != nullptr);
+  assert(m_bufPos > 0 && m_bufCol > 0);
+
+  const size_t count = m_system->numAliveParticles();
+  if (count > 0)
+  {
+    glBindBuffer(GL_ARRAY_BUFFER, m_bufPos);
+    float* ptr = (float*)(m_system->finalData()->m_pos.get());
+    glBufferSubData(GL_ARRAY_BUFFER, 0, count * sizeof(float) * 4, ptr);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_bufCol);
+    ptr = (float*)(m_system->finalData()->m_col.get());
+    glBufferSubData(GL_ARRAY_BUFFER, 0, count * sizeof(float) * 4, ptr);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+  }
+}
+
+void GLParticleRenderer::render()
+{
+  glBindVertexArray(m_vao);
+
+  const size_t count = m_system->numAliveParticles();
+  if (count > 0)
+    glDrawArrays(GL_POINTS, 0, count);
+
+  glBindVertexArray(0);
+}
+} // namespace particles
 /*
 First of all, I don't really understand why you use pos.x + 1.
 
@@ -138,4 +141,3 @@ EDIT: Of course you also should keep in mind the limitations of point sprites. A
 
 Therefore I would rather suggest you to use simple textured quads. This way you circumvent this whole attenuation problem, as the quads are just transformed like every other 3d object. You only need to implement the rotation toward the viewer, which can either be done on the CPU or in the vertex shader
 */
-

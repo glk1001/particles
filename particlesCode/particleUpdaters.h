@@ -1,78 +1,75 @@
 #pragma once
 
-#include <vector>
 #include "particles.h"
 
-namespace particles
+#include <vector>
+
+namespace particles::updaters
 {
-	namespace updaters
-	{
-		class EulerUpdater : public particles::ParticleUpdater
-		{
-		public:
-			glm::vec4 m_globalAcceleration;
-		public:
-			EulerUpdater() : m_globalAcceleration(0.0) { }
 
-			virtual void update(double dt, ParticleData *p) override;
-		};
+class EulerUpdater : public particles::ParticleUpdater
+{
+public:
+  glm::vec4 m_globalAcceleration{0.0};
 
-		// collision with the floor :) todo: implement a collision model
-		class FloorUpdater : public particles::ParticleUpdater
-		{
-		public:
-			float m_floorY;
-			float m_bounceFactor;
-		public:
-			FloorUpdater() : m_floorY(0.0), m_bounceFactor(0.5f) { }
+public:
+  auto update(double dt, ParticleData* p) -> void override;
+};
 
-			virtual void update(double dt, ParticleData *p) override;
-		};
+// collision with the floor :) todo: implement a collision model
+class FloorUpdater : public particles::ParticleUpdater
+{
+public:
+  float m_floorY = 0.0F;
+  float m_bounceFactor = 0.5F;
 
-		class AttractorUpdater : public particles::ParticleUpdater
-		{
-		protected:
-			std::vector<glm::vec4> m_attractors; // .w is force
-		public:
-			virtual void update(double dt, ParticleData *p) override;
+public:
+  auto update(double dt, ParticleData* p) -> void override;
+};
 
-			size_t collectionSize() const { return m_attractors.size(); }
-			void add(const glm::vec4 &attr) { m_attractors.push_back(attr); }
-			glm::vec4 &get(size_t id) { return m_attractors[id]; }
-		};
+class AttractorUpdater : public particles::ParticleUpdater
+{
+public:
+  auto update(double dt, ParticleData* p) -> void override;
 
-		class BasicColorUpdater : public ParticleUpdater
-		{
-		public:
-			virtual void update(double dt, ParticleData *p) override;
-		};
+  [[nodiscard]] auto collectionSize() const -> size_t { return m_attractors.size(); }
+  auto add(const glm::vec4& attr) -> void { m_attractors.push_back(attr); }
+  [[nodiscard]] auto get(const size_t id) -> glm::vec4& { return m_attractors[id]; }
 
-		class PosColorUpdater : public ParticleUpdater
-		{
-		public:
-			glm::vec4 m_minPos;
-			glm::vec4 m_maxPos;
-		public:
-			PosColorUpdater() : m_minPos(0.0), m_maxPos(1.0) { }
+protected:
+  std::vector<glm::vec4> m_attractors; // .w is force
+};
 
-			virtual void update(double dt, ParticleData *p) override;
-		};
+class BasicColorUpdater : public ParticleUpdater
+{
+public:
+  auto update(double dt, ParticleData* p) -> void override;
+};
 
-		class VelColorUpdater : public ParticleUpdater
-		{
-		public:
-			glm::vec4 m_minVel;
-			glm::vec4 m_maxVel;
-		public:
-			VelColorUpdater() : m_minVel(0.0), m_maxVel(1.0) { }
+class PosColorUpdater : public ParticleUpdater
+{
+public:
+  glm::vec4 m_minPos{0.0};
+  glm::vec4 m_maxPos{1.0};
 
-			virtual void update(double dt, ParticleData *p) override;
-		};
+public:
+  auto update(double dt, ParticleData* p) -> void override;
+};
 
-		class BasicTimeUpdater : public ParticleUpdater
-		{
-		public:
-			virtual void update(double dt, ParticleData *p) override;
-		};
-	}
-}
+class VelColorUpdater : public ParticleUpdater
+{
+public:
+  glm::vec4 m_minVel{0.0};
+  glm::vec4 m_maxVel{1.0};
+
+public:
+  auto update(double dt, ParticleData* p) -> void override;
+};
+
+class BasicTimeUpdater : public ParticleUpdater
+{
+public:
+  auto update(double dt, ParticleData* p) -> void override;
+};
+
+} // namespace particles::updaters

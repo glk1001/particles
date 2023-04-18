@@ -1,5 +1,7 @@
-#include "glParticleRenderer.h"
-#include "particles.h"
+#include "particlesCode/glParticleRenderer.h"
+#include "particlesCode/particles.h"
+
+#include <cassert>
 
 namespace particles
 {

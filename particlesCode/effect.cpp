@@ -1,20 +1,27 @@
 #include "effect.h"
 
-#include <string>
-#include "tunnelEffect.h"
-#include "fountainEffect.h"
 #include "attractorEffect.h"
+#include "fountainEffect.h"
+#include "tunnelEffect.h"
 
-std::shared_ptr<IEffect> EffectFactory::create(const char *name)
+#include <string>
+
+auto EffectFactory::create(const char* const name) -> std::shared_ptr<IEffect>
 {
-	std::string effect{ name };
+  const auto effect = std::string{name};
 
-	if (effect == "tunnel")
-		return std::make_shared<TunnelEffect>();
-	else if (effect == "attractors")
-		return std::make_shared<AttractorEffect>();
-	else if (effect == "fountain")
-		return std::make_shared<FountainEffect>();
+  if ("tunnel" == effect)
+  {
+    return std::make_shared<TunnelEffect>();
+  }
+  if ("attractors" == effect)
+  {
+    return std::make_shared<AttractorEffect>();
+  }
+  if ("fountain" == effect)
+  {
+    return std::make_shared<FountainEffect>();
+  }
 
-	return nullptr;
+  return nullptr;
 }

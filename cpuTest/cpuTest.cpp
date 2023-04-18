@@ -1,8 +1,11 @@
-#include "effect.h"
-#include "particles.h"
+#include "particlesCode/effect.h"
+#include "particlesCode/particles.h"
 
 #include <chrono>
 #include <iostream>
+
+namespace
+{
 
 class CpuTimeQuery
 {
@@ -11,18 +14,20 @@ public:
 
   auto end() -> void
   {
-    auto diff  = std::chrono::high_resolution_clock::now() - m_cpuTimePointStart;
-    auto milli = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
-    m_time     = 0.5 * (m_time + static_cast<double>(milli));
+    const auto diff  = std::chrono::high_resolution_clock::now() - m_cpuTimePointStart;
+    const auto milli = std::chrono::duration_cast<std::chrono::milliseconds>(diff).count();
+    m_time           = 0.5 * (m_time + static_cast<double>(milli));
   }
 
-  double GetTimeInMilliseconds() const { return m_time; }
-  double GetTimeInSeconds() const { return m_time * 0.001; }
+  [[nodiscard]] auto GetTimeInMilliseconds() const -> double { return m_time; }
+  [[nodiscard]] auto GetTimeInSeconds() const -> double { return m_time * 0.001; }
 
 private:
   double m_time{};
   std::chrono::time_point<std::chrono::high_resolution_clock> m_cpuTimePointStart;
 };
+
+} // namespace
 
 int main()
 {

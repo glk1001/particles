@@ -2,32 +2,39 @@
 
 #include <memory>
 
+namespace particles
+{
+class ParticleSystem;
+}
+
 class IEffect
 {
 public:
-	static const size_t DEFAULT_PARTICLE_NUM_FLAG = 0;	// for initialize method
-	//enum Name { };
-public:
-	IEffect() { }
-	virtual ~IEffect() { }
+  IEffect()                                  = default;
+  IEffect(const IEffect&)                    = delete;
+  IEffect(IEffect&&)                         = delete;
+  virtual ~IEffect()                         = default;
+  auto operator=(const IEffect&) -> IEffect& = delete;
+  auto operator=(IEffect&&) -> IEffect&      = delete;
 
-	// creates the effect with desired num of particles, (0 means default for the effect)
-	virtual bool initialize(size_t numParticles) = 0;
-	virtual bool initializeRenderer() = 0;
-	virtual void reset() = 0;
-	virtual void clean() = 0;
+  // Creates the effect with desired number of particles, (0 means default for the effect).
+  virtual auto initialize(size_t numParticles) -> bool = 0;
+  virtual auto initializeRenderer() -> bool            = 0;
+  virtual auto reset() -> void                         = 0;
+  virtual auto clean() -> void                         = 0;
 
-        virtual void update(double dt) = 0;
-	virtual void cpuUpdate(double dt) = 0;
-	virtual void gpuUpdate(double dt) = 0;
-	virtual void render() = 0;
+  virtual auto update(double dt) -> void    = 0;
+  virtual auto cpuUpdate(double dt) -> void = 0;
+  virtual auto gpuUpdate(double dt) -> void = 0;
+  virtual auto render() -> void             = 0;
 
-	virtual int numAllParticles() = 0;
-	virtual int numAliveParticles() = 0;
+  [[nodiscard]] virtual auto numAllParticles() -> size_t   = 0;
+  [[nodiscard]] virtual auto numAliveParticles() -> size_t = 0;
+  [[nodiscard]] virtual auto GetSystem() const -> const particles::ParticleSystem* = 0;
 };
 
 class EffectFactory
 {
 public:
-	static std::shared_ptr<IEffect> create(const char *name);
+  [[nodiscard]] static auto create(const char* name) -> std::shared_ptr<IEffect>;
 };
