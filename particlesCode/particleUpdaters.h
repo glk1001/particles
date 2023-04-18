@@ -37,7 +37,7 @@ public:
   [[nodiscard]] auto get(const size_t id) -> glm::vec4& { return m_attractors[id]; }
 
 protected:
-  std::vector<glm::vec4> m_attractors; // .w is force
+  std::vector<glm::vec4> m_attractors{}; // .w is force
 };
 
 class BasicColorUpdater : public ParticleUpdater

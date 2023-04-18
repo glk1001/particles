@@ -32,10 +32,10 @@ public:
   }
 
 private:
-  std::shared_ptr<particles::ParticleSystem> m_system;
-  std::shared_ptr<particles::IParticleRenderer> m_renderer;
-  std::shared_ptr<particles::generators::BoxPosGen> m_posGenerator;
-  std::shared_ptr<particles::generators::BasicColorGen> m_colGenerator;
-  std::shared_ptr<particles::updaters::EulerUpdater> m_eulerUpdater;
-  std::shared_ptr<particles::updaters::FloorUpdater> m_floorUpdater;
+  std::shared_ptr<particles::ParticleSystem> m_system{};
+  std::shared_ptr<particles::IParticleRenderer> m_renderer{};
+  std::shared_ptr<particles::generators::BoxPosGen> m_posGenerator{};
+  std::shared_ptr<particles::generators::BasicColorGen> m_colGenerator{};
+  std::shared_ptr<particles::updaters::EulerUpdater> m_eulerUpdater{};
+  std::shared_ptr<particles::updaters::FloorUpdater> m_floorUpdater{};
 };

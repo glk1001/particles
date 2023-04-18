@@ -10,17 +10,17 @@ namespace particles
 class ParticleData
 {
 public:
-  std::unique_ptr<glm::vec4[]> m_pos;
-  std::unique_ptr<glm::vec4[]> m_col;
-  std::unique_ptr<glm::vec4[]> m_startCol;
-  std::unique_ptr<glm::vec4[]> m_endCol;
-  std::unique_ptr<glm::vec4[]> m_vel;
-  std::unique_ptr<glm::vec4[]> m_acc;
-  std::unique_ptr<glm::vec4[]> m_time;
-  std::unique_ptr<bool[]> m_alive;
+  std::unique_ptr<glm::vec4[]> m_pos{};
+  std::unique_ptr<glm::vec4[]> m_col{};
+  std::unique_ptr<glm::vec4[]> m_startCol{};
+  std::unique_ptr<glm::vec4[]> m_endCol{};
+  std::unique_ptr<glm::vec4[]> m_vel{};
+  std::unique_ptr<glm::vec4[]> m_acc{};
+  std::unique_ptr<glm::vec4[]> m_time{};
+  std::unique_ptr<bool[]> m_alive{};
 
-  size_t m_count{0};
-  size_t m_countAlive{0};
+  size_t m_count = 0U;
+  size_t m_countAlive = 0U;
 
 public:
   ParticleData()                                       = default;
@@ -74,7 +74,7 @@ public:
   }
 
 protected:
-  std::vector<std::shared_ptr<ParticleGenerator>> m_generators;
+  std::vector<std::shared_ptr<ParticleGenerator>> m_generators{};
 };
 
 class ParticleUpdater
@@ -100,11 +100,11 @@ public:
   auto operator=(const ParticleSystem&) -> ParticleSystem& = delete;
   auto operator=(ParticleSystem&&) -> ParticleSystem&      = delete;
 
-  virtual auto update(double dt) -> void;
-  virtual auto reset() -> void;
+  auto update(double dt) -> void;
+  auto reset() -> void;
 
-  [[nodiscard]] virtual auto numAllParticles() const -> size_t { return m_particles.m_count; }
-  [[nodiscard]] virtual auto numAliveParticles() const -> size_t
+  [[nodiscard]] auto numAllParticles() const -> size_t { return m_particles.m_count; }
+  [[nodiscard]] auto numAliveParticles() const -> size_t
   {
     return m_particles.m_countAlive;
   }
@@ -118,13 +118,13 @@ public:
   [[nodiscard]] static auto computeMemoryUsage(const ParticleSystem& p) -> size_t;
 
 protected:
-  ParticleData m_particles;
-  ParticleData m_aliveParticles;
+  ParticleData m_particles{};
+  ParticleData m_aliveParticles{};
 
-  size_t m_count;
+  size_t m_count = 0U;
 
-  std::vector<std::shared_ptr<ParticleEmitter>> m_emitters;
-  std::vector<std::shared_ptr<ParticleUpdater>> m_updaters;
+  std::vector<std::shared_ptr<ParticleEmitter>> m_emitters{};
+  std::vector<std::shared_ptr<ParticleUpdater>> m_updaters{};
 };
 
 } // namespace particles

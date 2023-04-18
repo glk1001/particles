@@ -33,12 +33,12 @@ public:
   }
 
 private:
-  std::shared_ptr<particles::ParticleSystem> m_system;
-  std::shared_ptr<particles::IParticleRenderer> m_renderer;
+  std::shared_ptr<particles::ParticleSystem> m_system{};
+  std::shared_ptr<particles::IParticleRenderer> m_renderer{};
   static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
   std::array<std::shared_ptr<particles::generators::BoxPosGen>, NUM_BOX_POS_GENERATORS>
       m_posGenerators{};
-  std::shared_ptr<particles::generators::BasicColorGen> m_colGenerator;
-  std::shared_ptr<particles::updaters::AttractorUpdater> m_attractors;
-  float m_zScale;
+  std::shared_ptr<particles::generators::BasicColorGen> m_colGenerator{};
+  std::shared_ptr<particles::updaters::AttractorUpdater> m_attractors{};
+  float m_zScale = 0.0F;
 };

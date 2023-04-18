@@ -106,11 +106,11 @@ auto BasicColorUpdater::update([[maybe_unused]] const double dt, ParticleData* c
 
 auto PosColorUpdater::update([[maybe_unused]] const double dt, ParticleData* const p) -> void
 {
-  glm::vec4* __restrict col      = p->m_col.get();
-  glm::vec4* __restrict startCol = p->m_startCol.get();
-  glm::vec4* __restrict endCol   = p->m_endCol.get();
-  glm::vec4* __restrict t        = p->m_time.get();
-  glm::vec4* __restrict pos      = p->m_pos.get();
+  glm::vec4* __restrict col            = p->m_col.get();
+  const glm::vec4* __restrict startCol = p->m_startCol.get();
+  const glm::vec4* __restrict endCol   = p->m_endCol.get();
+  const glm::vec4* __restrict t        = p->m_time.get();
+  const glm::vec4* __restrict pos      = p->m_pos.get();
 
   const auto endId = p->m_countAlive;
   const auto diffr = m_maxPos.x - m_minPos.x;
