@@ -18,10 +18,8 @@ source_group("effects" FILES ${effects})
 
 set(particles
         "${PARENT_DIR}/particlesCode/particleGenerators.cpp"
-        "${PARENT_DIR}/particlesCode/particleRenderer.cpp"
         "${PARENT_DIR}/particlesCode/particles.cpp"
         "${PARENT_DIR}/particlesCode/particleUpdaters.cpp"
-        "fake_glParticleRenderer.cpp"
         )
 source_group("particles" FILES ${particles})
 

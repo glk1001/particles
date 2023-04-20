@@ -2,7 +2,6 @@
 
 #include "effect.h"
 #include "particleGenerators.h"
-#include "particleRenderer.h"
 #include "particleUpdaters.h"
 #include "particles.h"
 
