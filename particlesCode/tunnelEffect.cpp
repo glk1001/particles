@@ -60,18 +60,6 @@ auto TunnelEffect::initialize(const size_t numParticles) -> bool
   return true;
 }
 
-auto TunnelEffect::update(const double dt) -> void
-{
-  static double s_time = 0.0;
-  s_time += dt;
-
-  m_posGenerator->m_center.x = 0.1F * std::sin(static_cast<float>(s_time) * 2.5F);
-  m_posGenerator->m_center.y = 0.1F * std::cos(static_cast<float>(s_time) * 2.5F);
-  m_posGenerator->m_radX     = 0.15F + 0.05F * std::sin(static_cast<float>(s_time));
-  m_posGenerator->m_radY     = 0.15F + 0.05F * std::sin(static_cast<float>(s_time)) *
-                                       std::cos(static_cast<float>(s_time) * 0.5F);
-}
-
 auto TunnelEffect::cpuUpdate(const double dt) -> void
 {
   m_system->update(dt);

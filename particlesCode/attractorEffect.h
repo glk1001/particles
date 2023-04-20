@@ -15,7 +15,6 @@ public:
   [[nodiscard]] auto initialize(size_t numParticles) -> bool override;
   auto reset() -> void override { m_system->reset(); }
 
-  auto update(double dt) -> void override;
   auto cpuUpdate(double dt) -> void override;
 
   [[nodiscard]] auto numAllParticles() -> size_t override { return m_system->numAllParticles(); }

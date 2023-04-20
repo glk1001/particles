@@ -109,24 +109,6 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   return true;
 }
 
-auto AttractorEffect::update(const double dt) -> void
-{
-  static auto s_time = 0.0F;
-  s_time += static_cast<float>(dt);
-
-  m_posGenerators[0]->m_pos.x = 0.15F * std::sin(s_time * 2.5F);
-  m_posGenerators[0]->m_pos.y = 0.15F * std::cos(s_time * 2.5F);
-  m_posGenerators[0]->m_pos.z = m_zScale * (0.25F * std::cos(s_time * 2.5F));
-
-  m_posGenerators[1]->m_pos.x = -0.15F * std::sin(s_time * 2.0F);
-  m_posGenerators[1]->m_pos.y = 0.15f * std::cos(s_time * 2.0F);
-  m_posGenerators[1]->m_pos.z = m_zScale * (0.25F * std::cos(s_time * 1.5F));
-
-  m_posGenerators[2]->m_pos.x = -0.15F * std::sin(s_time * 1.5F);
-  m_posGenerators[2]->m_pos.y = 0.15F * std::cos(s_time * 2.5F);
-  m_posGenerators[2]->m_pos.z = m_zScale * (0.25F * std::cos(s_time * 1.75F));
-}
-
 auto AttractorEffect::cpuUpdate(const double dt) -> void
 {
   m_system->update(dt);

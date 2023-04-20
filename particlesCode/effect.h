@@ -21,7 +21,6 @@ public:
   virtual auto initialize(size_t numParticles) -> bool = 0;
   virtual auto reset() -> void                         = 0;
 
-  virtual auto update(double dt) -> void    = 0;
   virtual auto cpuUpdate(double dt) -> void = 0;
 
   [[nodiscard]] virtual auto numAllParticles() -> size_t   = 0;

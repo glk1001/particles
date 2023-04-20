@@ -58,15 +58,6 @@ auto FountainEffect::initialize(const size_t numParticles) -> bool
   return true;
 }
 
-auto FountainEffect::update(const double dt) -> void
-{
-  static double s_time = 0.0;
-  s_time += dt;
-
-  m_posGenerator->m_pos.x = 0.1F * std::sin(static_cast<float>(s_time) * 2.5F);
-  m_posGenerator->m_pos.z = 0.1F * std::cos(static_cast<float>(s_time) * 2.5F);
-}
-
 auto FountainEffect::cpuUpdate(const double dt) -> void
 {
   m_system->update(dt);
