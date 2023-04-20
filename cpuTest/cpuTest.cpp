@@ -1,11 +1,41 @@
+#include "particlesCode/attractorEffect.h"
 #include "particlesCode/effect.h"
+#include "particlesCode/fountainEffect.h"
 #include "particlesCode/particles.h"
+#include "particlesCode/tunnelEffect.h"
 
 #include <chrono>
 #include <iostream>
+#include <stdexcept>
 
 namespace
 {
+
+class EffectFactory
+{
+public:
+  [[nodiscard]] static auto create(const char* name) -> std::shared_ptr<IEffect>;
+};
+
+auto EffectFactory::create(const char* const name) -> std::shared_ptr<IEffect>
+{
+  const auto effect = std::string{name};
+
+  if ("tunnel" == effect)
+  {
+    return std::make_shared<TunnelEffect>();
+  }
+  if ("attractors" == effect)
+  {
+    return std::make_shared<AttractorEffect>();
+  }
+  if ("fountain" == effect)
+  {
+    return std::make_shared<FountainEffect>();
+  }
+
+  throw std::runtime_error("Effect not found.");
+}
 
 class CpuTimeQuery
 {

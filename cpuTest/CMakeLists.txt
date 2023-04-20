@@ -10,7 +10,6 @@ source_group("" FILES ${no_group_source_files})
 
 set(effects
         "${PARENT_DIR}/particlesCode/attractorEffect.cpp"
-        "${PARENT_DIR}/particlesCode/effect.cpp"
         "${PARENT_DIR}/particlesCode/fountainEffect.cpp"
         "${PARENT_DIR}/particlesCode/tunnelEffect.cpp"
         )

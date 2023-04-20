@@ -1,6 +1,6 @@
 #pragma once
 
-#include <memory>
+#include <cstddef>
 
 namespace particles
 {
@@ -26,10 +26,4 @@ public:
   [[nodiscard]] virtual auto numAllParticles() -> size_t   = 0;
   [[nodiscard]] virtual auto numAliveParticles() -> size_t = 0;
   [[nodiscard]] virtual auto GetSystem() const -> const particles::ParticleSystem* = 0;
-};
-
-class EffectFactory
-{
-public:
-  [[nodiscard]] static auto create(const char* name) -> std::shared_ptr<IEffect>;
 };
