@@ -10,8 +10,8 @@ namespace particles::generators
 class BoxPosGen : public ParticleGenerator
 {
 public:
-  glm::vec4 m_pos{0.0};
-  glm::vec4 m_maxStartPosOffset{0.0};
+  glm::vec4 m_pos{0.0F};
+  glm::vec4 m_maxStartPosOffset{0.0F};
 
 public:
   auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
@@ -20,14 +20,14 @@ public:
 class RoundPosGen : public ParticleGenerator
 {
 public:
-  glm::vec4 m_center;
-  float m_radX;
-  float m_radY;
+  glm::vec4 m_center{0.0F};
+  float m_radX = 0.0F;
+  float m_radY = 0.0F;
 
 public:
-  RoundPosGen() : m_center(0.0), m_radX(0.0), m_radY(0.0) {}
+  RoundPosGen() = default;
   RoundPosGen(const glm::vec4& center, const double radX, const double radY)
-    : m_center(center), m_radX(static_cast<float>(radX)), m_radY(static_cast<float>(radY))
+    : m_center{center}, m_radX{static_cast<float>(radX)}, m_radY{static_cast<float>(radY)}
   {
   }
 
@@ -37,10 +37,10 @@ public:
 class BasicColorGen : public ParticleGenerator
 {
 public:
-  glm::vec4 m_minStartCol{0.0};
-  glm::vec4 m_maxStartCol{0.0};
-  glm::vec4 m_minEndCol{0.0};
-  glm::vec4 m_maxEndCol{0.0};
+  glm::vec4 m_minStartCol{0.0F};
+  glm::vec4 m_maxStartCol{0.0F};
+  glm::vec4 m_minEndCol{0.0F};
+  glm::vec4 m_maxEndCol{0.0F};
 
 public:
   auto generate(double dt, ParticleData* p, size_t startId, size_t endId)  -> void override;
@@ -49,8 +49,8 @@ public:
 class BasicVelGen : public ParticleGenerator
 {
 public:
-  glm::vec4 m_minStartVel{0.0};
-  glm::vec4 m_maxStartVel{0.0};
+  glm::vec4 m_minStartVel{0.0F};
+  glm::vec4 m_maxStartVel{0.0F};
 
 public:
   auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
@@ -59,8 +59,8 @@ public:
 class SphereVelGen : public ParticleGenerator
 {
 public:
-  float m_minVel{0.0};
-  float m_maxVel{0.0};
+  float m_minVel = 0.0F;
+  float m_maxVel = 0.0F;
 
 public:
   auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
@@ -69,7 +69,7 @@ public:
 class VelFromPosGen : public ParticleGenerator
 {
 public:
-  glm::vec4 m_offset{0.0};
+  glm::vec4 m_offset{0.0F};
   float m_minScale = 0.0F;
   float m_maxScale = 0.0F;
 

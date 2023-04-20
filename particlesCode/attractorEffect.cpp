@@ -109,22 +109,6 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   return true;
 }
 
-auto AttractorEffect::initializeRenderer() -> bool
-{
-  m_renderer = particles::RendererFactory::create("gl");
-  m_renderer->generate(m_system.get(), false);
-
-  return true;
-}
-
-auto AttractorEffect::clean() -> void
-{
-  if (m_renderer)
-  {
-    m_renderer->destroy();
-  }
-}
-
 auto AttractorEffect::update(const double dt) -> void
 {
   static auto s_time = 0.0F;
@@ -146,14 +130,4 @@ auto AttractorEffect::update(const double dt) -> void
 auto AttractorEffect::cpuUpdate(const double dt) -> void
 {
   m_system->update(dt);
-}
-
-auto AttractorEffect::gpuUpdate([[maybe_unused]] const double dt) -> void
-{
-  m_renderer->update();
-}
-
-auto AttractorEffect::render() -> void
-{
-  m_renderer->render();
 }

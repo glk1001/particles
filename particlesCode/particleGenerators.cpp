@@ -74,17 +74,13 @@ auto SphereVelGen::generate([[maybe_unused]] const double dt,
                             const size_t startId,
                             const size_t endId) -> void
 {
-  auto phi   = 0.0F;
-  auto theta = 0.0F;
-  auto v     = 0.0F;
-  auto r     = 0.0F;
   for (auto i = startId; i < endId; ++i)
   {
-    phi   = static_cast<float>(glm::linearRand(-M_PI, M_PI));
-    theta = static_cast<float>(glm::linearRand(-M_PI, M_PI));
-    v     = glm::linearRand(m_minVel, m_maxVel);
+    const auto phi   = static_cast<float>(glm::linearRand(-M_PI, M_PI));
+    const auto theta = static_cast<float>(glm::linearRand(-M_PI, M_PI));
+    const auto v     = glm::linearRand(m_minVel, m_maxVel);
+    const auto r  = v * std::sin(phi);
 
-    r             = v * std::sin(phi);
     p->m_vel[i].z = v * std::cos(phi);
     p->m_vel[i].x = r * std::cos(theta);
     p->m_vel[i].y = r * std::sin(theta);

@@ -37,7 +37,7 @@ auto ParticleData::wake(const size_t id) -> void
   {
     m_alive[id] = true;
     //swapData(id, m_countAlive);
-    m_countAlive++;
+    ++m_countAlive;
   }
 }
 
@@ -94,7 +94,7 @@ auto ParticleData::computeMemoryUsage(const ParticleData& p) -> size_t
 ////////////////////////////////////////////////////////////////////////////////
 // ParticleEmitter class
 
-void ParticleEmitter::emit(const double dt, ParticleData* const p)
+auto ParticleEmitter::emit(const double dt, ParticleData* const p) -> void
 {
   const auto maxNewParticles = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
   const auto startId         = p->m_countAlive;

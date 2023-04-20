@@ -58,22 +58,6 @@ auto FountainEffect::initialize(const size_t numParticles) -> bool
   return true;
 }
 
-auto FountainEffect::initializeRenderer() -> bool
-{
-  m_renderer = particles::RendererFactory::create("gl");
-  m_renderer->generate(m_system.get(), false);
-
-  return true;
-}
-
-auto FountainEffect::clean() -> void
-{
-  if (m_renderer)
-  {
-    m_renderer->destroy();
-  }
-}
-
 auto FountainEffect::update(const double dt) -> void
 {
   static double s_time = 0.0;
@@ -86,14 +70,4 @@ auto FountainEffect::update(const double dt) -> void
 auto FountainEffect::cpuUpdate(const double dt) -> void
 {
   m_system->update(dt);
-}
-
-auto FountainEffect::gpuUpdate([[maybe_unused]] const double dt) -> void
-{
-  m_renderer->update();
-}
-
-auto FountainEffect::render() -> void
-{
-  m_renderer->render();
 }

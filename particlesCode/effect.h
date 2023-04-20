@@ -19,14 +19,10 @@ public:
 
   // Creates the effect with desired number of particles, (0 means default for the effect).
   virtual auto initialize(size_t numParticles) -> bool = 0;
-  virtual auto initializeRenderer() -> bool            = 0;
   virtual auto reset() -> void                         = 0;
-  virtual auto clean() -> void                         = 0;
 
   virtual auto update(double dt) -> void    = 0;
   virtual auto cpuUpdate(double dt) -> void = 0;
-  virtual auto gpuUpdate(double dt) -> void = 0;
-  virtual auto render() -> void             = 0;
 
   [[nodiscard]] virtual auto numAllParticles() -> size_t   = 0;
   [[nodiscard]] virtual auto numAliveParticles() -> size_t = 0;

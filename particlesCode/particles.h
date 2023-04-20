@@ -55,7 +55,7 @@ public:
 class ParticleEmitter
 {
 public:
-  float m_emitRate{0.0};
+  float m_emitRate = 0.0F;
 
 public:
   ParticleEmitter()                                          = default;
@@ -66,7 +66,7 @@ public:
   auto operator=(ParticleEmitter&&) -> ParticleEmitter&      = delete;
 
   // calls all the generators and at the end it activates (wakes) particle
-  virtual auto emit(double dt, ParticleData* p) -> void;
+  auto emit(double dt, ParticleData* p) -> void;
 
   auto addGenerator(const std::shared_ptr<ParticleGenerator> gen) -> void
   {
