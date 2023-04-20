@@ -27,7 +27,7 @@ auto ParticleData::kill(const size_t id) -> void
   {
     m_alive[id] = false;
     swapData(id, m_countAlive - 1);
-    m_countAlive--;
+    --m_countAlive;
   }
 }
 
@@ -44,13 +44,13 @@ auto ParticleData::wake(const size_t id) -> void
 auto ParticleData::swapData(const size_t a, const size_t b) -> void
 {
   /*std::swap(m_pos[a], m_pos[b]);
-		std::swap(m_col[a], m_col[b]);
-		std::swap(m_startCol[a], m_startCol[b]);
-		std::swap(m_endCol[a], m_endCol[b]);
-		std::swap(m_vel[a], m_vel[b]);
-		std::swap(m_acc[a], m_acc[b]);
-		std::swap(m_time[a], m_time[b]);
-		std::swap(m_alive[a], m_alive[b]);*/
+    std::swap(m_col[a], m_col[b]);
+    std::swap(m_startCol[a], m_startCol[b]);
+    std::swap(m_endCol[a], m_endCol[b]);
+    std::swap(m_vel[a], m_vel[b]);
+    std::swap(m_acc[a], m_acc[b]);
+    std::swap(m_time[a], m_time[b]);
+    std::swap(m_alive[a], m_alive[b]);*/
   m_pos[a]      = m_pos[b];
   m_col[a]      = m_col[b];
   m_startCol[a] = m_startCol[b];
@@ -79,7 +79,7 @@ auto ParticleData::copyOnlyAlive(const ParticleData* source, ParticleData* const
       destination->m_acc[id]      = source->m_acc[i];
       destination->m_time[id]     = source->m_time[i];
       destination->m_alive[id]    = true;
-      id++;
+      ++id;
     }
   }
 
@@ -88,7 +88,7 @@ auto ParticleData::copyOnlyAlive(const ParticleData* source, ParticleData* const
 
 auto ParticleData::computeMemoryUsage(const ParticleData& p) -> size_t
 {
-  return p.m_count * (7 * sizeof(glm::vec4) + sizeof(bool)) + sizeof(size_t) * 2;
+  return p.m_count * ((7 * sizeof(glm::vec4)) + sizeof(bool)) + (sizeof(size_t) * 2);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

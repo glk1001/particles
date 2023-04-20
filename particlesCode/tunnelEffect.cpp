@@ -27,9 +27,9 @@ auto TunnelEffect::initialize(const size_t numParticles) -> bool
     particleEmitter->addGenerator(m_posGenerator);
 
     m_colGenerator                = std::make_shared<particles::generators::BasicColorGen>();
-    m_colGenerator->m_minStartCol = glm::vec4{0.7, 0.0, 0.7, 1.0};
+    m_colGenerator->m_minStartCol = glm::vec4{0.5, 0.0, 0.5, 1.0};
     m_colGenerator->m_maxStartCol = glm::vec4{1.0, 1.0, 1.0, 1.0};
-    m_colGenerator->m_minEndCol   = glm::vec4{0.5, 0.0, 0.6, 0.0};
+    m_colGenerator->m_minEndCol   = glm::vec4{0.2, 0.0, 0.6, 0.0};
     m_colGenerator->m_maxEndCol   = glm::vec4{0.7, 0.5, 1.0, 0.0};
     particleEmitter->addGenerator(m_colGenerator);
 
@@ -40,7 +40,7 @@ auto TunnelEffect::initialize(const size_t numParticles) -> bool
 
     auto timeGenerator       = std::make_shared<particles::generators::BasicTimeGen>();
     timeGenerator->m_minTime = 1.0;
-    timeGenerator->m_maxTime = 3.5;
+    timeGenerator->m_maxTime = 10.0;
     particleEmitter->addGenerator(timeGenerator);
   }
   m_system->addEmitter(particleEmitter);

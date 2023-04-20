@@ -94,10 +94,10 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   m_system->addUpdater(colorUpdater);
 
   m_attractors = std::make_shared<particles::updaters::AttractorUpdater>();
-  m_attractors->add(glm::vec4{0.0, 0.0, 0.75, 1.0});
-  m_attractors->add(glm::vec4{0.0, 0.0, -0.75, 1.0});
-  m_attractors->add(glm::vec4{0.0, 0.75, 0.0, 1.0});
-  m_attractors->add(glm::vec4{0.0, -0.75, 0.0, 1.0});
+  m_attractors->add(glm::vec4{3.0, 0.0, 0.75, 1.0});
+  m_attractors->add(glm::vec4{0.0, 1.0, -0.75, 1.0});
+  m_attractors->add(glm::vec4{-0.40, 0.75, 0.0, 1.0});
+  m_attractors->add(glm::vec4{-2.0, -0.75, 0.0, 1.0});
   m_system->addUpdater(m_attractors);
 
   auto eulerUpdater                  = std::make_shared<particles::updaters::EulerUpdater>();
