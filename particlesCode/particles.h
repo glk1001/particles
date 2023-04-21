@@ -10,16 +10,14 @@ namespace particles
 class ParticleData
 {
 public:
-  ParticleData()                                       = default;
+  explicit ParticleData(size_t count) noexcept;
   ParticleData(const ParticleData&)                    = delete;
   ParticleData(ParticleData&&)                         = delete;
   ~ParticleData()                                      = default;
   auto operator=(const ParticleData&) -> ParticleData& = delete;
   auto operator=(ParticleData&&) -> ParticleData&      = delete;
 
-  auto generate(size_t maxSize) -> void;
   auto reset() noexcept -> void;
-  auto SetAllDead() noexcept -> void;
 
   auto kill(size_t id) -> void;
   auto wake(size_t id) -> void;
@@ -59,30 +57,22 @@ public:
   [[nodiscard]] static auto computeMemoryUsage(const ParticleData& particleData) -> size_t;
 
 private:
-  size_t m_count      = 0U;
+  size_t m_count;
   size_t m_countAlive = 0U;
 
-  std::unique_ptr<glm::vec4[]> m_pos{};
-  std::unique_ptr<glm::vec4[]> m_vel{};
-  std::unique_ptr<glm::vec4[]> m_acc{};
-  std::unique_ptr<glm::vec4[]> m_col{};
-  std::unique_ptr<glm::vec4[]> m_startCol{};
-  std::unique_ptr<glm::vec4[]> m_endCol{};
-  std::unique_ptr<glm::vec4[]> m_time{};
-  std::unique_ptr<bool[]> m_alive{};
+  std::vector<glm::vec4> m_pos;
+  std::vector<glm::vec4> m_vel;
+  std::vector<glm::vec4> m_acc;
+  std::vector<glm::vec4> m_col;
+  std::vector<glm::vec4> m_startCol;
+  std::vector<glm::vec4> m_endCol;
+  std::vector<glm::vec4> m_time;
+  std::vector<bool> m_alive;
 };
 
 inline auto ParticleData::reset() noexcept -> void
 {
   m_countAlive = 0U;
-}
-
-inline auto ParticleData::SetAllDead() noexcept -> void
-{
-  for (auto i = 0U; i < m_count; ++i)
-  {
-    m_alive[i] = false;
-  }
 }
 
 inline auto ParticleData::GetCount() const noexcept -> size_t
@@ -207,7 +197,8 @@ public:
   auto operator=(const ParticleGenerator&) -> ParticleGenerator& = delete;
   auto operator=(ParticleGenerator&&) -> ParticleGenerator&      = delete;
 
-  virtual auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void = 0;
+  virtual auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
+      -> void = 0;
 };
 
 class ParticleEmitter
@@ -221,7 +212,7 @@ public:
   auto operator=(ParticleEmitter&&) -> ParticleEmitter&      = delete;
 
   auto SetEmitRate(float emitRate) noexcept -> void;
-  auto addGenerator(std::shared_ptr<ParticleGenerator> gen) noexcept -> void;
+  auto addGenerator(const std::shared_ptr<ParticleGenerator>& gen) noexcept -> void;
 
   // Calls all the generators and at the end it activates (wakes) particle.
   auto emit(double dt, ParticleData* particleData) -> void;
@@ -236,7 +227,7 @@ inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
   m_emitRate = emitRate;
 }
 
-inline auto ParticleEmitter::addGenerator(const std::shared_ptr<ParticleGenerator> gen) noexcept
+inline auto ParticleEmitter::addGenerator(const std::shared_ptr<ParticleGenerator>& gen) noexcept
     -> void
 {
   m_generators.push_back(gen);
@@ -271,19 +262,17 @@ public:
   [[nodiscard]] auto numAllParticles() const -> size_t { return m_particles.GetCount(); }
   [[nodiscard]] auto numAliveParticles() const -> size_t { return m_particles.GetAliveCount(); }
 
-  auto addEmitter(const std::shared_ptr<ParticleEmitter> em) -> void { m_emitters.push_back(em); }
-  auto addUpdater(const std::shared_ptr<ParticleUpdater> up) -> void { m_updaters.push_back(up); }
+  auto addEmitter(const std::shared_ptr<ParticleEmitter>& em) -> void { m_emitters.push_back(em); }
+  auto addUpdater(const std::shared_ptr<ParticleUpdater>& up) -> void { m_updaters.push_back(up); }
 
   [[nodiscard]] auto finalData() const -> const ParticleData* { return &m_particles; }
-  [[nodiscard]] auto finalData() -> ParticleData* { return &m_particles; }
 
   [[nodiscard]] static auto computeMemoryUsage(const ParticleSystem& particleSystem) -> size_t;
 
 private:
-  ParticleData m_particles{};
-  ParticleData m_aliveParticles{};
-
-  size_t m_count = 0U;
+  size_t m_count;
+  ParticleData m_particles;
+  ParticleData m_aliveParticles;
 
   std::vector<std::shared_ptr<ParticleEmitter>> m_emitters{};
   std::vector<std::shared_ptr<ParticleUpdater>> m_updaters{};

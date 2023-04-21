@@ -6,19 +6,17 @@
 namespace particles
 {
 
-auto ParticleData::generate(const size_t maxSize) -> void
+ParticleData::ParticleData(const size_t count) noexcept
+  : m_count{count},
+    m_pos(count, glm::vec4{0.0F}),
+    m_vel(count, glm::vec4{0.0F}),
+    m_acc(count, glm::vec4{0.0F}),
+    m_col(count, glm::vec4{0.0F}),
+    m_startCol(count, glm::vec4{0.0F}),
+    m_endCol(count, glm::vec4{0.0F}),
+    m_time(count, glm::vec4{0.0F}),
+    m_alive(count, false)
 {
-  m_count      = maxSize;
-  m_countAlive = 0;
-
-  m_pos      = std::make_unique<glm::vec4[]>(maxSize);
-  m_col      = std::make_unique<glm::vec4[]>(maxSize);
-  m_startCol = std::make_unique<glm::vec4[]>(maxSize);
-  m_endCol   = std::make_unique<glm::vec4[]>(maxSize);
-  m_vel      = std::make_unique<glm::vec4[]>(maxSize);
-  m_acc      = std::make_unique<glm::vec4[]>(maxSize);
-  m_time     = std::make_unique<glm::vec4[]>(maxSize);
-  m_alive    = std::make_unique<bool[]>(maxSize);
 }
 
 auto ParticleData::kill(const size_t id) -> void
@@ -33,7 +31,7 @@ auto ParticleData::kill(const size_t id) -> void
 
 auto ParticleData::wake(const size_t id) -> void
 {
-  //if (m_countAlive < m_count) // maybe this if can be removed?
+  //if (m_countAlive < m_count) // maybe this 'if' can be removed?
   {
     m_alive[id] = true;
     //swapData(id, m_countAlive);
@@ -61,7 +59,7 @@ auto ParticleData::swapData(const size_t a, const size_t b) -> void
   //m_alive[a] = m_alive[b];*/
 }
 
-auto ParticleData::copyOnlyAlive(const ParticleData* source, ParticleData* const destination)
+auto ParticleData::copyOnlyAlive(const ParticleData* const source, ParticleData* const destination)
     -> void
 {
   assert(source->m_count == destination->m_count);
@@ -115,11 +113,9 @@ auto ParticleEmitter::emit(const double dt, ParticleData* const particleData) ->
 // ParticleSystem class
 
 ////////////////////////////////////////////////////////////////////////////////
-ParticleSystem::ParticleSystem(const size_t maxCount) : m_count{maxCount}
+ParticleSystem::ParticleSystem(const size_t maxCount)
+  : m_count{maxCount}, m_particles{maxCount}, m_aliveParticles{maxCount}
 {
-  m_particles.generate(maxCount);
-  m_aliveParticles.generate(maxCount);
-  m_particles.SetAllDead();
 }
 
 auto ParticleSystem::update(const double dt) -> void
