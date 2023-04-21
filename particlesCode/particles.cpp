@@ -119,11 +119,7 @@ ParticleSystem::ParticleSystem(const size_t maxCount) : m_count{maxCount}
 {
   m_particles.generate(maxCount);
   m_aliveParticles.generate(maxCount);
-
-  for (auto i = 0U; i < maxCount; ++i)
-  {
-    m_particles.m_alive[i] = false;
-  }
+  m_particles.SetAllDead();
 }
 
 auto ParticleSystem::update(const double dt) -> void

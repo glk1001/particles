@@ -19,6 +19,7 @@ public:
 
   auto generate(size_t maxSize) -> void;
   auto reset() noexcept -> void;
+  auto SetAllDead() noexcept -> void;
 
   auto kill(size_t id) -> void;
   auto wake(size_t id) -> void;
@@ -69,13 +70,19 @@ private:
   std::unique_ptr<glm::vec4[]> m_endCol{};
   std::unique_ptr<glm::vec4[]> m_time{};
   std::unique_ptr<bool[]> m_alive{};
-
-  friend class ParticleSystem;
 };
 
 inline auto ParticleData::reset() noexcept -> void
 {
   m_countAlive = 0U;
+}
+
+inline auto ParticleData::SetAllDead() noexcept -> void
+{
+  for (auto i = 0U; i < m_count; ++i)
+  {
+    m_alive[i] = false;
+  }
 }
 
 inline auto ParticleData::GetCount() const noexcept -> size_t
@@ -128,7 +135,8 @@ inline auto ParticleData::GetAcceleration(const size_t i) const noexcept -> cons
   return m_acc[i];
 }
 
-inline auto ParticleData::SetAcceleration(const size_t i, const glm::vec4& acceleration) noexcept -> void
+inline auto ParticleData::SetAcceleration(const size_t i, const glm::vec4& acceleration) noexcept
+    -> void
 {
   m_acc[i] = acceleration;
 }
@@ -158,7 +166,8 @@ inline auto ParticleData::GetStartColor(const size_t i) const noexcept -> const 
   return m_startCol[i];
 }
 
-inline auto ParticleData::SetStartColor(const size_t i, const glm::vec4& startColor) noexcept -> void
+inline auto ParticleData::SetStartColor(const size_t i, const glm::vec4& startColor) noexcept
+    -> void
 {
   m_startCol[i] = startColor;
 }
@@ -204,9 +213,6 @@ public:
 class ParticleEmitter
 {
 public:
-  float m_emitRate = 0.0F;
-
-public:
   ParticleEmitter()                                          = default;
   ParticleEmitter(const ParticleEmitter&)                    = delete;
   ParticleEmitter(ParticleEmitter&&)                         = delete;
@@ -214,17 +220,26 @@ public:
   auto operator=(const ParticleEmitter&) -> ParticleEmitter& = delete;
   auto operator=(ParticleEmitter&&) -> ParticleEmitter&      = delete;
 
-  // calls all the generators and at the end it activates (wakes) particle
+  auto SetEmitRate(float emitRate) noexcept -> void;
+  auto addGenerator(std::shared_ptr<ParticleGenerator> gen) noexcept -> void;
+
+  // Calls all the generators and at the end it activates (wakes) particle.
   auto emit(double dt, ParticleData* p) -> void;
 
-  auto addGenerator(const std::shared_ptr<ParticleGenerator> gen) -> void
-  {
-    m_generators.push_back(gen);
-  }
-
-protected:
+private:
+  float m_emitRate = 0.0F;
   std::vector<std::shared_ptr<ParticleGenerator>> m_generators{};
 };
+
+inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
+{
+  m_emitRate = emitRate;
+}
+
+inline auto ParticleEmitter::addGenerator(const std::shared_ptr<ParticleGenerator> gen) noexcept -> void
+{
+  m_generators.push_back(gen);
+}
 
 class ParticleUpdater
 {
@@ -263,7 +278,7 @@ public:
 
   [[nodiscard]] static auto computeMemoryUsage(const ParticleSystem& p) -> size_t;
 
-protected:
+private:
   ParticleData m_particles{};
   ParticleData m_aliveParticles{};
 

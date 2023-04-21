@@ -15,7 +15,7 @@ auto FountainEffect::initialize(const size_t numParticles) -> bool
   //
   auto particleEmitter = std::make_shared<particles::ParticleEmitter>();
   {
-    particleEmitter->m_emitRate = static_cast<float>(numParticlesToUse) * 0.25F;
+    particleEmitter->SetEmitRate(0.25F * static_cast<float>(numParticlesToUse));
 
     // pos:
     m_posGenerator                      = std::make_shared<particles::generators::BoxPosGen>();

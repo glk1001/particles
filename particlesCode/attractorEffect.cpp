@@ -32,7 +32,7 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   //
   auto particleEmitter = std::make_shared<particles::ParticleEmitter>();
   {
-    particleEmitter->m_emitRate = static_cast<float>(numParticlesToUse) * 0.1F;
+    particleEmitter->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
     // pos:
     m_posGenerators[0]                      = std::make_shared<particles::generators::BoxPosGen>();
@@ -51,7 +51,7 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   //
   auto particleEmitter2 = std::make_shared<particles::ParticleEmitter>();
   {
-    particleEmitter2->m_emitRate = static_cast<float>(numParticlesToUse) * 0.1F;
+    particleEmitter2->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
     m_posGenerators[1]                      = std::make_shared<particles::generators::BoxPosGen>();
     m_posGenerators[1]->m_pos               = glm::vec4{0.0, 0.0, 0.25, 0.0};
@@ -69,7 +69,7 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   //
   auto particleEmitter3 = std::make_shared<particles::ParticleEmitter>();
   {
-    particleEmitter3->m_emitRate = static_cast<float>(numParticlesToUse) * 0.1F;
+    particleEmitter3->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
     m_posGenerators[2]                      = std::make_shared<particles::generators::BoxPosGen>();
     m_posGenerators[2]->m_pos               = glm::vec4{0.0, 0.0, 0.25, 0.0};
