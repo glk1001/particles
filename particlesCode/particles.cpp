@@ -11,14 +11,14 @@ auto ParticleData::generate(const size_t maxSize) -> void
   m_count      = maxSize;
   m_countAlive = 0;
 
-  m_pos.reset(new glm::vec4[maxSize]);
-  m_col.reset(new glm::vec4[maxSize]);
-  m_startCol.reset(new glm::vec4[maxSize]);
-  m_endCol.reset(new glm::vec4[maxSize]);
-  m_vel.reset(new glm::vec4[maxSize]);
-  m_acc.reset(new glm::vec4[maxSize]);
-  m_time.reset(new glm::vec4[maxSize]);
-  m_alive.reset(new bool[maxSize]);
+  m_pos = std::make_unique<glm::vec4[]>(maxSize);
+  m_col = std::make_unique<glm::vec4[]>(maxSize);
+  m_startCol = std::make_unique<glm::vec4[]>(maxSize);
+  m_endCol = std::make_unique<glm::vec4[]>(maxSize);
+  m_vel = std::make_unique<glm::vec4[]>(maxSize);
+  m_acc = std::make_unique<glm::vec4[]>(maxSize);
+  m_time = std::make_unique<glm::vec4[]>(maxSize);
+  m_alive = std::make_unique<bool[]>(maxSize);
 }
 
 auto ParticleData::kill(const size_t id) -> void

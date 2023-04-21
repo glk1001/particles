@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="gcc-12-Debug" ENABLED="true" GENERATION_DIR="build-clion-gcc-12-Debug" CONFIG_NAME="Debug" TOOLCHAIN_NAME="gcc-12" NO_GENERATOR="true" />
+      <configuration PROFILE_NAME="gcc-12-RelWithDebInfo" ENABLED="true" GENERATION_DIR="build-clion-gcc-12-RelWithDebInfo" CONFIG_NAME="RelWithDebInfo" TOOLCHAIN_NAME="gcc-12" NO_GENERATOR="true" />
+    </configurations>
+  </component>
+</project>
