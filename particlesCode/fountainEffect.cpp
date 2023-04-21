@@ -54,8 +54,8 @@ auto FountainEffect::initialize(const size_t numParticles) -> bool
   m_eulerUpdater->m_globalAcceleration = glm::vec4{0.0, -2.0, 0.0, 0.0};
   m_system->addUpdater(m_eulerUpdater);
 
-  m_floorUpdater = std::make_shared<particles::updaters::FloorUpdater>();
-  m_floorUpdater->m_floorY = -3.50F;
+  m_floorUpdater                 = std::make_shared<particles::updaters::FloorUpdater>();
+  m_floorUpdater->m_floorY       = -3.50F;
   m_floorUpdater->m_bounceFactor = 2.0F;
   m_system->addUpdater(m_floorUpdater);
 

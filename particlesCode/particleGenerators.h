@@ -43,7 +43,7 @@ public:
   glm::vec4 m_maxEndCol{0.0F};
 
 public:
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId)  -> void override;
+  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
 };
 
 class BasicVelGen : public ParticleGenerator

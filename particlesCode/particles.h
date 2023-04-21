@@ -236,7 +236,8 @@ inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
   m_emitRate = emitRate;
 }
 
-inline auto ParticleEmitter::addGenerator(const std::shared_ptr<ParticleGenerator> gen) noexcept -> void
+inline auto ParticleEmitter::addGenerator(const std::shared_ptr<ParticleGenerator> gen) noexcept
+    -> void
 {
   m_generators.push_back(gen);
 }

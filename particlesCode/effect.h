@@ -23,7 +23,7 @@ public:
 
   virtual auto cpuUpdate(double dt) -> void = 0;
 
-  [[nodiscard]] virtual auto numAllParticles() -> size_t   = 0;
-  [[nodiscard]] virtual auto numAliveParticles() -> size_t = 0;
+  [[nodiscard]] virtual auto numAllParticles() -> size_t                           = 0;
+  [[nodiscard]] virtual auto numAliveParticles() -> size_t                         = 0;
   [[nodiscard]] virtual auto GetSystem() const -> const particles::ParticleSystem* = 0;
 };

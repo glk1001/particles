@@ -20,7 +20,7 @@ public:
 class FloorUpdater : public particles::ParticleUpdater
 {
 public:
-  float m_floorY = 0.0F;
+  float m_floorY       = 0.0F;
   float m_bounceFactor = 0.5F;
 
 public:
