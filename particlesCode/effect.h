@@ -7,6 +7,9 @@ namespace particles
 class ParticleSystem;
 }
 
+namespace particles::EFFECTS
+{
+
 class IEffect
 {
 public:
@@ -27,3 +30,5 @@ public:
   [[nodiscard]] virtual auto numAliveParticles() -> size_t                         = 0;
   [[nodiscard]] virtual auto GetSystem() const -> const particles::ParticleSystem* = 0;
 };
+
+} // namespace particles::EFFECTS

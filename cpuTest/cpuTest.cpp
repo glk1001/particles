@@ -8,6 +8,11 @@
 #include <iostream>
 #include <stdexcept>
 
+using particles::EFFECTS::IEffect;
+using particles::EFFECTS::AttractorEffect;
+using particles::EFFECTS::FountainEffect;
+using particles::EFFECTS::TunnelEffect;
+
 namespace
 {
 

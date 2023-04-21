@@ -1,6 +1,7 @@
 #include "fountainEffect.h"
 
-#include <cmath>
+namespace particles::EFFECTS
+{
 
 auto FountainEffect::initialize(const size_t numParticles) -> bool
 {
@@ -61,7 +62,4 @@ auto FountainEffect::initialize(const size_t numParticles) -> bool
   return true;
 }
 
-auto FountainEffect::cpuUpdate(const double dt) -> void
-{
-  m_system->update(dt);
-}
+} // namespace particles::EFFECTS

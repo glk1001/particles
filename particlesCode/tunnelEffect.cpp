@@ -2,7 +2,8 @@
 
 #include "glm/glm.hpp"
 
-#include <cmath>
+namespace particles::EFFECTS
+{
 
 auto TunnelEffect::initialize(const size_t numParticles) -> bool
 {
@@ -58,7 +59,4 @@ auto TunnelEffect::initialize(const size_t numParticles) -> bool
   return true;
 }
 
-auto TunnelEffect::cpuUpdate(const double dt) -> void
-{
-  m_system->update(dt);
-}
+} // namespace particles::EFFECTS

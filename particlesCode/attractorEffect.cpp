@@ -1,6 +1,7 @@
 #include "attractorEffect.h"
 
-#include <cmath>
+namespace particles::EFFECTS
+{
 
 auto AttractorEffect::initialize(const size_t numParticles) -> bool
 {
@@ -103,12 +104,7 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   eulerUpdater->SetGlobalAcceleration(glm::vec4{0.0, 0.0, 0.0, 0.0});
   m_system->addUpdater(eulerUpdater);
 
-  m_zScale = 1.0F;
-
   return true;
 }
 
-auto AttractorEffect::cpuUpdate(const double dt) -> void
-{
-  m_system->update(dt);
-}
+} // namespace particles::EFFECTS
