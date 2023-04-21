@@ -97,8 +97,8 @@ auto ParticleData::computeMemoryUsage(const ParticleData& p) -> size_t
 auto ParticleEmitter::emit(const double dt, ParticleData* const p) -> void
 {
   const auto maxNewParticles = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
-  const auto startId         = p->m_countAlive;
-  const auto endId           = std::min(startId + maxNewParticles, p->m_count - 1);
+  const auto startId         = p->GetAliveCount();
+  const auto endId           = std::min(startId + maxNewParticles, p->GetCount() - 1);
 
   for (auto& gen : m_generators)
   {
@@ -135,7 +135,7 @@ auto ParticleSystem::update(const double dt) -> void
 
   for (auto i = 0U; i < m_count; ++i)
   {
-    m_particles.m_acc[i] = glm::vec4{0.0F};
+    m_particles.SetAcceleration(i, glm::vec4{0.0F});
   }
 
   for (auto& up : m_updaters)
@@ -148,7 +148,7 @@ auto ParticleSystem::update(const double dt) -> void
 
 auto ParticleSystem::reset() -> void
 {
-  m_particles.m_countAlive = 0;
+  m_particles.reset();
 }
 
 auto ParticleSystem::computeMemoryUsage(const ParticleSystem& p) -> size_t

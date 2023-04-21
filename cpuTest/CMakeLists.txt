@@ -48,4 +48,10 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
         ">"
         )
 
+target_link_libraries(${PROJECT_NAME}
+        PRIVATE
+        m
+        stdc++
+        )
+
 set_project_warnings(cpuTest)

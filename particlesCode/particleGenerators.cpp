@@ -27,7 +27,7 @@ auto BoxPosGen::generate([[maybe_unused]] const double dt,
 
   for (auto i = startId; i < endId; ++i)
   {
-    p->m_pos[i] = glm::linearRand(posMin, posMax);
+    p->SetPosition(i, glm::linearRand(posMin, posMax));
   }
 }
 
@@ -40,10 +40,11 @@ auto RoundPosGen::generate([[maybe_unused]] const double dt,
   {
     // TODO(glk) - Need '2.01' instead of '2.0' to cover small radial gap (see tunnel effect).
     const auto ang = glm::linearRand(0.0, M_PI * 2.01);
-    p->m_pos[i]    = m_center + glm::vec4(static_cast<double>(m_radX) * std::sin(ang),
-                                       static_cast<double>(m_radY) * std::cos(ang),
-                                       0.0,
-                                       1.0);
+    p->SetPosition(i,
+                   m_center + glm::vec4(static_cast<double>(m_radX) * std::sin(ang),
+                                        static_cast<double>(m_radY) * std::cos(ang),
+                                        0.0,
+                                        1.0));
   }
 }
 
@@ -54,8 +55,8 @@ auto BasicColorGen::generate([[maybe_unused]] const double dt,
 {
   for (auto i = startId; i < endId; ++i)
   {
-    p->m_startCol[i] = glm::linearRand(m_minStartCol, m_maxStartCol);
-    p->m_endCol[i]   = glm::linearRand(m_minEndCol, m_maxEndCol);
+    p->SetStartColor(i, glm::linearRand(m_minStartCol, m_maxStartCol));
+    p->SetEndColor(i, glm::linearRand(m_minEndCol, m_maxEndCol));
   }
 }
 
@@ -66,7 +67,7 @@ auto BasicVelGen::generate([[maybe_unused]] const double dt,
 {
   for (auto i = startId; i < endId; ++i)
   {
-    p->m_vel[i] = glm::linearRand(m_minStartVel, m_maxStartVel);
+    p->SetVelocity(i, glm::linearRand(m_minStartVel, m_maxStartVel));
   }
 }
 
@@ -80,11 +81,10 @@ auto SphereVelGen::generate([[maybe_unused]] const double dt,
     const auto phi   = static_cast<float>(glm::linearRand(-M_PI, M_PI));
     const auto theta = static_cast<float>(glm::linearRand(-M_PI, M_PI));
     const auto v     = glm::linearRand(m_minVel, m_maxVel);
-    const auto r  = v * std::sin(phi);
+    const auto r     = v * std::sin(phi);
 
-    p->m_vel[i].z = v * std::cos(phi);
-    p->m_vel[i].x = r * std::cos(theta);
-    p->m_vel[i].y = r * std::sin(theta);
+    p->SetVelocity(
+        i, {r * std::cos(theta), r * std::sin(theta), v * std::cos(phi), p->GetVelocity(i).w});
   }
 }
 
@@ -96,8 +96,8 @@ auto VelFromPosGen::generate([[maybe_unused]] const double dt,
   for (auto i = startId; i < endId; ++i)
   {
     const auto scale = glm::linearRand(m_minScale, m_maxScale);
-    const auto vel   = glm::vec4{p->m_pos[i] - m_offset};
-    p->m_vel[i]      = scale * vel;
+    const auto vel   = glm::vec4{p->GetPosition(i) - m_offset};
+    p->SetVelocity(i, scale * vel);
   }
 }
 
@@ -108,9 +108,9 @@ auto BasicTimeGen::generate([[maybe_unused]] const double dt,
 {
   for (auto i = startId; i < endId; ++i)
   {
-    p->m_time[i].x = p->m_time[i].y = glm::linearRand(m_minTime, m_maxTime);
-    p->m_time[i].z                  = 0.0F;
-    p->m_time[i].w                  = 1.0F / p->m_time[i].x;
+    const auto xyTime = glm::linearRand(m_minTime, m_maxTime);
+
+    p->SetTime(i, {xyTime, xyTime, 0.0F, 1.0F / p->GetTime(i).x});
   }
 }
 
