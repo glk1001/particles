@@ -12,7 +12,7 @@ namespace particles::generators
 {
 
 auto BoxPosGen::generate([[maybe_unused]] const double dt,
-                         ParticleData* const p,
+                         ParticleData* const particleData,
                          const size_t startId,
                          const size_t endId) -> void
 {
@@ -27,12 +27,12 @@ auto BoxPosGen::generate([[maybe_unused]] const double dt,
 
   for (auto i = startId; i < endId; ++i)
   {
-    p->SetPosition(i, glm::linearRand(posMin, posMax));
+    particleData->SetPosition(i, glm::linearRand(posMin, posMax));
   }
 }
 
 auto RoundPosGen::generate([[maybe_unused]] const double dt,
-                           ParticleData* const p,
+                           ParticleData* const particleData,
                            const size_t startId,
                            const size_t endId) -> void
 {
@@ -40,7 +40,7 @@ auto RoundPosGen::generate([[maybe_unused]] const double dt,
   {
     // TODO(glk) - Need '2.01' instead of '2.0' to cover small radial gap (see tunnel effect).
     const auto ang = glm::linearRand(0.0, M_PI * 2.01);
-    p->SetPosition(i,
+    particleData->SetPosition(i,
                    m_center + glm::vec4(static_cast<double>(m_radX) * std::sin(ang),
                                         static_cast<double>(m_radY) * std::cos(ang),
                                         0.0,
@@ -49,30 +49,30 @@ auto RoundPosGen::generate([[maybe_unused]] const double dt,
 }
 
 auto BasicColorGen::generate([[maybe_unused]] const double dt,
-                             ParticleData* const p,
+                             ParticleData* const particleData,
                              const size_t startId,
                              const size_t endId) -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
-    p->SetStartColor(i, glm::linearRand(m_minStartCol, m_maxStartCol));
-    p->SetEndColor(i, glm::linearRand(m_minEndCol, m_maxEndCol));
+    particleData->SetStartColor(i, glm::linearRand(m_minStartCol, m_maxStartCol));
+    particleData->SetEndColor(i, glm::linearRand(m_minEndCol, m_maxEndCol));
   }
 }
 
 auto BasicVelGen::generate([[maybe_unused]] const double dt,
-                           ParticleData* const p,
+                           ParticleData* const particleData,
                            const size_t startId,
                            const size_t endId) -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
-    p->SetVelocity(i, glm::linearRand(m_minStartVel, m_maxStartVel));
+    particleData->SetVelocity(i, glm::linearRand(m_minStartVel, m_maxStartVel));
   }
 }
 
 auto SphereVelGen::generate([[maybe_unused]] const double dt,
-                            ParticleData* const p,
+                            ParticleData* const particleData,
                             const size_t startId,
                             const size_t endId) -> void
 {
@@ -83,26 +83,27 @@ auto SphereVelGen::generate([[maybe_unused]] const double dt,
     const auto v     = glm::linearRand(m_minVel, m_maxVel);
     const auto r     = v * std::sin(phi);
 
-    p->SetVelocity(
-        i, {r * std::cos(theta), r * std::sin(theta), v * std::cos(phi), p->GetVelocity(i).w});
+    particleData->SetVelocity(
+        i, {r * std::cos(theta), r * std::sin(theta), v * std::cos(phi),
+                               particleData->GetVelocity(i).w});
   }
 }
 
 auto VelFromPosGen::generate([[maybe_unused]] const double dt,
-                             ParticleData* const p,
+                             ParticleData* const particleData,
                              const size_t startId,
                              const size_t endId) -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
     const auto scale = glm::linearRand(m_minScale, m_maxScale);
-    const auto vel   = glm::vec4{p->GetPosition(i) - m_offset};
-    p->SetVelocity(i, scale * vel);
+    const auto vel   = glm::vec4{particleData->GetPosition(i) - m_offset};
+    particleData->SetVelocity(i, scale * vel);
   }
 }
 
 auto BasicTimeGen::generate([[maybe_unused]] const double dt,
-                            ParticleData* const p,
+                            ParticleData* const particleData,
                             const size_t startId,
                             const size_t endId) -> void
 {
@@ -110,7 +111,7 @@ auto BasicTimeGen::generate([[maybe_unused]] const double dt,
   {
     const auto xyTime = glm::linearRand(m_minTime, m_maxTime);
 
-    p->SetTime(i, {xyTime, xyTime, 0.0F, 1.0F / p->GetTime(i).x});
+    particleData->SetTime(i, {xyTime, xyTime, 0.0F, 1.0F / particleData->GetTime(i).x});
   }
 }
 

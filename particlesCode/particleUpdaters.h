@@ -13,7 +13,7 @@ public:
   glm::vec4 m_globalAcceleration{0.0};
 
 public:
-  auto update(double dt, ParticleData* p) -> void override;
+  auto update(double dt, ParticleData* particleData) -> void override;
 };
 
 // collision with the floor :) todo: implement a collision model
@@ -24,13 +24,13 @@ public:
   float m_bounceFactor = 0.5F;
 
 public:
-  auto update(double dt, ParticleData* p) -> void override;
+  auto update(double dt, ParticleData* particleData) -> void override;
 };
 
 class AttractorUpdater : public particles::ParticleUpdater
 {
 public:
-  auto update(double dt, ParticleData* p) -> void override;
+  auto update(double dt, ParticleData* particleData) -> void override;
 
   [[nodiscard]] auto collectionSize() const -> size_t { return m_attractors.size(); }
   auto add(const glm::vec4& attr) -> void { m_attractors.push_back(attr); }
@@ -43,7 +43,7 @@ protected:
 class BasicColorUpdater : public ParticleUpdater
 {
 public:
-  auto update(double dt, ParticleData* p) -> void override;
+  auto update(double dt, ParticleData* particleData) -> void override;
 };
 
 class PosColorUpdater : public ParticleUpdater
@@ -53,7 +53,7 @@ public:
   glm::vec4 m_maxPos{1.0};
 
 public:
-  auto update(double dt, ParticleData* p) -> void override;
+  auto update(double dt, ParticleData* particleData) -> void override;
 };
 
 class VelColorUpdater : public ParticleUpdater
@@ -69,7 +69,7 @@ public:
 class BasicTimeUpdater : public ParticleUpdater
 {
 public:
-  auto update(double dt, ParticleData* p) -> void override;
+  auto update(double dt, ParticleData* particleData) -> void override;
 };
 
 } // namespace particles::updaters

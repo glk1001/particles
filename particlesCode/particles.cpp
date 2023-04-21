@@ -86,28 +86,28 @@ auto ParticleData::copyOnlyAlive(const ParticleData* source, ParticleData* const
   destination->m_countAlive = id;
 }
 
-auto ParticleData::computeMemoryUsage(const ParticleData& p) -> size_t
+auto ParticleData::computeMemoryUsage(const ParticleData& particleData) -> size_t
 {
-  return p.m_count * ((7 * sizeof(glm::vec4)) + sizeof(bool)) + (sizeof(size_t) * 2);
+  return particleData.m_count * ((7 * sizeof(glm::vec4)) + sizeof(bool)) + (sizeof(size_t) * 2);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // ParticleEmitter class
 
-auto ParticleEmitter::emit(const double dt, ParticleData* const p) -> void
+auto ParticleEmitter::emit(const double dt, ParticleData* const particleData) -> void
 {
   const auto maxNewParticles = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
-  const auto startId         = p->GetAliveCount();
-  const auto endId           = std::min(startId + maxNewParticles, p->GetCount() - 1);
+  const auto startId         = particleData->GetAliveCount();
+  const auto endId           = std::min(startId + maxNewParticles, particleData->GetCount() - 1);
 
   for (auto& gen : m_generators)
   {
-    gen->generate(dt, p, startId, endId);
+    gen->generate(dt, particleData, startId, endId);
   }
 
   for (auto i = startId; i < endId; ++i)
   {
-    p->wake(i);
+    particleData->wake(i);
   }
 }
 
@@ -147,9 +147,9 @@ auto ParticleSystem::reset() -> void
   m_particles.reset();
 }
 
-auto ParticleSystem::computeMemoryUsage(const ParticleSystem& p) -> size_t
+auto ParticleSystem::computeMemoryUsage(const ParticleSystem& particleSystem) -> size_t
 {
-  return 2 * ParticleData::computeMemoryUsage(p.m_particles);
+  return 2 * ParticleData::computeMemoryUsage(particleSystem.m_particles);
 }
 
 } // namespace particles

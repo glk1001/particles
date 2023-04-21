@@ -14,7 +14,7 @@ public:
   glm::vec4 m_maxStartPosOffset{0.0F};
 
 public:
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
+  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void override;
 };
 
 class RoundPosGen : public ParticleGenerator
@@ -31,7 +31,7 @@ public:
   {
   }
 
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
+  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void override;
 };
 
 class BasicColorGen : public ParticleGenerator
@@ -43,7 +43,7 @@ public:
   glm::vec4 m_maxEndCol{0.0F};
 
 public:
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
+  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void override;
 };
 
 class BasicVelGen : public ParticleGenerator
@@ -53,7 +53,7 @@ public:
   glm::vec4 m_maxStartVel{0.0F};
 
 public:
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
+  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void override;
 };
 
 class SphereVelGen : public ParticleGenerator
@@ -63,7 +63,7 @@ public:
   float m_maxVel = 0.0F;
 
 public:
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
+  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void override;
 };
 
 class VelFromPosGen : public ParticleGenerator
@@ -79,7 +79,7 @@ public:
   {
   }
 
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
+  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void override;
 };
 
 class BasicTimeGen : public ParticleGenerator
@@ -89,7 +89,7 @@ public:
   float m_maxTime = 0.0F;
 
 public:
-  auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void override;
+  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void override;
 };
 
 } // namespace particles::generators

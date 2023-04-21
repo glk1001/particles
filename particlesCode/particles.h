@@ -56,7 +56,7 @@ public:
   auto DecTime(size_t i, const glm::vec4& amount) noexcept -> void;
 
   static auto copyOnlyAlive(const ParticleData* source, ParticleData* destination) -> void;
-  [[nodiscard]] static auto computeMemoryUsage(const ParticleData& p) -> size_t;
+  [[nodiscard]] static auto computeMemoryUsage(const ParticleData& particleData) -> size_t;
 
 private:
   size_t m_count      = 0U;
@@ -207,7 +207,7 @@ public:
   auto operator=(const ParticleGenerator&) -> ParticleGenerator& = delete;
   auto operator=(ParticleGenerator&&) -> ParticleGenerator&      = delete;
 
-  virtual auto generate(double dt, ParticleData* p, size_t startId, size_t endId) -> void = 0;
+  virtual auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) -> void = 0;
 };
 
 class ParticleEmitter
@@ -224,7 +224,7 @@ public:
   auto addGenerator(std::shared_ptr<ParticleGenerator> gen) noexcept -> void;
 
   // Calls all the generators and at the end it activates (wakes) particle.
-  auto emit(double dt, ParticleData* p) -> void;
+  auto emit(double dt, ParticleData* particleData) -> void;
 
 private:
   float m_emitRate = 0.0F;
@@ -252,7 +252,7 @@ public:
   auto operator=(const ParticleUpdater&) -> ParticleUpdater& = delete;
   auto operator=(ParticleUpdater&&) -> ParticleUpdater&      = delete;
 
-  virtual auto update(double dt, ParticleData* p) -> void = 0;
+  virtual auto update(double dt, ParticleData* particleData) -> void = 0;
 };
 
 class ParticleSystem
@@ -277,7 +277,7 @@ public:
   [[nodiscard]] auto finalData() const -> const ParticleData* { return &m_particles; }
   [[nodiscard]] auto finalData() -> ParticleData* { return &m_particles; }
 
-  [[nodiscard]] static auto computeMemoryUsage(const ParticleSystem& p) -> size_t;
+  [[nodiscard]] static auto computeMemoryUsage(const ParticleSystem& particleSystem) -> size_t;
 
 private:
   ParticleData m_particles{};
