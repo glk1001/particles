@@ -41,10 +41,10 @@ auto RoundPosGen::generate([[maybe_unused]] const double dt,
     // TODO(glk) - Need '2.01' instead of '2.0' to cover small radial gap (see tunnel effect).
     const auto ang = glm::linearRand(0.0, M_PI * 2.01);
     particleData->SetPosition(i,
-                   m_center + glm::vec4(static_cast<double>(m_radX) * std::sin(ang),
-                                        static_cast<double>(m_radY) * std::cos(ang),
-                                        0.0,
-                                        1.0));
+                              m_center + glm::vec4(static_cast<double>(m_radX) * std::sin(ang),
+                                                   static_cast<double>(m_radY) * std::cos(ang),
+                                                   0.0,
+                                                   1.0));
   }
 }
 
@@ -83,8 +83,10 @@ auto SphereVelGen::generate([[maybe_unused]] const double dt,
     const auto v     = glm::linearRand(m_minVel, m_maxVel);
     const auto r     = v * std::sin(phi);
 
-    particleData->SetVelocity(
-        i, {r * std::cos(theta), r * std::sin(theta), v * std::cos(phi),
+    particleData->SetVelocity(i,
+                              {r * std::cos(theta),
+                               r * std::sin(theta),
+                               v * std::cos(phi),
                                particleData->GetVelocity(i).w});
   }
 }

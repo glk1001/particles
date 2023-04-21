@@ -18,26 +18,25 @@ auto FountainEffect::initialize(const size_t numParticles) -> bool
     particleEmitter->SetEmitRate(0.25F * static_cast<float>(numParticlesToUse));
 
     // pos:
-    m_posGenerator                      = std::make_shared<particles::generators::BoxPosGen>();
-    m_posGenerator->m_pos               = glm::vec4{0.0, 0.0, 0.0, 0.0};
-    m_posGenerator->m_maxStartPosOffset = glm::vec4{0.1, 0.1, 0.0, 0.0};
+    m_posGenerator = std::make_shared<particles::generators::BoxPosGen>();
+    m_posGenerator->SetPosition(glm::vec4{0.0, 0.0, 0.0, 0.0});
+    m_posGenerator->SetMaxStartPositionOffset(glm::vec4{0.1, 0.1, 0.0, 0.0});
     particleEmitter->addGenerator(m_posGenerator);
 
-    m_colGenerator                = std::make_shared<particles::generators::BasicColorGen>();
-    m_colGenerator->m_minStartCol = glm::vec4{0.5, 0.5, 0.5, 1.0};
-    m_colGenerator->m_maxStartCol = glm::vec4{1.0, 1.0, 1.0, 1.0};
-    m_colGenerator->m_minEndCol   = glm::vec4{0.5, 0.0, 0.6, 0.0};
-    m_colGenerator->m_maxEndCol   = glm::vec4{0.7, 0.5, 1.0, 0.0};
+    m_colGenerator = std::make_shared<particles::generators::BasicColorGen>();
+    m_colGenerator->SetMinMaxStartColors(glm::vec4{0.5, 0.5, 0.5, 1.0},
+                                         glm::vec4{1.0, 1.0, 1.0, 1.0});
+    m_colGenerator->SetMinMaxEndColors(glm::vec4{0.5, 0.0, 0.6, 0.0},
+                                       glm::vec4{0.7, 0.5, 1.0, 0.0});
     particleEmitter->addGenerator(m_colGenerator);
 
-    auto velGenerator           = std::make_shared<particles::generators::BasicVelGen>();
-    velGenerator->m_minStartVel = glm::vec4{-0.5F, 0.052F, -0.05F, 0.0F};
-    velGenerator->m_maxStartVel = glm::vec4{0.5F, 0.25F, 0.05F, 0.0F};
+    auto velGenerator = std::make_shared<particles::generators::BasicVelGen>();
+    velGenerator->SetMinMaxVelocity(glm::vec4{-0.5F, 0.052F, -0.05F, 0.0F},
+                                    glm::vec4{0.5F, 0.25F, 0.05F, 0.0F});
     particleEmitter->addGenerator(velGenerator);
 
-    auto timeGenerator       = std::make_shared<particles::generators::BasicTimeGen>();
-    timeGenerator->m_minTime = 30.0F;
-    timeGenerator->m_maxTime = 40.0F;
+    auto timeGenerator = std::make_shared<particles::generators::BasicTimeGen>();
+    timeGenerator->SetMinMaxTime(30.0F, 40.0F);
     particleEmitter->addGenerator(timeGenerator);
   }
   m_system->addEmitter(particleEmitter);
@@ -50,8 +49,8 @@ auto FountainEffect::initialize(const size_t numParticles) -> bool
   //colorUpdater->m_maxVel = glm::vec4{0.5F, 1.0F, -0.0F, 0.0F};
   m_system->addUpdater(colorUpdater);
 
-  m_eulerUpdater                       = std::make_shared<particles::updaters::EulerUpdater>();
-  m_eulerUpdater->m_globalAcceleration = glm::vec4{0.0, -2.0, 0.0, 0.0};
+  m_eulerUpdater = std::make_shared<particles::updaters::EulerUpdater>();
+  m_eulerUpdater->SetGlobalAcceleration(glm::vec4{0.0, -2.0, 0.0, 0.0});
   m_system->addUpdater(m_eulerUpdater);
 
   m_floorUpdater                 = std::make_shared<particles::updaters::FloorUpdater>();

@@ -10,11 +10,18 @@ namespace particles::updaters
 class EulerUpdater : public particles::ParticleUpdater
 {
 public:
-  glm::vec4 m_globalAcceleration{0.0};
-
-public:
   auto update(double dt, ParticleData* particleData) -> void override;
+
+  auto SetGlobalAcceleration(const glm::vec4& acceleration) noexcept -> void;
+
+private:
+  glm::vec4 m_globalAcceleration{0.0};
 };
+
+inline auto EulerUpdater::SetGlobalAcceleration(const glm::vec4& acceleration) noexcept -> void
+{
+  m_globalAcceleration = acceleration;
+}
 
 // collision with the floor :) todo: implement a collision model
 class FloorUpdater : public particles::ParticleUpdater

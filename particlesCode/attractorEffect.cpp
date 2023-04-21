@@ -13,19 +13,18 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   //
   // common
   //
-  m_colGenerator                = std::make_shared<particles::generators::BasicColorGen>();
-  m_colGenerator->m_minStartCol = glm::vec4{0.99, 0.99, 0.99, 1.0};
-  m_colGenerator->m_maxStartCol = glm::vec4{0.99, 0.99, 1.0, 1.0};
-  m_colGenerator->m_minEndCol   = glm::vec4{0.99, 0.99, 0.99, 0.0};
-  m_colGenerator->m_maxEndCol   = glm::vec4{0.99, 0.99, 1.0, 0.25};
+  m_colGenerator = std::make_shared<particles::generators::BasicColorGen>();
+  m_colGenerator->SetMinMaxStartColors(glm::vec4{0.99, 0.99, 0.99, 1.0},
+                                       glm::vec4{0.99, 0.99, 1.0, 1.0});
+  m_colGenerator->SetMinMaxEndColors(glm::vec4{0.99, 0.99, 0.99, 0.0},
+                                     glm::vec4{0.99, 0.99, 1.0, 0.25});
 
   auto velGenerator      = std::make_shared<particles::generators::SphereVelGen>();
   velGenerator->m_minVel = 0.1F;
   velGenerator->m_maxVel = 0.1F;
 
-  auto timeGenerator       = std::make_shared<particles::generators::BasicTimeGen>();
-  timeGenerator->m_minTime = 1.6F;
-  timeGenerator->m_maxTime = 4.0F;
+  auto timeGenerator = std::make_shared<particles::generators::BasicTimeGen>();
+  timeGenerator->SetMinMaxTime(1.6F, 4.0F);
 
   //
   // emitter 1:
@@ -35,9 +34,9 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
     particleEmitter->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
     // pos:
-    m_posGenerators[0]                      = std::make_shared<particles::generators::BoxPosGen>();
-    m_posGenerators[0]->m_pos               = glm::vec4{0.0, 0.0, -0.25, 0.0};
-    m_posGenerators[0]->m_maxStartPosOffset = glm::vec4{0.0, 0.0, 0.0, 0.0};
+    m_posGenerators[0] = std::make_shared<particles::generators::BoxPosGen>();
+    m_posGenerators[0]->SetPosition(glm::vec4{0.0, 0.0, -0.25, 0.0});
+    m_posGenerators[0]->SetMaxStartPositionOffset(glm::vec4{0.0, 0.0, 0.0, 0.0});
     particleEmitter->addGenerator(m_posGenerators[0]);
 
     particleEmitter->addGenerator(m_colGenerator);
@@ -53,9 +52,9 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   {
     particleEmitter2->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
-    m_posGenerators[1]                      = std::make_shared<particles::generators::BoxPosGen>();
-    m_posGenerators[1]->m_pos               = glm::vec4{0.0, 0.0, 0.25, 0.0};
-    m_posGenerators[1]->m_maxStartPosOffset = glm::vec4{0.0, 0.0, 0.0, 0.0};
+    m_posGenerators[1] = std::make_shared<particles::generators::BoxPosGen>();
+    m_posGenerators[1]->SetPosition(glm::vec4{0.0, 0.0, 0.25, 0.0});
+    m_posGenerators[1]->SetMaxStartPositionOffset(glm::vec4{0.0, 0.0, 0.0, 0.0});
     particleEmitter2->addGenerator(m_posGenerators[1]);
 
     particleEmitter2->addGenerator(m_colGenerator);
@@ -71,9 +70,9 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   {
     particleEmitter3->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
-    m_posGenerators[2]                      = std::make_shared<particles::generators::BoxPosGen>();
-    m_posGenerators[2]->m_pos               = glm::vec4{0.0, 0.0, 0.25, 0.0};
-    m_posGenerators[2]->m_maxStartPosOffset = glm::vec4{0.0, 0.0, 0.0, 0.0};
+    m_posGenerators[2] = std::make_shared<particles::generators::BoxPosGen>();
+    m_posGenerators[2]->SetPosition(glm::vec4{0.0, 0.0, 0.25, 0.0});
+    m_posGenerators[2]->SetMaxStartPositionOffset(glm::vec4{0.0, 0.0, 0.0, 0.0});
     particleEmitter3->addGenerator(m_posGenerators[2]);
 
     particleEmitter3->addGenerator(m_colGenerator);
@@ -100,8 +99,8 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   m_attractors->add(glm::vec4{-2.0, -0.75, 0.0, 1.0});
   m_system->addUpdater(m_attractors);
 
-  auto eulerUpdater                  = std::make_shared<particles::updaters::EulerUpdater>();
-  eulerUpdater->m_globalAcceleration = glm::vec4{0.0, 0.0, 0.0, 0.0};
+  auto eulerUpdater = std::make_shared<particles::updaters::EulerUpdater>();
+  eulerUpdater->SetGlobalAcceleration(glm::vec4{0.0, 0.0, 0.0, 0.0});
   m_system->addUpdater(eulerUpdater);
 
   m_zScale = 1.0F;
