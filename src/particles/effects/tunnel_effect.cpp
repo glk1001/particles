@@ -1,7 +1,7 @@
-#include "tunnelEffect.h"
+#include "tunnel_effect.h"
 
-#include "particles/particleGenerators.h"
-#include "particles/particleUpdaters.h"
+#include "particles/particle_generators.h"
+#include "particles/particle_updaters.h"
 
 namespace PARTICLES::EFFECTS
 {

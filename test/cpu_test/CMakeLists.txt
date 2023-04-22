@@ -2,22 +2,22 @@ set(PROJECT_NAME cpuTest)
 
 # Source groups
 set(no_group_source_files
-        "cpuTest.cpp"
+        "cpu_test.cpp"
         )
 source_group("" FILES ${no_group_source_files})
 
 set(effects
         "${SRC_DIR}/particles/effects/effect.h"
-        "${SRC_DIR}/particles/effects/attractorEffect.cpp"
-        "${SRC_DIR}/particles/effects/fountainEffect.cpp"
-        "${SRC_DIR}/particles/effects/tunnelEffect.cpp"
+        "${SRC_DIR}/particles/effects/attractor_effect.cpp"
+        "${SRC_DIR}/particles/effects/fountain_effect.cpp"
+        "${SRC_DIR}/particles/effects/tunnel_effect.cpp"
         )
 source_group("effects" FILES ${effects})
 
 set(particles
-        "${SRC_DIR}/particles/particleGenerators.cpp"
+        "${SRC_DIR}/particles/particle_generators.cpp"
+        "${SRC_DIR}/particles/particle_updaters.cpp"
         "${SRC_DIR}/particles/particles.cpp"
-        "${SRC_DIR}/particles/particleUpdaters.cpp"
         )
 source_group("particles" FILES ${particles})
 

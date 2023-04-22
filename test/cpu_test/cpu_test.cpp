@@ -1,7 +1,7 @@
-#include "particles/effects/attractorEffect.h"
+#include "particles/effects/attractor_effect.h"
 #include "particles/effects/effect.h"
-#include "particles/effects/fountainEffect.h"
-#include "particles/effects/tunnelEffect.h"
+#include "particles/effects/fountain_effect.h"
+#include "particles/effects/tunnel_effect.h"
 #include "particles/particles.h"
 
 #include <chrono>

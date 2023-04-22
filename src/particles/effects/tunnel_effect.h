@@ -1,17 +1,16 @@
 #pragma once
 
 #include "effect.h"
-#include "particles/particleGenerators.h"
-#include "particles/particleUpdaters.h"
+#include "particles/particle_generators.h"
+#include "particles/particle_updaters.h"
 #include "particles/particles.h"
 
-#include <array>
 #include <memory>
 
 namespace PARTICLES::EFFECTS
 {
 
-class AttractorEffect : public IEffect
+class TunnelEffect : public IEffect
 {
 public:
   [[nodiscard]] auto Initialize(size_t numParticles) -> bool override;
@@ -25,34 +24,31 @@ public:
 
 private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
-  static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
-  std::array<std::shared_ptr<PARTICLES::GENERATORS::BoxPosGen>, NUM_BOX_POS_GENERATORS>
-      m_posGenerators{};
+  std::shared_ptr<PARTICLES::GENERATORS::RoundPosGen> m_posGenerator{};
   std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
-  std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractors{};
 };
 
-inline auto AttractorEffect::Reset() -> void
+inline auto TunnelEffect::Reset() -> void
 {
   m_system->Reset();
 }
 
-inline auto AttractorEffect::CpuUpdate(const double dt) -> void
+inline auto TunnelEffect::CpuUpdate(const double dt) -> void
 {
   m_system->Update(dt);
 }
 
-inline auto AttractorEffect::GetNumAllParticles() -> size_t
+inline auto TunnelEffect::GetNumAllParticles() -> size_t
 {
   return m_system->GetNumAllParticles();
 }
 
-inline auto AttractorEffect::GetNumAliveParticles() -> size_t
+inline auto TunnelEffect::GetNumAliveParticles() -> size_t
 {
   return m_system->GetNumAliveParticles();
 }
 
-inline auto AttractorEffect::GetSystem() const -> const PARTICLES::ParticleSystem*
+inline auto TunnelEffect::GetSystem() const -> const PARTICLES::ParticleSystem*
 {
   return m_system.get();
 }

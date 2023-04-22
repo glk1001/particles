@@ -23,7 +23,7 @@ include_directories(BEFORE
 
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
-add_subdirectory(test/cpuTest)
+add_subdirectory(test/cpu_test)
 
 message(STATUS "Particles: CMAKE_CXX_COMPILER_ID = \"${CMAKE_CXX_COMPILER_ID}\".")
 message(STATUS "Particles: CMAKE_CXX_COMPILER_VERSION = \"${CMAKE_CXX_COMPILER_VERSION}\".")

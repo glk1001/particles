@@ -1,8 +1,8 @@
 #pragma once
 
 #include "effect.h"
-#include "particles/particleGenerators.h"
-#include "particles/particleUpdaters.h"
+#include "particles/particle_generators.h"
+#include "particles/particle_updaters.h"
 #include "particles/particles.h"
 
 #include <memory>
