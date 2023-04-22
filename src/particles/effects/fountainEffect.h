@@ -1,13 +1,13 @@
 #pragma once
 
 #include "effect.h"
-#include "particleGenerators.h"
-#include "particleUpdaters.h"
-#include "particles.h"
+#include "particles/particleGenerators.h"
+#include "particles/particleUpdaters.h"
+#include "particles/particles.h"
 
 #include <memory>
 
-namespace particles::EFFECTS
+namespace PARTICLES::EFFECTS
 {
 
 class FountainEffect : public IEffect
@@ -20,14 +20,14 @@ public:
 
   [[nodiscard]] auto numAllParticles() -> size_t override;
   [[nodiscard]] auto numAliveParticles() -> size_t override;
-  [[nodiscard]] auto GetSystem() const -> const particles::ParticleSystem* override;
+  [[nodiscard]] auto GetSystem() const -> const PARTICLES::ParticleSystem* override;
 
 private:
-  std::shared_ptr<particles::ParticleSystem> m_system{};
-  std::shared_ptr<particles::generators::BoxPosGen> m_posGenerator{};
-  std::shared_ptr<particles::generators::BasicColorGen> m_colGenerator{};
-  std::shared_ptr<particles::updaters::EulerUpdater> m_eulerUpdater{};
-  std::shared_ptr<particles::updaters::FloorUpdater> m_floorUpdater{};
+  std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
+  std::shared_ptr<PARTICLES::GENERATORS::BoxPosGen> m_posGenerator{};
+  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
+  std::shared_ptr<PARTICLES::UPDATERS::EulerUpdater> m_eulerUpdater{};
+  std::shared_ptr<PARTICLES::UPDATERS::FloorUpdater> m_floorUpdater{};
 };
 
 inline auto FountainEffect::reset() -> void
@@ -50,9 +50,9 @@ inline auto FountainEffect::numAliveParticles() -> size_t
   return m_system->numAliveParticles();
 }
 
-inline auto FountainEffect::GetSystem() const -> const particles::ParticleSystem*
+inline auto FountainEffect::GetSystem() const -> const PARTICLES::ParticleSystem*
 {
   return m_system.get();
 }
 
-} // namespace particles::EFFECTS
+} // namespace PARTICLES::EFFECTS

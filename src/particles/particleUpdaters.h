@@ -4,10 +4,10 @@
 
 #include <vector>
 
-namespace particles::updaters
+namespace PARTICLES::UPDATERS
 {
 
-class EulerUpdater : public particles::ParticleUpdater
+class EulerUpdater : public PARTICLES::ParticleUpdater
 {
 public:
   auto update(double dt, ParticleData* particleData) -> void override;
@@ -24,7 +24,7 @@ inline auto EulerUpdater::SetGlobalAcceleration(const glm::vec4& acceleration) n
 }
 
 // collision with the floor :) todo: implement a collision model
-class FloorUpdater : public particles::ParticleUpdater
+class FloorUpdater : public PARTICLES::ParticleUpdater
 {
 public:
   float m_floorY       = 0.0F;
@@ -34,7 +34,7 @@ public:
   auto update(double dt, ParticleData* particleData) -> void override;
 };
 
-class AttractorUpdater : public particles::ParticleUpdater
+class AttractorUpdater : public PARTICLES::ParticleUpdater
 {
 public:
   auto update(double dt, ParticleData* particleData) -> void override;
@@ -79,4 +79,4 @@ public:
   auto update(double dt, ParticleData* particleData) -> void override;
 };
 
-} // namespace particles::updaters
+} // namespace PARTICLES::UPDATERS

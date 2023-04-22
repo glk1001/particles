@@ -1,41 +1,41 @@
 #include "attractorEffect.h"
 
-namespace particles::EFFECTS
+namespace PARTICLES::EFFECTS
 {
 
 auto AttractorEffect::initialize(const size_t numParticles) -> bool
 {
   //
-  // particles
+  // PARTICLES
   //
   const auto numParticlesToUse = 0 == numParticles ? 250000 : numParticles;
-  m_system                     = std::make_shared<particles::ParticleSystem>(numParticlesToUse);
+  m_system                     = std::make_shared<PARTICLES::ParticleSystem>(numParticlesToUse);
 
   //
   // common
   //
-  m_colGenerator = std::make_shared<particles::generators::BasicColorGen>();
+  m_colGenerator = std::make_shared<PARTICLES::GENERATORS::BasicColorGen>();
   m_colGenerator->SetMinMaxStartColors(glm::vec4{0.99, 0.99, 0.99, 1.0},
                                        glm::vec4{0.99, 0.99, 1.0, 1.0});
   m_colGenerator->SetMinMaxEndColors(glm::vec4{0.99, 0.99, 0.99, 0.0},
                                      glm::vec4{0.99, 0.99, 1.0, 0.25});
 
-  auto velGenerator      = std::make_shared<particles::generators::SphereVelGen>();
+  auto velGenerator      = std::make_shared<PARTICLES::GENERATORS::SphereVelGen>();
   velGenerator->m_minVel = 0.1F;
   velGenerator->m_maxVel = 0.1F;
 
-  auto timeGenerator = std::make_shared<particles::generators::BasicTimeGen>();
+  auto timeGenerator = std::make_shared<PARTICLES::GENERATORS::BasicTimeGen>();
   timeGenerator->SetMinMaxTime(1.6F, 4.0F);
 
   //
   // emitter 1:
   //
-  auto particleEmitter = std::make_shared<particles::ParticleEmitter>();
+  auto particleEmitter = std::make_shared<PARTICLES::ParticleEmitter>();
   {
     particleEmitter->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
     // pos:
-    m_posGenerators[0] = std::make_shared<particles::generators::BoxPosGen>();
+    m_posGenerators[0] = std::make_shared<PARTICLES::GENERATORS::BoxPosGen>();
     m_posGenerators[0]->SetPosition(glm::vec4{0.0, 0.0, -0.25, 0.0});
     m_posGenerators[0]->SetMaxStartPositionOffset(glm::vec4{0.0, 0.0, 0.0, 0.0});
     particleEmitter->addGenerator(m_posGenerators[0]);
@@ -49,11 +49,11 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   //
   // emitter 2:
   //
-  auto particleEmitter2 = std::make_shared<particles::ParticleEmitter>();
+  auto particleEmitter2 = std::make_shared<PARTICLES::ParticleEmitter>();
   {
     particleEmitter2->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
-    m_posGenerators[1] = std::make_shared<particles::generators::BoxPosGen>();
+    m_posGenerators[1] = std::make_shared<PARTICLES::GENERATORS::BoxPosGen>();
     m_posGenerators[1]->SetPosition(glm::vec4{0.0, 0.0, 0.25, 0.0});
     m_posGenerators[1]->SetMaxStartPositionOffset(glm::vec4{0.0, 0.0, 0.0, 0.0});
     particleEmitter2->addGenerator(m_posGenerators[1]);
@@ -67,11 +67,11 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   //
   // emitter 3:
   //
-  auto particleEmitter3 = std::make_shared<particles::ParticleEmitter>();
+  auto particleEmitter3 = std::make_shared<PARTICLES::ParticleEmitter>();
   {
     particleEmitter3->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
-    m_posGenerators[2] = std::make_shared<particles::generators::BoxPosGen>();
+    m_posGenerators[2] = std::make_shared<PARTICLES::GENERATORS::BoxPosGen>();
     m_posGenerators[2]->SetPosition(glm::vec4{0.0, 0.0, 0.25, 0.0});
     m_posGenerators[2]->SetMaxStartPositionOffset(glm::vec4{0.0, 0.0, 0.0, 0.0});
     particleEmitter3->addGenerator(m_posGenerators[2]);
@@ -85,26 +85,26 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
   //
   // updaters:
   //
-  auto timeUpdater = std::make_shared<particles::updaters::BasicTimeUpdater>();
+  auto timeUpdater = std::make_shared<PARTICLES::UPDATERS::BasicTimeUpdater>();
   m_system->addUpdater(timeUpdater);
 
-  auto colorUpdater      = std::make_shared<particles::updaters::VelColorUpdater>();
+  auto colorUpdater      = std::make_shared<PARTICLES::UPDATERS::VelColorUpdater>();
   colorUpdater->m_minVel = glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F};
   colorUpdater->m_maxVel = glm::vec4{2.0F, 2.0F, 2.0F, 2.0F};
   m_system->addUpdater(colorUpdater);
 
-  m_attractors = std::make_shared<particles::updaters::AttractorUpdater>();
+  m_attractors = std::make_shared<PARTICLES::UPDATERS::AttractorUpdater>();
   m_attractors->add(glm::vec4{3.0, 0.0, 0.75, 1.0});
   m_attractors->add(glm::vec4{0.0, 1.0, -0.75, 1.0});
   m_attractors->add(glm::vec4{-0.40, 0.75, 0.0, 1.0});
   m_attractors->add(glm::vec4{-2.0, -0.75, 0.0, 1.0});
   m_system->addUpdater(m_attractors);
 
-  auto eulerUpdater = std::make_shared<particles::updaters::EulerUpdater>();
+  auto eulerUpdater = std::make_shared<PARTICLES::UPDATERS::EulerUpdater>();
   eulerUpdater->SetGlobalAcceleration(glm::vec4{0.0, 0.0, 0.0, 0.0});
   m_system->addUpdater(eulerUpdater);
 
   return true;
 }
 
-} // namespace particles::EFFECTS
+} // namespace PARTICLES::EFFECTS

@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-namespace particles
+namespace PARTICLES
 {
 
 class ParticleData
@@ -278,4 +278,4 @@ private:
   std::vector<std::shared_ptr<ParticleUpdater>> m_updaters{};
 };
 
-} // namespace particles
+} // namespace PARTICLES

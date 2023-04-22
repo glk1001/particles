@@ -1,17 +1,17 @@
-#include "particlesCode/attractorEffect.h"
-#include "particlesCode/effect.h"
-#include "particlesCode/fountainEffect.h"
-#include "particlesCode/particles.h"
-#include "particlesCode/tunnelEffect.h"
+#include "particles/effects/attractorEffect.h"
+#include "particles/effects/effect.h"
+#include "particles/effects/fountainEffect.h"
+#include "particles/effects/tunnelEffect.h"
+#include "particles/particles.h"
 
 #include <chrono>
 #include <iostream>
 #include <stdexcept>
 
-using particles::EFFECTS::IEffect;
-using particles::EFFECTS::AttractorEffect;
-using particles::EFFECTS::FountainEffect;
-using particles::EFFECTS::TunnelEffect;
+using PARTICLES::EFFECTS::AttractorEffect;
+using PARTICLES::EFFECTS::FountainEffect;
+using PARTICLES::EFFECTS::IEffect;
+using PARTICLES::EFFECTS::TunnelEffect;
 
 namespace
 {

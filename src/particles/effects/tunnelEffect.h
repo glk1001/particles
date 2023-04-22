@@ -1,13 +1,13 @@
 #pragma once
 
 #include "effect.h"
-#include "particleGenerators.h"
-#include "particleUpdaters.h"
-#include "particles.h"
+#include "particles/particleGenerators.h"
+#include "particles/particleUpdaters.h"
+#include "particles/particles.h"
 
 #include <memory>
 
-namespace particles::EFFECTS
+namespace PARTICLES::EFFECTS
 {
 
 class TunnelEffect : public IEffect
@@ -20,12 +20,12 @@ public:
 
   [[nodiscard]] auto numAllParticles() -> size_t override;
   [[nodiscard]] auto numAliveParticles() -> size_t override;
-  [[nodiscard]] auto GetSystem() const -> const particles::ParticleSystem* override;
+  [[nodiscard]] auto GetSystem() const -> const PARTICLES::ParticleSystem* override;
 
 private:
-  std::shared_ptr<particles::ParticleSystem> m_system{};
-  std::shared_ptr<particles::generators::RoundPosGen> m_posGenerator{};
-  std::shared_ptr<particles::generators::BasicColorGen> m_colGenerator{};
+  std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
+  std::shared_ptr<PARTICLES::GENERATORS::RoundPosGen> m_posGenerator{};
+  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
 };
 
 inline auto TunnelEffect::reset() -> void
@@ -48,9 +48,9 @@ inline auto TunnelEffect::numAliveParticles() -> size_t
   return m_system->numAliveParticles();
 }
 
-inline auto TunnelEffect::GetSystem() const -> const particles::ParticleSystem*
+inline auto TunnelEffect::GetSystem() const -> const PARTICLES::ParticleSystem*
 {
   return m_system.get();
 }
 
-} // namespace particles::EFFECTS
+} // namespace PARTICLES::EFFECTS

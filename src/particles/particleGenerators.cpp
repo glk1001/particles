@@ -8,7 +8,7 @@
 #define M_2_PI 6.28318530717958647692528676655901f // PI*2
 #endif
 
-namespace particles::generators
+namespace PARTICLES::GENERATORS
 {
 
 auto BoxPosGen::generate([[maybe_unused]] const double dt,
@@ -117,4 +117,4 @@ auto BasicTimeGen::generate([[maybe_unused]] const double dt,
   }
 }
 
-} // namespace particles::generators
+} // namespace PARTICLES::GENERATORS

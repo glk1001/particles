@@ -4,7 +4,7 @@
 
 #include <vector>
 
-namespace particles::generators
+namespace PARTICLES::GENERATORS
 {
 
 class BoxPosGen : public ParticleGenerator
@@ -161,4 +161,4 @@ inline auto BasicTimeGen::SetMinMaxTime(const float minTime, const float maxTime
   m_maxTime = maxTime;
 }
 
-} // namespace particles::generators
+} // namespace PARTICLES::GENERATORS

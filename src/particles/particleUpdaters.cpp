@@ -3,7 +3,7 @@
 #include <glm/common.hpp>
 #include <glm/gtc/random.hpp>
 
-namespace particles::updaters
+namespace PARTICLES::UPDATERS
 {
 
 auto EulerUpdater::update(const double dt, ParticleData* const particleData) -> void
@@ -180,4 +180,4 @@ auto BasicTimeUpdater::update(const double dt, ParticleData* const particleData)
   }
 }
 
-} // namespace particles::updaters
+} // namespace PARTICLES::UPDATERS

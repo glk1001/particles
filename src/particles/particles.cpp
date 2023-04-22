@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <cassert>
 
-namespace particles
+namespace PARTICLES
 {
 
 ParticleData::ParticleData(const size_t count) noexcept
@@ -148,4 +148,4 @@ auto ParticleSystem::computeMemoryUsage(const ParticleSystem& particleSystem) ->
   return 2 * ParticleData::computeMemoryUsage(particleSystem.m_particles);
 }
 
-} // namespace particles
+} // namespace PARTICLES

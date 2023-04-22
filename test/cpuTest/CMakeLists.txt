@@ -1,7 +1,5 @@
 set(PROJECT_NAME cpuTest)
 
-cmake_path(GET CMAKE_CURRENT_SOURCE_DIR PARENT_PATH PARENT_DIR)
-
 # Source groups
 set(no_group_source_files
         "cpuTest.cpp"
@@ -9,16 +7,17 @@ set(no_group_source_files
 source_group("" FILES ${no_group_source_files})
 
 set(effects
-        "${PARENT_DIR}/particlesCode/attractorEffect.cpp"
-        "${PARENT_DIR}/particlesCode/fountainEffect.cpp"
-        "${PARENT_DIR}/particlesCode/tunnelEffect.cpp"
+        "${SRC_DIR}/particles/effects/effect.h"
+        "${SRC_DIR}/particles/effects/attractorEffect.cpp"
+        "${SRC_DIR}/particles/effects/fountainEffect.cpp"
+        "${SRC_DIR}/particles/effects/tunnelEffect.cpp"
         )
 source_group("effects" FILES ${effects})
 
 set(particles
-        "${PARENT_DIR}/particlesCode/particleGenerators.cpp"
-        "${PARENT_DIR}/particlesCode/particles.cpp"
-        "${PARENT_DIR}/particlesCode/particleUpdaters.cpp"
+        "${SRC_DIR}/particles/particleGenerators.cpp"
+        "${SRC_DIR}/particles/particles.cpp"
+        "${SRC_DIR}/particles/particleUpdaters.cpp"
         )
 source_group("particles" FILES ${particles})
 
@@ -36,7 +35,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        "${PARENT_DIR}"
+        "${SRC_DIR}"
         )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE

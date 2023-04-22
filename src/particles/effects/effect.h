@@ -2,12 +2,12 @@
 
 #include <cstddef>
 
-namespace particles
+namespace PARTICLES
 {
 class ParticleSystem;
 }
 
-namespace particles::EFFECTS
+namespace PARTICLES::EFFECTS
 {
 
 class IEffect
@@ -20,7 +20,7 @@ public:
   auto operator=(const IEffect&) -> IEffect& = delete;
   auto operator=(IEffect&&) -> IEffect&      = delete;
 
-  // Creates the effect with desired number of particles, (0 means default for the effect).
+  // Creates the effect with desired number of PARTICLES, (0 means default for the effect).
   virtual auto initialize(size_t numParticles) -> bool = 0;
   virtual auto reset() -> void                         = 0;
 
@@ -28,7 +28,7 @@ public:
 
   [[nodiscard]] virtual auto numAllParticles() -> size_t                           = 0;
   [[nodiscard]] virtual auto numAliveParticles() -> size_t                         = 0;
-  [[nodiscard]] virtual auto GetSystem() const -> const particles::ParticleSystem* = 0;
+  [[nodiscard]] virtual auto GetSystem() const -> const PARTICLES::ParticleSystem* = 0;
 };
 
-} // namespace particles::EFFECTS
+} // namespace PARTICLES::EFFECTS

@@ -17,11 +17,13 @@ include(${CMAKE_SCRIPTS_PATH}/StaticAnalyzers.cmake)
 include(${CMAKE_SCRIPTS_PATH}/CheckMinimumToolRequirements.cmake)
 
 include_directories(BEFORE
-                    SYSTEM
-                    glm
-                    )
+        SYSTEM
+        src/glm
+        )
 
-add_subdirectory(cpuTest)
+set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+
+add_subdirectory(test/cpuTest)
 
 message(STATUS "Particles: CMAKE_CXX_COMPILER_ID = \"${CMAKE_CXX_COMPILER_ID}\".")
 message(STATUS "Particles: CMAKE_CXX_COMPILER_VERSION = \"${CMAKE_CXX_COMPILER_VERSION}\".")
