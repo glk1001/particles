@@ -21,8 +21,7 @@ auto AttractorEffect::initialize(const size_t numParticles) -> bool
                                      glm::vec4{0.99, 0.99, 1.0, 0.25});
 
   auto velGenerator      = std::make_shared<PARTICLES::GENERATORS::SphereVelGen>();
-  velGenerator->m_minVel = 0.1F;
-  velGenerator->m_maxVel = 0.1F;
+  velGenerator->SetMinMaxVelocity(0.1F, 0.1F);
 
   auto timeGenerator = std::make_shared<PARTICLES::GENERATORS::BasicTimeGen>();
   timeGenerator->SetMinMaxTime(1.6F, 4.0F);

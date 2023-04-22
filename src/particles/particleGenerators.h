@@ -117,30 +117,60 @@ inline auto BasicVelGen::SetMinMaxVelocity(const glm::vec4& minVelocity,
 class SphereVelGen : public ParticleGenerator
 {
 public:
-  float m_minVel = 0.0F;
-  float m_maxVel = 0.0F;
-
-public:
   auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
       -> void override;
+
+  auto SetMinMaxVelocity(float minVelocity, float maxVelocity) noexcept -> void;
+
+private:
+  float m_minVel = 0.0F;
+  float m_maxVel = 0.0F;
 };
+
+inline auto SphereVelGen::SetMinMaxVelocity(const float minVelocity,
+                                            const float maxVelocity) noexcept -> void
+{
+  m_minVel = minVelocity;
+  m_maxVel = maxVelocity;
+}
 
 class VelFromPosGen : public ParticleGenerator
 {
 public:
-  glm::vec4 m_offset{0.0F};
-  float m_minScale = 0.0F;
-  float m_maxScale = 0.0F;
+  VelFromPosGen(const glm::vec4& offset, double minScale, double maxScale) noexcept;
 
-public:
-  VelFromPosGen(const glm::vec4& off, const double minS, const double maxS)
-    : m_offset(off), m_minScale(static_cast<float>(minS)), m_maxScale(static_cast<float>(maxS))
-  {
-  }
+  auto SetOffset(const glm::vec4& offset) noexcept -> void;
+  auto SetMinMaxScale(float minScale, float maxScale) noexcept -> void;
 
   auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
       -> void override;
+
+private:
+  glm::vec4 m_offset{0.0F};
+  float m_minScale = 0.0F;
+  float m_maxScale = 0.0F;
 };
+
+inline VelFromPosGen::VelFromPosGen(const glm::vec4& offset,
+                                    const double minScale,
+                                    const double maxScale) noexcept
+  : m_offset(offset),
+    m_minScale(static_cast<float>(minScale)),
+    m_maxScale(static_cast<float>(maxScale))
+{
+}
+
+inline auto VelFromPosGen::SetOffset(const glm::vec4& offset) noexcept -> void
+{
+  m_offset = offset;
+}
+
+inline auto VelFromPosGen::SetMinMaxScale(const float minScale, const float maxScale) noexcept
+    -> void
+{
+  m_minScale = minScale;
+  m_maxScale = maxScale;
+}
 
 class BasicTimeGen : public ParticleGenerator
 {
