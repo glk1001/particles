@@ -6,7 +6,12 @@
 namespace PARTICLES::UPDATERS
 {
 
-auto EulerUpdater::update(const double dt, ParticleData* const particleData) -> void
+EulerUpdater::EulerUpdater(const glm::vec4& globalAcceleration) noexcept
+  : m_globalAcceleration{globalAcceleration}
+{
+}
+
+auto EulerUpdater::update(const double dt, ParticleData* const particleData) noexcept -> void
 {
   const auto globalA = glm::vec4{dt * static_cast<double>(m_globalAcceleration.x),
                                  dt * static_cast<double>(m_globalAcceleration.y),
@@ -32,17 +37,22 @@ auto EulerUpdater::update(const double dt, ParticleData* const particleData) -> 
   }
 }
 
-auto FloorUpdater::update([[maybe_unused]] const double dt, ParticleData* const particleData)
-    -> void
+FloorUpdater::FloorUpdater(const float floorY, const float bounceFactor) noexcept
+  : m_floorY{floorY}, m_bounceFactor{bounceFactor}
+{
+}
+
+auto FloorUpdater::update([[maybe_unused]] const double dt,
+                          ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
   for (auto i = 0U; i < endId; ++i)
   {
     if (particleData->GetPosition(i).y < m_floorY)
     {
-      auto force              = glm::vec4{particleData->GetAcceleration(i)};
-      const auto normalFactor = glm::dot(force, glm::vec4(0.0F, 1.0F, 0.0F, 0.0F));
-      if (normalFactor < 0.0F)
+      auto force = glm::vec4{particleData->GetAcceleration(i)};
+      if (const auto normalFactor = glm::dot(force, glm::vec4(0.0F, 1.0F, 0.0F, 0.0F));
+          normalFactor < 0.0F)
       {
         force -= glm::vec4(0.0F, 1.0F, 0.0F, 0.0F) * normalFactor;
       }
@@ -58,8 +68,8 @@ auto FloorUpdater::update([[maybe_unused]] const double dt, ParticleData* const 
   }
 }
 
-auto AttractorUpdater::update([[maybe_unused]] const double dt, ParticleData* const particleData)
-    -> void
+auto AttractorUpdater::update([[maybe_unused]] const double dt,
+                              ParticleData* const particleData) noexcept -> void
 {
   const auto endId           = particleData->GetAliveCount();
   const auto countAttractors = m_attractors.size();
@@ -83,8 +93,8 @@ auto AttractorUpdater::update([[maybe_unused]] const double dt, ParticleData* co
   }
 }
 
-auto BasicColorUpdater::update([[maybe_unused]] const double dt, ParticleData* const particleData)
-    -> void
+auto BasicColorUpdater::update([[maybe_unused]] const double dt,
+                               ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
 
@@ -97,8 +107,13 @@ auto BasicColorUpdater::update([[maybe_unused]] const double dt, ParticleData* c
   }
 }
 
-auto PosColorUpdater::update([[maybe_unused]] const double dt, ParticleData* const particleData)
-    -> void
+PosColorUpdater::PosColorUpdater(const glm::vec4& minPos, const glm::vec4& maxPos) noexcept
+  : m_minPos{minPos}, m_maxPos{maxPos}
+{
+}
+
+auto PosColorUpdater::update([[maybe_unused]] const double dt,
+                             ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
   const auto diffr = m_maxPos.x - m_minPos.x;
@@ -125,9 +140,15 @@ auto PosColorUpdater::update([[maybe_unused]] const double dt, ParticleData* con
   }
 }
 
-auto VelColorUpdater::update([[maybe_unused]] const double dt, ParticleData* const p) -> void
+VelColorUpdater::VelColorUpdater(const glm::vec4& minVel, const glm::vec4& maxVel) noexcept
+  : m_minVel{minVel}, m_maxVel{maxVel}
 {
-  const auto endId = p->GetAliveCount();
+}
+
+auto VelColorUpdater::update([[maybe_unused]] const double dt,
+                             ParticleData* const particleData) noexcept -> void
+{
+  const auto endId = particleData->GetAliveCount();
   const auto diffr = m_maxVel.x - m_minVel.x;
   const auto diffg = m_maxVel.y - m_minVel.y;
   const auto diffb = m_maxVel.z - m_minVel.z;
@@ -137,22 +158,25 @@ auto VelColorUpdater::update([[maybe_unused]] const double dt, ParticleData* con
   auto scaleb = 0.0F;
   for (auto i = 0U; i < endId; ++i)
   {
-    scaler = (p->GetVelocity(i).x - m_minVel.x) / diffr;
-    scaleg = (p->GetVelocity(i).y - m_minVel.y) / diffg;
-    scaleb = (p->GetVelocity(i).z - m_minVel.z) / diffb;
-    p->SetColor(i,
-                {scaler, // glm::mix(p->m_startCol[i].r, p->m_endCol[i].r, scaler);
-                 scaleg, // glm::mix(p->m_startCol[i].g, p->m_endCol[i].g, scaleg);
-                 scaleb, // glm::mix(p->m_startCol[i].b, p->m_endCol[i].b, scaleb);
-                 glm::mix(p->GetStartColor(i).a, p->GetEndColor(i).a, p->GetTime(i).z)});
+    scaler = (particleData->GetVelocity(i).x - m_minVel.x) / diffr;
+    scaleg = (particleData->GetVelocity(i).y - m_minVel.y) / diffg;
+    scaleb = (particleData->GetVelocity(i).z - m_minVel.z) / diffb;
+    particleData->SetColor(
+        i,
+        {scaler, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
+         scaleg, // glm::mix(particleData->m_startCol[i].g, particleData->m_endCol[i].g, scaleg);
+         scaleb, // glm::mix(particleData->m_startCol[i].b, particleData->m_endCol[i].b, scaleb);
+         glm::mix(particleData->GetStartColor(i).a,
+                  particleData->GetEndColor(i).a,
+                  particleData->GetTime(i).z)});
   }
 }
 
-auto BasicTimeUpdater::update(const double dt, ParticleData* const particleData) -> void
+auto BasicTimeUpdater::update(const double dt, ParticleData* const particleData) noexcept -> void
 {
   auto endId = particleData->GetAliveCount();
 
-  if (endId == 0)
+  if (0 == endId)
   {
     return;
   }

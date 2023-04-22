@@ -7,76 +7,82 @@
 namespace PARTICLES::UPDATERS
 {
 
-class EulerUpdater : public PARTICLES::ParticleUpdater
+class EulerUpdater : public ParticleUpdater
 {
 public:
-  auto update(double dt, ParticleData* particleData) -> void override;
+  explicit EulerUpdater(const glm::vec4& globalAcceleration) noexcept;
 
-  auto SetGlobalAcceleration(const glm::vec4& acceleration) noexcept -> void;
+  auto update(double dt, ParticleData* particleData) noexcept -> void override;
 
 private:
-  glm::vec4 m_globalAcceleration{0.0};
+  glm::vec4 m_globalAcceleration;
 };
 
-inline auto EulerUpdater::SetGlobalAcceleration(const glm::vec4& acceleration) noexcept -> void
-{
-  m_globalAcceleration = acceleration;
-}
-
-// collision with the floor :) todo: implement a collision model
-class FloorUpdater : public PARTICLES::ParticleUpdater
+// Collision with the floor :) todo: implement a collision model
+class FloorUpdater : public ParticleUpdater
 {
 public:
-  float m_floorY       = 0.0F;
-  float m_bounceFactor = 0.5F;
+  FloorUpdater(float floorY, float bounceFactor) noexcept;
 
-public:
-  auto update(double dt, ParticleData* particleData) -> void override;
+  auto update(double dt, ParticleData* particleData) noexcept -> void override;
+
+private:
+  float m_floorY;
+  float m_bounceFactor;
 };
 
-class AttractorUpdater : public PARTICLES::ParticleUpdater
+class AttractorUpdater : public ParticleUpdater
 {
 public:
-  auto update(double dt, ParticleData* particleData) -> void override;
+  AttractorUpdater() noexcept = default;
 
-  [[nodiscard]] auto collectionSize() const -> size_t { return m_attractors.size(); }
-  auto add(const glm::vec4& attr) -> void { m_attractors.push_back(attr); }
-  [[nodiscard]] auto get(const size_t id) -> glm::vec4& { return m_attractors[id]; }
+  auto add(const glm::vec4& attr) noexcept -> void;
 
-protected:
+  auto update(double dt, ParticleData* particleData) noexcept -> void override;
+
+private:
   std::vector<glm::vec4> m_attractors{}; // .w is force
 };
+
+inline auto AttractorUpdater::add(const glm::vec4& attr) noexcept -> void
+{
+  m_attractors.push_back(attr);
+}
 
 class BasicColorUpdater : public ParticleUpdater
 {
 public:
-  auto update(double dt, ParticleData* particleData) -> void override;
+  auto update(double dt, ParticleData* particleData) noexcept -> void override;
 };
 
 class PosColorUpdater : public ParticleUpdater
 {
 public:
-  glm::vec4 m_minPos{0.0};
-  glm::vec4 m_maxPos{1.0};
+  PosColorUpdater(const glm::vec4& minPos, const glm::vec4& maxPos) noexcept;
 
-public:
-  auto update(double dt, ParticleData* particleData) -> void override;
+  auto update(double dt, ParticleData* particleData) noexcept -> void override;
+
+private:
+  glm::vec4 m_minPos;
+  glm::vec4 m_maxPos;
 };
 
 class VelColorUpdater : public ParticleUpdater
 {
 public:
-  glm::vec4 m_minVel{0.0};
-  glm::vec4 m_maxVel{1.0};
+  VelColorUpdater(const glm::vec4& minVel, const glm::vec4& maxVel) noexcept;
 
-public:
-  auto update(double dt, ParticleData* p) -> void override;
+  auto update(double dt, ParticleData* particleData) noexcept -> void override;
+
+private:
+  glm::vec4 m_minVel;
+  glm::vec4 m_maxVel;
 };
 
 class BasicTimeUpdater : public ParticleUpdater
 {
 public:
-  auto update(double dt, ParticleData* particleData) -> void override;
+  auto update(double dt, ParticleData* particleData) noexcept -> void override;
 };
 
 } // namespace PARTICLES::UPDATERS

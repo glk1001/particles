@@ -11,10 +11,15 @@
 namespace PARTICLES::GENERATORS
 {
 
+BoxPosGen::BoxPosGen(const glm::vec4& position, const glm::vec4& maxStartPosOffset) noexcept
+  : m_pos{position}, m_maxStartPosOffset{maxStartPosOffset}
+{
+}
+
 auto BoxPosGen::generate([[maybe_unused]] const double dt,
                          ParticleData* const particleData,
                          const size_t startId,
-                         const size_t endId) -> void
+                         const size_t endId) noexcept -> void
 {
   const auto posMin = glm::vec4{m_pos.x - m_maxStartPosOffset.x,
                                 m_pos.y - m_maxStartPosOffset.y,
@@ -31,10 +36,15 @@ auto BoxPosGen::generate([[maybe_unused]] const double dt,
   }
 }
 
+RoundPosGen::RoundPosGen(const glm::vec4& center, const double radX, const double radY) noexcept
+  : m_center{center}, m_radX{static_cast<float>(radX)}, m_radY{static_cast<float>(radY)}
+{
+}
+
 auto RoundPosGen::generate([[maybe_unused]] const double dt,
                            ParticleData* const particleData,
                            const size_t startId,
-                           const size_t endId) -> void
+                           const size_t endId) noexcept -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
@@ -48,10 +58,21 @@ auto RoundPosGen::generate([[maybe_unused]] const double dt,
   }
 }
 
+BasicColorGen::BasicColorGen(const glm::vec4& minStartColor,
+                             const glm::vec4& maxStartColor,
+                             const glm::vec4& minEndColor,
+                             const glm::vec4& maxEndColor) noexcept
+  : m_minStartCol{minStartColor},
+    m_maxStartCol{maxStartColor},
+    m_minEndCol{minEndColor},
+    m_maxEndCol{maxEndColor}
+{
+}
+
 auto BasicColorGen::generate([[maybe_unused]] const double dt,
                              ParticleData* const particleData,
                              const size_t startId,
-                             const size_t endId) -> void
+                             const size_t endId) noexcept -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
@@ -60,10 +81,16 @@ auto BasicColorGen::generate([[maybe_unused]] const double dt,
   }
 }
 
+BasicVelGen::BasicVelGen(const glm::vec4& minStartVelocity,
+                         const glm::vec4& maxStartVelocity) noexcept
+  : m_minStartVel{minStartVelocity}, m_maxStartVel{maxStartVelocity}
+{
+}
+
 auto BasicVelGen::generate([[maybe_unused]] const double dt,
                            ParticleData* const particleData,
                            const size_t startId,
-                           const size_t endId) -> void
+                           const size_t endId) noexcept -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
@@ -71,10 +98,15 @@ auto BasicVelGen::generate([[maybe_unused]] const double dt,
   }
 }
 
+SphereVelGen::SphereVelGen(const float minVelocity, const float maxVelocity) noexcept
+  : m_minVel{minVelocity}, m_maxVel{maxVelocity}
+{
+}
+
 auto SphereVelGen::generate([[maybe_unused]] const double dt,
                             ParticleData* const particleData,
                             const size_t startId,
-                            const size_t endId) -> void
+                            const size_t endId) noexcept -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
@@ -91,10 +123,17 @@ auto SphereVelGen::generate([[maybe_unused]] const double dt,
   }
 }
 
+VelFromPosGen::VelFromPosGen(const glm::vec4& offset,
+                             const float minScale,
+                             const float maxScale) noexcept
+  : m_offset{offset}, m_minScale{minScale}, m_maxScale{maxScale}
+{
+}
+
 auto VelFromPosGen::generate([[maybe_unused]] const double dt,
                              ParticleData* const particleData,
                              const size_t startId,
-                             const size_t endId) -> void
+                             const size_t endId) noexcept -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
@@ -104,10 +143,15 @@ auto VelFromPosGen::generate([[maybe_unused]] const double dt,
   }
 }
 
+BasicTimeGen::BasicTimeGen(const float minTime, const float maxTime) noexcept
+  : m_minTime{minTime}, m_maxTime{maxTime}
+{
+}
+
 auto BasicTimeGen::generate([[maybe_unused]] const double dt,
                             ParticleData* const particleData,
                             const size_t startId,
-                            const size_t endId) -> void
+                            const size_t endId) noexcept -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
