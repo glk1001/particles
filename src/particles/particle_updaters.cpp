@@ -46,6 +46,7 @@ auto FloorUpdater::Update([[maybe_unused]] const double dt,
                           ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
+
   for (auto i = 0U; i < endId; ++i)
   {
     if (particleData->GetPosition(i).y < m_floorY)
@@ -74,19 +75,15 @@ auto AttractorUpdater::Update([[maybe_unused]] const double dt,
   const auto endId           = particleData->GetAliveCount();
   const auto countAttractors = m_attractors.size();
 
-  auto off  = glm::vec4{};
-  auto dist = 0.0F;
   for (auto i = 0U; i < endId; ++i)
   {
     for (auto j = 0U; j < countAttractors; ++j)
     {
-      off.x = m_attractors[j].x - particleData->GetPosition(i).x;
-      off.y = m_attractors[j].y - particleData->GetPosition(i).y;
-      off.z = m_attractors[j].z - particleData->GetPosition(i).z;
-      dist  = glm::dot(off, off);
-
-      //if (fabs(dist) > 0.00001)
-      dist = m_attractors[j].w / dist;
+      const auto off  = glm::vec4{m_attractors[j].x - particleData->GetPosition(i).x,
+                                 m_attractors[j].y - particleData->GetPosition(i).y,
+                                 m_attractors[j].z - particleData->GetPosition(i).z,
+                                 0.0F};
+      const auto dist = m_attractors[j].w / glm::dot(off, off);
 
       particleData->IncAcceleration(i, off * dist);
     }
@@ -120,15 +117,12 @@ auto PosColorUpdater::Update([[maybe_unused]] const double dt,
   const auto diffg = m_maxPos.y - m_minPos.y;
   const auto diffb = m_maxPos.z - m_minPos.z;
 
-  auto scaler = 0.0F;
-  auto scaleg = 0.0F;
-  auto scaleb = 0.0F;
-
   for (auto i = 0U; i < endId; ++i)
   {
-    scaler = (particleData->GetPosition(i).x - m_minPos.x) / diffr;
-    scaleg = (particleData->GetPosition(i).y - m_minPos.y) / diffg;
-    scaleb = (particleData->GetPosition(i).z - m_minPos.z) / diffb;
+    const auto scaler = (particleData->GetPosition(i).x - m_minPos.x) / diffr;
+    const auto scaleg = (particleData->GetPosition(i).y - m_minPos.y) / diffg;
+    const auto scaleb = (particleData->GetPosition(i).z - m_minPos.z) / diffb;
+
     particleData->SetColor(
         i,
         {scaler, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
@@ -153,14 +147,12 @@ auto VelColorUpdater::Update([[maybe_unused]] const double dt,
   const auto diffg = m_maxVel.y - m_minVel.y;
   const auto diffb = m_maxVel.z - m_minVel.z;
 
-  auto scaler = 0.0F;
-  auto scaleg = 0.0F;
-  auto scaleb = 0.0F;
   for (auto i = 0U; i < endId; ++i)
   {
-    scaler = (particleData->GetVelocity(i).x - m_minVel.x) / diffr;
-    scaleg = (particleData->GetVelocity(i).y - m_minVel.y) / diffg;
-    scaleb = (particleData->GetVelocity(i).z - m_minVel.z) / diffb;
+    const auto scaler = (particleData->GetVelocity(i).x - m_minVel.x) / diffr;
+    const auto scaleg = (particleData->GetVelocity(i).y - m_minVel.y) / diffg;
+    const auto scaleb = (particleData->GetVelocity(i).z - m_minVel.z) / diffb;
+
     particleData->SetColor(
         i,
         {scaler, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
