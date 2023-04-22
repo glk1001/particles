@@ -7,7 +7,7 @@
 namespace PARTICLES::GENERATORS
 {
 
-class BoxPosGen : public ParticleGenerator
+class BoxPosGen : public IParticleGenerator
 {
 public:
   BoxPosGen(const glm::vec4& position, const glm::vec4& maxStartPosOffset) noexcept;
@@ -20,7 +20,7 @@ private:
   glm::vec4 m_maxStartPosOffset;
 };
 
-class RoundPosGen : public ParticleGenerator
+class RoundPosGen : public IParticleGenerator
 {
 public:
   RoundPosGen(const glm::vec4& center, double radX, double radY) noexcept;
@@ -34,7 +34,7 @@ private:
   float m_radY;
 };
 
-class BasicColorGen : public ParticleGenerator
+class BasicColorGen : public IParticleGenerator
 {
 public:
   BasicColorGen(const glm::vec4& minStartColor,
@@ -52,7 +52,7 @@ private:
   glm::vec4 m_maxEndCol;
 };
 
-class BasicVelGen : public ParticleGenerator
+class BasicVelGen : public IParticleGenerator
 {
 public:
   BasicVelGen(const glm::vec4& minStartVelocity, const glm::vec4& maxStartVelocity) noexcept;
@@ -65,7 +65,7 @@ private:
   glm::vec4 m_maxStartVel;
 };
 
-class SphereVelGen : public ParticleGenerator
+class SphereVelGen : public IParticleGenerator
 {
 public:
   SphereVelGen(float minVelocity, float maxVelocity) noexcept;
@@ -78,7 +78,7 @@ private:
   float m_maxVel;
 };
 
-class VelFromPosGen : public ParticleGenerator
+class VelFromPosGen : public IParticleGenerator
 {
 public:
   VelFromPosGen(const glm::vec4& offset, float minScale, float maxScale) noexcept;
@@ -92,7 +92,7 @@ private:
   float m_maxScale;
 };
 
-class BasicTimeGen : public ParticleGenerator
+class BasicTimeGen : public IParticleGenerator
 {
 public:
   BasicTimeGen(float minTime, float maxTime) noexcept;

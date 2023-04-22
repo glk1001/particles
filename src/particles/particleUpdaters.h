@@ -7,7 +7,7 @@
 namespace PARTICLES::UPDATERS
 {
 
-class EulerUpdater : public ParticleUpdater
+class EulerUpdater : public IParticleUpdater
 {
 public:
   explicit EulerUpdater(const glm::vec4& globalAcceleration) noexcept;
@@ -19,7 +19,7 @@ private:
 };
 
 // Collision with the floor :) todo: implement a collision model
-class FloorUpdater : public ParticleUpdater
+class FloorUpdater : public IParticleUpdater
 {
 public:
   FloorUpdater(float floorY, float bounceFactor) noexcept;
@@ -31,7 +31,7 @@ private:
   float m_bounceFactor;
 };
 
-class AttractorUpdater : public ParticleUpdater
+class AttractorUpdater : public IParticleUpdater
 {
 public:
   AttractorUpdater() noexcept = default;
@@ -49,13 +49,13 @@ inline auto AttractorUpdater::add(const glm::vec4& attr) noexcept -> void
   m_attractors.push_back(attr);
 }
 
-class BasicColorUpdater : public ParticleUpdater
+class BasicColorUpdater : public IParticleUpdater
 {
 public:
   auto update(double dt, ParticleData* particleData) noexcept -> void override;
 };
 
-class PosColorUpdater : public ParticleUpdater
+class PosColorUpdater : public IParticleUpdater
 {
 public:
   PosColorUpdater(const glm::vec4& minPos, const glm::vec4& maxPos) noexcept;
@@ -67,7 +67,7 @@ private:
   glm::vec4 m_maxPos;
 };
 
-class VelColorUpdater : public ParticleUpdater
+class VelColorUpdater : public IParticleUpdater
 {
 public:
   VelColorUpdater(const glm::vec4& minVel, const glm::vec4& maxVel) noexcept;
@@ -79,7 +79,7 @@ private:
   glm::vec4 m_maxVel;
 };
 
-class BasicTimeUpdater : public ParticleUpdater
+class BasicTimeUpdater : public IParticleUpdater
 {
 public:
   auto update(double dt, ParticleData* particleData) noexcept -> void override;
