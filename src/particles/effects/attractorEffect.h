@@ -14,13 +14,13 @@ namespace PARTICLES::EFFECTS
 class AttractorEffect : public IEffect
 {
 public:
-  [[nodiscard]] auto initialize(size_t numParticles) -> bool override;
-  auto reset() -> void override;
+  [[nodiscard]] auto Initialize(size_t numParticles) -> bool override;
+  auto Reset() -> void override;
 
-  auto cpuUpdate(double dt) -> void override;
+  auto CpuUpdate(double dt) -> void override;
 
-  [[nodiscard]] auto numAllParticles() -> size_t override;
-  [[nodiscard]] auto numAliveParticles() -> size_t override;
+  [[nodiscard]] auto GetNumAllParticles() -> size_t override;
+  [[nodiscard]] auto GetNumAliveParticles() -> size_t override;
   [[nodiscard]] auto GetSystem() const -> const PARTICLES::ParticleSystem* override;
 
 private:
@@ -32,24 +32,24 @@ private:
   std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractors{};
 };
 
-inline auto AttractorEffect::reset() -> void
+inline auto AttractorEffect::Reset() -> void
 {
-  m_system->reset();
+  m_system->Reset();
 }
 
-inline auto AttractorEffect::cpuUpdate(const double dt) -> void
+inline auto AttractorEffect::CpuUpdate(const double dt) -> void
 {
-  m_system->update(dt);
+  m_system->Update(dt);
 }
 
-inline auto AttractorEffect::numAllParticles() -> size_t
+inline auto AttractorEffect::GetNumAllParticles() -> size_t
 {
-  return m_system->numAllParticles();
+  return m_system->GetNumAllParticles();
 }
 
-inline auto AttractorEffect::numAliveParticles() -> size_t
+inline auto AttractorEffect::GetNumAliveParticles() -> size_t
 {
-  return m_system->numAliveParticles();
+  return m_system->GetNumAliveParticles();
 }
 
 inline auto AttractorEffect::GetSystem() const -> const PARTICLES::ParticleSystem*

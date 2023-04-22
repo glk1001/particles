@@ -14,7 +14,7 @@ using UPDATERS::BasicColorUpdater;
 using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
 
-auto TunnelEffect::initialize(const size_t numParticles) -> bool
+auto TunnelEffect::Initialize(const size_t numParticles) -> bool
 {
   //
   // PARTICLES
@@ -25,39 +25,39 @@ auto TunnelEffect::initialize(const size_t numParticles) -> bool
   //
   // emitter:
   //
-  auto particleEmitter = std::make_shared<ParticleEmitter>();
+  const auto particleEmitter = std::make_shared<ParticleEmitter>();
   {
     particleEmitter->SetEmitRate(0.45F * static_cast<float>(numParticlesToUse));
 
     // pos:
     m_posGenerator = std::make_shared<RoundPosGen>(glm::vec4{0.0, 0.0, 0.0, 0.0}, 0.15F, 0.15F);
-    particleEmitter->addGenerator(m_posGenerator);
+    particleEmitter->AddGenerator(m_posGenerator);
 
     m_colGenerator = std::make_shared<BasicColorGen>(glm::vec4{0.5, 0.0, 0.5, 1.0},
                                                      glm::vec4{1.0, 1.0, 1.0, 1.0},
                                                      glm::vec4{0.2, 0.0, 0.6, 0.0},
                                                      glm::vec4{0.7, 0.5, 1.0, 0.0});
-    particleEmitter->addGenerator(m_colGenerator);
+    particleEmitter->AddGenerator(m_colGenerator);
 
-    auto velGenerator = std::make_shared<BasicVelGen>(glm::vec4{0.0F, 0.0F, 0.15F, 0.0F},
-                                                      glm::vec4{0.0F, 0.0F, 0.45F, 0.0F});
-    particleEmitter->addGenerator(velGenerator);
+    const auto velGenerator = std::make_shared<BasicVelGen>(glm::vec4{0.0F, 0.0F, 0.15F, 0.0F},
+                                                            glm::vec4{0.0F, 0.0F, 0.45F, 0.0F});
+    particleEmitter->AddGenerator(velGenerator);
 
-    auto timeGenerator = std::make_shared<BasicTimeGen>(1.0, 10.0);
-    particleEmitter->addGenerator(timeGenerator);
+    const auto timeGenerator = std::make_shared<BasicTimeGen>(1.0, 10.0);
+    particleEmitter->AddGenerator(timeGenerator);
   }
-  m_system->addEmitter(particleEmitter);
+  m_system->AddEmitter(particleEmitter);
 
-  auto timeUpdater = std::make_shared<BasicTimeUpdater>();
-  m_system->addUpdater(timeUpdater);
+  const auto timeUpdater = std::make_shared<BasicTimeUpdater>();
+  m_system->AddUpdater(timeUpdater);
 
-  auto colorUpdater = std::make_shared<BasicColorUpdater>();
+  const auto colorUpdater = std::make_shared<BasicColorUpdater>();
   //colorUpdater->m_minPos = glm::vec4{ -1.0f };
   //colorUpdater->m_maxPos = glm::vec4{ 1.0f };
-  m_system->addUpdater(colorUpdater);
+  m_system->AddUpdater(colorUpdater);
 
-  auto eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0, 0.0, 0.0, 0.0});
-  m_system->addUpdater(eulerUpdater);
+  const auto eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0, 0.0, 0.0, 0.0});
+  m_system->AddUpdater(eulerUpdater);
 
   return true;
 }

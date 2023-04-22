@@ -17,11 +17,11 @@ public:
   auto operator=(const ParticleData&) -> ParticleData& = delete;
   auto operator=(ParticleData&&) -> ParticleData&      = delete;
 
-  auto reset() noexcept -> void;
+  auto Reset() noexcept -> void;
 
-  auto kill(size_t id) -> void;
-  auto wake(size_t id) -> void;
-  auto swapData(size_t a, size_t b) -> void;
+  auto Kill(size_t id) -> void;
+  auto Wake(size_t id) -> void;
+  auto SwapData(size_t a, size_t b) -> void;
 
   [[nodiscard]] auto GetCount() const noexcept -> size_t;
   [[nodiscard]] auto GetAliveCount() const noexcept -> size_t;
@@ -51,8 +51,8 @@ public:
   [[nodiscard]] auto GetTime(size_t i) const noexcept -> const glm::vec4&;
   auto SetTime(size_t i, const glm::vec4& time) noexcept -> void;
 
-  static auto copyOnlyAlive(const ParticleData* source, ParticleData* destination) -> void;
-  [[nodiscard]] static auto computeMemoryUsage(const ParticleData& particleData) -> size_t;
+  static auto CopyOnlyAlive(const ParticleData* source, ParticleData* destination) -> void;
+  [[nodiscard]] static auto ComputeMemoryUsage(const ParticleData& particleData) -> size_t;
 
 private:
   size_t m_count;
@@ -78,7 +78,7 @@ public:
   auto operator=(const IParticleGenerator&) -> IParticleGenerator& = delete;
   auto operator=(IParticleGenerator&&) -> IParticleGenerator&      = delete;
 
-  virtual auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
+  virtual auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
       -> void = 0;
 };
 
@@ -92,7 +92,7 @@ public:
   auto operator=(const IParticleUpdater&) -> IParticleUpdater& = delete;
   auto operator=(IParticleUpdater&&) -> IParticleUpdater&      = delete;
 
-  virtual auto update(double dt, ParticleData* particleData) -> void = 0;
+  virtual auto Update(double dt, ParticleData* particleData) noexcept -> void = 0;
 };
 
 class ParticleEmitter
@@ -101,10 +101,10 @@ public:
   ParticleEmitter() = default;
 
   auto SetEmitRate(float emitRate) noexcept -> void;
-  auto addGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept -> void;
+  auto AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept -> void;
 
   // Calls all the generators and at the end it activates (wakes) particle.
-  auto emit(double dt, ParticleData* particleData) -> void;
+  auto Emit(double dt, ParticleData* particleData) noexcept -> void;
 
 private:
   float m_emitRate = 0.0F;
@@ -116,18 +116,19 @@ class ParticleSystem
 public:
   explicit ParticleSystem(size_t maxCount);
 
-  auto update(double dt) -> void;
-  auto reset() -> void;
+  auto Update(double dt) -> void;
+  auto Reset() -> void;
 
-  [[nodiscard]] auto numAllParticles() const -> size_t;
-  [[nodiscard]] auto numAliveParticles() const -> size_t;
+  [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t;
+  [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t;
 
-  auto addEmitter(const std::shared_ptr<ParticleEmitter>& emitter) -> void;
-  auto addUpdater(const std::shared_ptr<IParticleUpdater>& updater) -> void;
+  auto AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept -> void;
+  auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
 
-  [[nodiscard]] auto finalData() const -> const ParticleData*;
+  [[nodiscard]] auto GetFinalData() const noexcept -> const ParticleData*;
 
-  [[nodiscard]] static auto computeMemoryUsage(const ParticleSystem& particleSystem) -> size_t;
+  [[nodiscard]] static auto ComputeMemoryUsage(const ParticleSystem& particleSystem) noexcept
+      -> size_t;
 
 private:
   size_t m_count;
@@ -138,7 +139,7 @@ private:
   std::vector<std::shared_ptr<IParticleUpdater>> m_updaters{};
 };
 
-inline auto ParticleData::reset() noexcept -> void
+inline auto ParticleData::Reset() noexcept -> void
 {
   m_countAlive = 0U;
 }
@@ -250,32 +251,34 @@ inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
   m_emitRate = emitRate;
 }
 
-inline auto ParticleEmitter::addGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept
+inline auto ParticleEmitter::AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept
     -> void
 {
   m_generators.push_back(gen);
 }
 
-inline auto ParticleSystem::numAllParticles() const -> size_t
+inline auto ParticleSystem::GetNumAllParticles() const noexcept -> size_t
 {
   return m_particles.GetCount();
 }
 
-inline auto ParticleSystem::numAliveParticles() const -> size_t
+inline auto ParticleSystem::GetNumAliveParticles() const noexcept -> size_t
 {
   return m_particles.GetAliveCount();
 }
 
-inline auto ParticleSystem::addEmitter(const std::shared_ptr<ParticleEmitter>& emitter) -> void
+inline auto ParticleSystem::AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept
+    -> void
 {
   m_emitters.push_back(emitter);
 }
-inline auto ParticleSystem::addUpdater(const std::shared_ptr<IParticleUpdater>& updater) -> void
+inline auto ParticleSystem::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept
+    -> void
 {
   m_updaters.push_back(updater);
 }
 
-inline auto ParticleSystem::finalData() const -> const ParticleData*
+inline auto ParticleSystem::GetFinalData() const noexcept -> const ParticleData*
 {
   return &m_particles;
 }

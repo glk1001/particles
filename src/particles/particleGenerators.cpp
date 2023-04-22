@@ -16,7 +16,7 @@ BoxPosGen::BoxPosGen(const glm::vec4& position, const glm::vec4& maxStartPosOffs
 {
 }
 
-auto BoxPosGen::generate([[maybe_unused]] const double dt,
+auto BoxPosGen::Generate([[maybe_unused]] const double dt,
                          ParticleData* const particleData,
                          const size_t startId,
                          const size_t endId) noexcept -> void
@@ -41,7 +41,7 @@ RoundPosGen::RoundPosGen(const glm::vec4& center, const double radX, const doubl
 {
 }
 
-auto RoundPosGen::generate([[maybe_unused]] const double dt,
+auto RoundPosGen::Generate([[maybe_unused]] const double dt,
                            ParticleData* const particleData,
                            const size_t startId,
                            const size_t endId) noexcept -> void
@@ -69,7 +69,7 @@ BasicColorGen::BasicColorGen(const glm::vec4& minStartColor,
 {
 }
 
-auto BasicColorGen::generate([[maybe_unused]] const double dt,
+auto BasicColorGen::Generate([[maybe_unused]] const double dt,
                              ParticleData* const particleData,
                              const size_t startId,
                              const size_t endId) noexcept -> void
@@ -87,7 +87,7 @@ BasicVelGen::BasicVelGen(const glm::vec4& minStartVelocity,
 {
 }
 
-auto BasicVelGen::generate([[maybe_unused]] const double dt,
+auto BasicVelGen::Generate([[maybe_unused]] const double dt,
                            ParticleData* const particleData,
                            const size_t startId,
                            const size_t endId) noexcept -> void
@@ -103,7 +103,7 @@ SphereVelGen::SphereVelGen(const float minVelocity, const float maxVelocity) noe
 {
 }
 
-auto SphereVelGen::generate([[maybe_unused]] const double dt,
+auto SphereVelGen::Generate([[maybe_unused]] const double dt,
                             ParticleData* const particleData,
                             const size_t startId,
                             const size_t endId) noexcept -> void
@@ -130,7 +130,7 @@ VelFromPosGen::VelFromPosGen(const glm::vec4& offset,
 {
 }
 
-auto VelFromPosGen::generate([[maybe_unused]] const double dt,
+auto VelFromPosGen::Generate([[maybe_unused]] const double dt,
                              ParticleData* const particleData,
                              const size_t startId,
                              const size_t endId) noexcept -> void
@@ -148,7 +148,7 @@ BasicTimeGen::BasicTimeGen(const float minTime, const float maxTime) noexcept
 {
 }
 
-auto BasicTimeGen::generate([[maybe_unused]] const double dt,
+auto BasicTimeGen::Generate([[maybe_unused]] const double dt,
                             ParticleData* const particleData,
                             const size_t startId,
                             const size_t endId) noexcept -> void

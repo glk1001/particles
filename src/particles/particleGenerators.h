@@ -12,7 +12,7 @@ class BoxPosGen : public IParticleGenerator
 public:
   BoxPosGen(const glm::vec4& position, const glm::vec4& maxStartPosOffset) noexcept;
 
-  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
+  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
@@ -25,7 +25,7 @@ class RoundPosGen : public IParticleGenerator
 public:
   RoundPosGen(const glm::vec4& center, double radX, double radY) noexcept;
 
-  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
+  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
@@ -42,7 +42,7 @@ public:
                 const glm::vec4& minEndColor,
                 const glm::vec4& maxEndColor) noexcept;
 
-  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
+  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
@@ -57,7 +57,7 @@ class BasicVelGen : public IParticleGenerator
 public:
   BasicVelGen(const glm::vec4& minStartVelocity, const glm::vec4& maxStartVelocity) noexcept;
 
-  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
+  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
@@ -70,7 +70,7 @@ class SphereVelGen : public IParticleGenerator
 public:
   SphereVelGen(float minVelocity, float maxVelocity) noexcept;
 
-  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
+  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
@@ -83,7 +83,7 @@ class VelFromPosGen : public IParticleGenerator
 public:
   VelFromPosGen(const glm::vec4& offset, float minScale, float maxScale) noexcept;
 
-  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
+  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
@@ -97,7 +97,7 @@ class BasicTimeGen : public IParticleGenerator
 public:
   BasicTimeGen(float minTime, float maxTime) noexcept;
 
-  auto generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
+  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:

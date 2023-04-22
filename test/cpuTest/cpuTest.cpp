@@ -105,12 +105,12 @@ int main()
     for (const auto& n : s_EFFECTS_NAME)
     {
       const auto effect = EffectFactory::create(n.c_str());
-      effect->initialize(numParticles);
+      effect->Initialize(numParticles);
 
       timer.begin();
       for (auto frame = 0U; frame < FRAME_COUNT; ++frame)
       {
-        effect->cpuUpdate(DELTA_TIME);
+        effect->CpuUpdate(DELTA_TIME);
       }
       timer.end();
 

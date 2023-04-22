@@ -21,13 +21,13 @@ public:
   auto operator=(IEffect&&) -> IEffect&      = delete;
 
   // Creates the effect with desired number of PARTICLES, (0 means default for the effect).
-  virtual auto initialize(size_t numParticles) -> bool = 0;
-  virtual auto reset() -> void                         = 0;
+  virtual auto Initialize(size_t numParticles) -> bool = 0;
+  virtual auto Reset() -> void                         = 0;
 
-  virtual auto cpuUpdate(double dt) -> void = 0;
+  virtual auto CpuUpdate(double dt) -> void = 0;
 
-  [[nodiscard]] virtual auto numAllParticles() -> size_t                           = 0;
-  [[nodiscard]] virtual auto numAliveParticles() -> size_t                         = 0;
+  [[nodiscard]] virtual auto GetNumAllParticles() -> size_t                        = 0;
+  [[nodiscard]] virtual auto GetNumAliveParticles() -> size_t                      = 0;
   [[nodiscard]] virtual auto GetSystem() const -> const PARTICLES::ParticleSystem* = 0;
 };
 

@@ -19,17 +19,17 @@ ParticleData::ParticleData(const size_t count) noexcept
 {
 }
 
-auto ParticleData::kill(const size_t id) -> void
+auto ParticleData::Kill(const size_t id) -> void
 {
   //if (m_countAlive > 0) // maybe this if can be removed?
   {
     m_alive[id] = false;
-    swapData(id, m_countAlive - 1);
+    SwapData(id, m_countAlive - 1);
     --m_countAlive;
   }
 }
 
-auto ParticleData::wake(const size_t id) -> void
+auto ParticleData::Wake(const size_t id) -> void
 {
   //if (m_countAlive < m_count) // maybe this 'if' can be removed?
   {
@@ -39,7 +39,7 @@ auto ParticleData::wake(const size_t id) -> void
   }
 }
 
-auto ParticleData::swapData(const size_t a, const size_t b) -> void
+auto ParticleData::SwapData(const size_t a, const size_t b) -> void
 {
   /*std::swap(m_pos[a], m_pos[b]);
     std::swap(m_col[a], m_col[b]);
@@ -59,7 +59,7 @@ auto ParticleData::swapData(const size_t a, const size_t b) -> void
   //m_alive[a] = m_alive[b];*/
 }
 
-auto ParticleData::copyOnlyAlive(const ParticleData* const source, ParticleData* const destination)
+auto ParticleData::CopyOnlyAlive(const ParticleData* const source, ParticleData* const destination)
     -> void
 {
   assert(source->m_count == destination->m_count);
@@ -84,15 +84,15 @@ auto ParticleData::copyOnlyAlive(const ParticleData* const source, ParticleData*
   destination->m_countAlive = id;
 }
 
-auto ParticleData::computeMemoryUsage(const ParticleData& particleData) -> size_t
+auto ParticleData::ComputeMemoryUsage(const ParticleData& particleData) -> size_t
 {
-  return particleData.m_count * ((7 * sizeof(glm::vec4)) + sizeof(bool)) + (sizeof(size_t) * 2);
+  return particleData.m_count * ((7 * sizeof(glm::vec4)) + (sizeof(bool)) + (sizeof(size_t) * 2));
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // ParticleEmitter class
 
-auto ParticleEmitter::emit(const double dt, ParticleData* const particleData) -> void
+auto ParticleEmitter::Emit(const double dt, ParticleData* const particleData) noexcept -> void
 {
   const auto maxNewParticles = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
   const auto startId         = particleData->GetAliveCount();
@@ -100,12 +100,12 @@ auto ParticleEmitter::emit(const double dt, ParticleData* const particleData) ->
 
   for (auto& gen : m_generators)
   {
-    gen->generate(dt, particleData, startId, endId);
+    gen->Generate(dt, particleData, startId, endId);
   }
 
   for (auto i = startId; i < endId; ++i)
   {
-    particleData->wake(i);
+    particleData->Wake(i);
   }
 }
 
@@ -118,11 +118,11 @@ ParticleSystem::ParticleSystem(const size_t maxCount)
 {
 }
 
-auto ParticleSystem::update(const double dt) -> void
+auto ParticleSystem::Update(const double dt) -> void
 {
   for (auto& em : m_emitters)
   {
-    em->emit(dt, &m_particles);
+    em->Emit(dt, &m_particles);
   }
 
   for (auto i = 0U; i < m_count; ++i)
@@ -132,20 +132,20 @@ auto ParticleSystem::update(const double dt) -> void
 
   for (auto& up : m_updaters)
   {
-    up->update(dt, &m_particles);
+    up->Update(dt, &m_particles);
   }
 
-  //ParticleData::copyOnlyAlive(&m_particles, &m_aliveParticles);
+  //ParticleData::CopyOnlyAlive(&m_particles, &m_aliveParticles);
 }
 
-auto ParticleSystem::reset() -> void
+auto ParticleSystem::Reset() -> void
 {
-  m_particles.reset();
+  m_particles.Reset();
 }
 
-auto ParticleSystem::computeMemoryUsage(const ParticleSystem& particleSystem) -> size_t
+auto ParticleSystem::ComputeMemoryUsage(const ParticleSystem& particleSystem) noexcept -> size_t
 {
-  return 2 * ParticleData::computeMemoryUsage(particleSystem.m_particles);
+  return 2 * ParticleData::ComputeMemoryUsage(particleSystem.m_particles);
 }
 
 } // namespace PARTICLES

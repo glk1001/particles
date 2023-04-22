@@ -11,7 +11,7 @@ EulerUpdater::EulerUpdater(const glm::vec4& globalAcceleration) noexcept
 {
 }
 
-auto EulerUpdater::update(const double dt, ParticleData* const particleData) noexcept -> void
+auto EulerUpdater::Update(const double dt, ParticleData* const particleData) noexcept -> void
 {
   const auto globalA = glm::vec4{dt * static_cast<double>(m_globalAcceleration.x),
                                  dt * static_cast<double>(m_globalAcceleration.y),
@@ -42,7 +42,7 @@ FloorUpdater::FloorUpdater(const float floorY, const float bounceFactor) noexcep
 {
 }
 
-auto FloorUpdater::update([[maybe_unused]] const double dt,
+auto FloorUpdater::Update([[maybe_unused]] const double dt,
                           ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
@@ -68,7 +68,7 @@ auto FloorUpdater::update([[maybe_unused]] const double dt,
   }
 }
 
-auto AttractorUpdater::update([[maybe_unused]] const double dt,
+auto AttractorUpdater::Update([[maybe_unused]] const double dt,
                               ParticleData* const particleData) noexcept -> void
 {
   const auto endId           = particleData->GetAliveCount();
@@ -93,7 +93,7 @@ auto AttractorUpdater::update([[maybe_unused]] const double dt,
   }
 }
 
-auto BasicColorUpdater::update([[maybe_unused]] const double dt,
+auto BasicColorUpdater::Update([[maybe_unused]] const double dt,
                                ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
@@ -112,7 +112,7 @@ PosColorUpdater::PosColorUpdater(const glm::vec4& minPos, const glm::vec4& maxPo
 {
 }
 
-auto PosColorUpdater::update([[maybe_unused]] const double dt,
+auto PosColorUpdater::Update([[maybe_unused]] const double dt,
                              ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
@@ -145,7 +145,7 @@ VelColorUpdater::VelColorUpdater(const glm::vec4& minVel, const glm::vec4& maxVe
 {
 }
 
-auto VelColorUpdater::update([[maybe_unused]] const double dt,
+auto VelColorUpdater::Update([[maybe_unused]] const double dt,
                              ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
@@ -172,7 +172,7 @@ auto VelColorUpdater::update([[maybe_unused]] const double dt,
   }
 }
 
-auto BasicTimeUpdater::update(const double dt, ParticleData* const particleData) noexcept -> void
+auto BasicTimeUpdater::Update(const double dt, ParticleData* const particleData) noexcept -> void
 {
   auto endId = particleData->GetAliveCount();
 
@@ -196,7 +196,7 @@ auto BasicTimeUpdater::update(const double dt, ParticleData* const particleData)
 
     if (newXTime < 0.0F)
     {
-      particleData->kill(i);
+      particleData->Kill(i);
       endId = particleData->GetAliveCount() < particleData->GetCount()
                   ? particleData->GetAliveCount()
                   : particleData->GetCount();
