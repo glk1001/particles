@@ -3,6 +3,8 @@
 #include "particles/particle_generators.h"
 #include "particles/particle_updaters.h"
 
+#include <cmath>
+
 namespace PARTICLES::EFFECTS
 {
 
@@ -18,7 +20,7 @@ using UPDATERS::FloorUpdater;
 auto FountainEffect::Initialize(const size_t numParticles) -> bool
 {
   //
-  // PARTICLES
+  // Particles
   //
   const auto numParticlesToUse = 0 == numParticles ? 10000 : numParticles;
   m_system                     = std::make_shared<ParticleSystem>(numParticlesToUse);
@@ -32,10 +34,10 @@ auto FountainEffect::Initialize(const size_t numParticles) -> bool
 
     // pos:
     m_posGenerator = std::make_shared<BoxPosGen>(glm::vec4{0.0F, -0.25F, 0.0F, 0.0F},
-                                                 glm::vec4{0.0F, 0.0F, 0.0F, 0.0F});
+                                                 glm::vec4{0.0F, +0.00F, 0.0F, 0.0F});
     particleEmitter->AddGenerator(m_posGenerator);
 
-    m_colGenerator = std::make_shared<BasicColorGen>(glm::vec4{0.5F, 0.5F, 0.5F, 0.5F},
+    m_colGenerator = std::make_shared<BasicColorGen>(glm::vec4{0.7F, 0.7F, 0.7F, 0.5F},
                                                      glm::vec4{1.0F, 1.0F, 1.0F, 0.7F},
                                                      glm::vec4{0.5F, 0.0F, 0.6F, 0.5F},
                                                      glm::vec4{0.7F, 0.5F, 1.0F, 0.7F});
@@ -61,10 +63,19 @@ auto FountainEffect::Initialize(const size_t numParticles) -> bool
   m_eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0F, -25.0F, 0.0F, 0.0F});
   m_system->AddUpdater(m_eulerUpdater);
 
-  m_floorUpdater = std::make_shared<FloorUpdater>(-0.35F, 0.5F);
+  m_floorUpdater = std::make_shared<FloorUpdater>(-0.25F, 0.5F);
   m_system->AddUpdater(m_floorUpdater);
 
   return true;
+}
+
+auto FountainEffect::Update(const double dt) noexcept -> void
+{
+  static auto time = 0.0F;
+  time += static_cast<float>(dt);
+
+  m_posGenerator->SetPosition(
+      {0.1F * std::sin(time * 2.5F), -0.25F, 0.1F * std::cos(time * 2.5F), 0.0F});
 }
 
 } // namespace PARTICLES::EFFECTS

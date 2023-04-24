@@ -28,6 +28,8 @@ private:
   std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
   std::shared_ptr<PARTICLES::UPDATERS::EulerUpdater> m_eulerUpdater{};
   std::shared_ptr<PARTICLES::UPDATERS::FloorUpdater> m_floorUpdater{};
+
+  auto Update(double dt) noexcept -> void;
 };
 
 inline auto FountainEffect::Reset() -> void
@@ -37,6 +39,7 @@ inline auto FountainEffect::Reset() -> void
 
 inline auto FountainEffect::CpuUpdate(const double dt) -> void
 {
+  Update(dt);
   m_system->Update(dt);
 }
 
