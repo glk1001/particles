@@ -113,7 +113,7 @@ auto SphereVelGen::Generate([[maybe_unused]] const double dt,
     particleData->SetVelocity(i,
                               {r * std::cos(theta),
                                r * std::sin(theta),
-                               v * std::cos(phi),
+                               0.0F, //v * std::cos(phi),
                                particleData->GetVelocity(i).w});
   }
 }
