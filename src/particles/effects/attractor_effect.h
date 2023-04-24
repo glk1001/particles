@@ -30,6 +30,8 @@ private:
       m_posGenerators{};
   std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
   std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractors{};
+
+  auto Update(double dt) -> void;
 };
 
 inline auto AttractorEffect::Reset() -> void
@@ -39,6 +41,7 @@ inline auto AttractorEffect::Reset() -> void
 
 inline auto AttractorEffect::CpuUpdate(const double dt) -> void
 {
+  Update(dt);
   m_system->Update(dt);
 }
 
