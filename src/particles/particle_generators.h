@@ -12,6 +12,8 @@ class BoxPosGen : public IParticleGenerator
 public:
   BoxPosGen(const glm::vec4& position, const glm::vec4& maxStartPosOffset) noexcept;
 
+  auto SetPosition(const glm::vec4& position) noexcept -> void;
+
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
@@ -24,6 +26,8 @@ class RoundPosGen : public IParticleGenerator
 {
 public:
   RoundPosGen(const glm::vec4& center, double radX, double radY) noexcept;
+
+  auto SetCentreAndRadius(const glm::vec4& center, float radX, float radY) noexcept -> void;
 
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
@@ -104,5 +108,19 @@ private:
   float m_minTime;
   float m_maxTime;
 };
+
+inline auto BoxPosGen::SetPosition(const glm::vec4& position) noexcept -> void
+{
+  m_pos = position;
+}
+
+inline auto RoundPosGen::SetCentreAndRadius(const glm::vec4& center,
+                                            const float radX,
+                                            const float radY) noexcept -> void
+{
+  m_center = center;
+  m_radX   = radX;
+  m_radY   = radY;
+}
 
 } // namespace PARTICLES::GENERATORS
