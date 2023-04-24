@@ -45,8 +45,8 @@ auto AttractorEffect::Initialize(const size_t numParticles) -> bool
     particleEmitter->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
     // pos:
-    m_posGenerators[0] = std::make_shared<BoxPosGen>(glm::vec4{0.0F, 0.0F, -0.25F, 0.0F},
-                                                     glm::vec4{0.0F, 0.0F, +0.00F, 0.0F});
+    m_posGenerators[0] = std::make_shared<BoxPosGen>(glm::vec4{0.0F, 0.0F, 0.0F, 0.0F},
+                                                     glm::vec4{0.0F, 0.0F, 0.0F, 0.0F});
     particleEmitter->AddGenerator(m_posGenerators[0]);
 
     particleEmitter->AddGenerator(m_colGenerator);
@@ -62,8 +62,8 @@ auto AttractorEffect::Initialize(const size_t numParticles) -> bool
   {
     particleEmitter2->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
-    m_posGenerators[1] = std::make_shared<BoxPosGen>(glm::vec4{0.0F, 0.0F, 0.25F, 0.0F},
-                                                     glm::vec4{0.0F, 0.0F, 0.00F, 0.0F});
+    m_posGenerators[1] = std::make_shared<BoxPosGen>(glm::vec4{0.0F, 0.0F, 0.0F, 0.0F},
+                                                     glm::vec4{0.0F, 0.0F, 0.0F, 0.0F});
     particleEmitter2->AddGenerator(m_posGenerators[1]);
 
     particleEmitter2->AddGenerator(m_colGenerator);
@@ -79,8 +79,8 @@ auto AttractorEffect::Initialize(const size_t numParticles) -> bool
   {
     particleEmitter3->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
 
-    m_posGenerators[2] = std::make_shared<BoxPosGen>(glm::vec4{0.0F, 0.0F, 0.25F, 0.0F},
-                                                     glm::vec4{0.0F, 0.0F, 0.00F, 0.0F});
+    m_posGenerators[2] = std::make_shared<BoxPosGen>(glm::vec4{0.0F, 0.0F, 0.0F, 0.0F},
+                                                     glm::vec4{0.0F, 0.0F, 0.0F, 0.0F});
     particleEmitter3->AddGenerator(m_posGenerators[2]);
 
     particleEmitter3->AddGenerator(m_colGenerator);
@@ -95,15 +95,15 @@ auto AttractorEffect::Initialize(const size_t numParticles) -> bool
   const auto timeUpdater = std::make_shared<BasicTimeUpdater>();
   m_system->AddUpdater(timeUpdater);
 
-  const auto colorUpdater = std::make_shared<VelColorUpdater>(glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F},
-                                                              glm::vec4{+2.0F, +2.0F, +2.0F, 2.0F});
+  const auto colorUpdater = std::make_shared<VelColorUpdater>(glm::vec4{-0.5F, -0.5F, 0.0F, 0.0F},
+                                                              glm::vec4{+2.0F, +2.0F, 0.0F, 2.0F});
   m_system->AddUpdater(colorUpdater);
 
   m_attractors = std::make_shared<AttractorUpdater>();
-  m_attractors->Add(glm::vec4{0.00F, +0.00F, +0.75F, 1.0F});
-  m_attractors->Add(glm::vec4{0.00F, +0.00F, -0.75F, 1.0F});
-  m_attractors->Add(glm::vec4{0.00F, +0.75F, +0.00F, 1.0F});
-  m_attractors->Add(glm::vec4{0.00F, -0.75F, +0.00F, 1.0F});
+  m_attractors->Add(glm::vec4{+0.00F, +0.75F, 0.0F, 1.0F});
+  m_attractors->Add(glm::vec4{+0.00F, -0.75F, 0.0F, 1.0F});
+  m_attractors->Add(glm::vec4{+0.75F, +0.00F, 0.0F, 1.0F});
+  m_attractors->Add(glm::vec4{-0.75F, +0.00F, 0.0F, 1.0F});
   m_system->AddUpdater(m_attractors);
 
   const auto eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0F, 0.0F, 0.0F, 0.0F});
@@ -117,21 +117,26 @@ auto AttractorEffect::Update(const double dt) -> void
   static auto time = 0.0F;
   time += static_cast<float>(dt);
 
-  const auto r = 0.15F;
-  const auto m_zScale = 1.0F;
-  m_posGenerators[0]->SetPosition({+r* std::sin(time * 2.5F),
+  static auto r = 0.15F;
+  r += static_cast<float>(dt/100.0);
+  if (r > 1.0F)
+  {
+    r = 0.15F;
+  }
+
+  m_posGenerators[0]->SetPosition({+r * std::sin(time * 2.5F),
                                    +r * std::cos(time * 2.5F),
-                                   m_zScale*0.25F*std::cos(time*2.5F),
+                                   0.0F,
                                    0.0F});
 
   m_posGenerators[1]->SetPosition({-r * std::sin(time * 2.0F),
                                    +r * std::cos(time * 2.0F),
-                                   m_zScale*0.25F*std::cos(time*1.5F),
+                                   0.0F,
                                    0.0F});
 
   m_posGenerators[2]->SetPosition({-r * std::sin(time * 1.5F),
-                                   +r * std::cos(time * 2.5F),
-                                   m_zScale*0.25F*std::cos(time*1.75F),
+                                   +r * std::cos(time * 1.5F),
+                                   0.0F,
                                    0.0F});
 }
 
