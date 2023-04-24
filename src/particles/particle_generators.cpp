@@ -152,7 +152,7 @@ auto BasicTimeGen::Generate([[maybe_unused]] const double dt,
   {
     const auto xyTime = glm::linearRand(m_minTime, m_maxTime);
 
-    particleData->SetTime(i, {xyTime, xyTime, 0.0F, 1.0F / particleData->GetTime(i).x});
+    particleData->SetTime(i, {xyTime, xyTime, 0.0F, 1.0F / xyTime});
   }
 }
 
