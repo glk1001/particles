@@ -26,6 +26,8 @@ private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
   std::shared_ptr<PARTICLES::GENERATORS::RoundPosGen> m_posGenerator{};
   std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
+
+  auto Update(double dt) noexcept -> void;
 };
 
 inline auto TunnelEffect::Reset() -> void
@@ -35,6 +37,7 @@ inline auto TunnelEffect::Reset() -> void
 
 inline auto TunnelEffect::CpuUpdate(const double dt) -> void
 {
+  Update(dt);
   m_system->Update(dt);
 }
 
