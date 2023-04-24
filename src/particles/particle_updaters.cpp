@@ -72,20 +72,21 @@ auto FloorUpdater::Update([[maybe_unused]] const double dt,
 auto AttractorUpdater::Update([[maybe_unused]] const double dt,
                               ParticleData* const particleData) noexcept -> void
 {
-  const auto endId           = particleData->GetAliveCount();
-  const auto countAttractors = m_attractors.size();
+  const auto endId = particleData->GetAliveCount();
 
   for (auto i = 0U; i < endId; ++i)
   {
-    for (auto j = 0U; j < countAttractors; ++j)
+    const auto particlePosition = particleData->GetPosition(i);
+    for (const auto& attractor : m_attractors)
     {
-      const auto off  = glm::vec4{m_attractors[j].x - particleData->GetPosition(i).x,
-                                 m_attractors[j].y - particleData->GetPosition(i).y,
-                                 m_attractors[j].z - particleData->GetPosition(i).z,
-                                 0.0F};
-      const auto dist = m_attractors[j].w / glm::dot(off, off);
+      const auto offset = glm::vec4{attractor.x - particlePosition.x,
+                                    attractor.y - particlePosition.y,
+                                    attractor.z - particlePosition.z,
+                                    0.0F};
+      const auto distSq = glm::dot(offset, offset);
+      const auto force  = attractor.w / distSq;
 
-      particleData->IncAcceleration(i, off * dist);
+      particleData->IncAcceleration(i, offset * force);
     }
   }
 }
