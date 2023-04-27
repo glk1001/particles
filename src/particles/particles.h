@@ -51,7 +51,6 @@ public:
   [[nodiscard]] auto GetTime(size_t i) const noexcept -> const glm::vec4&;
   auto SetTime(size_t i, const glm::vec4& time) noexcept -> void;
 
-  static auto CopyOnlyAlive(const ParticleData* source, ParticleData* destination) -> void;
   [[nodiscard]] static auto ComputeMemoryUsage(const ParticleData& particleData) -> size_t;
 
 private:
@@ -133,7 +132,6 @@ public:
 private:
   size_t m_count;
   ParticleData m_particles;
-  ParticleData m_aliveParticles;
 
   std::vector<std::shared_ptr<ParticleEmitter>> m_emitters{};
   std::vector<std::shared_ptr<IParticleUpdater>> m_updaters{};
@@ -272,6 +270,7 @@ inline auto ParticleSystem::AddEmitter(const std::shared_ptr<ParticleEmitter>& e
 {
   m_emitters.push_back(emitter);
 }
+
 inline auto ParticleSystem::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept
     -> void
 {

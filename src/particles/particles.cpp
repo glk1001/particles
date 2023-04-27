@@ -59,31 +59,6 @@ auto ParticleData::SwapData(const size_t a, const size_t b) -> void
   //m_alive[a] = m_alive[b];*/
 }
 
-auto ParticleData::CopyOnlyAlive(const ParticleData* const source, ParticleData* const destination)
-    -> void
-{
-  assert(source->m_count == destination->m_count);
-
-  size_t id = 0;
-  for (auto i = 0U; i < source->m_countAlive; ++i)
-  {
-    //if (source->m_alive[i])
-    {
-      destination->m_pos[id]      = source->m_pos[i];
-      destination->m_col[id]      = source->m_col[i];
-      destination->m_startCol[id] = source->m_startCol[i];
-      destination->m_endCol[id]   = source->m_endCol[i];
-      destination->m_vel[id]      = source->m_vel[i];
-      destination->m_acc[id]      = source->m_acc[i];
-      destination->m_time[id]     = source->m_time[i];
-      destination->m_alive[id]    = true;
-      ++id;
-    }
-  }
-
-  destination->m_countAlive = id;
-}
-
 auto ParticleData::ComputeMemoryUsage(const ParticleData& particleData) -> size_t
 {
   return particleData.m_count * ((7 * sizeof(glm::vec4)) + (sizeof(bool)) + (sizeof(size_t) * 2));
@@ -113,8 +88,7 @@ auto ParticleEmitter::Emit(const double dt, ParticleData* const particleData) no
 // ParticleSystem class
 
 ////////////////////////////////////////////////////////////////////////////////
-ParticleSystem::ParticleSystem(const size_t maxCount)
-  : m_count{maxCount}, m_particles{maxCount}, m_aliveParticles{maxCount}
+ParticleSystem::ParticleSystem(const size_t maxCount) : m_count{maxCount}, m_particles{maxCount}
 {
 }
 
