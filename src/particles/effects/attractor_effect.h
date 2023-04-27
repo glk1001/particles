@@ -17,6 +17,8 @@ public:
   [[nodiscard]] auto Initialize(size_t numParticles) -> bool override;
   auto Reset() -> void override;
 
+  auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
+
   auto CpuUpdate(double dt) -> void override;
 
   [[nodiscard]] auto GetNumAllParticles() -> size_t override;
@@ -37,6 +39,12 @@ private:
 inline auto AttractorEffect::Reset() -> void
 {
   m_system->Reset();
+}
+
+inline auto AttractorEffect::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept
+    -> void
+{
+  m_system->AddUpdater(updater);
 }
 
 inline auto AttractorEffect::CpuUpdate(const double dt) -> void
