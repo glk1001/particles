@@ -17,7 +17,7 @@ using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
 using UPDATERS::FloorUpdater;
 
-auto FountainEffect::Initialize(const size_t numParticles) -> bool
+FountainEffect::FountainEffect(const size_t numParticles) noexcept
 {
   //
   // Particles
@@ -65,8 +65,6 @@ auto FountainEffect::Initialize(const size_t numParticles) -> bool
 
   m_floorUpdater = std::make_shared<FloorUpdater>(-0.25F, 0.5F);
   m_system->AddUpdater(m_floorUpdater);
-
-  return true;
 }
 
 auto FountainEffect::Update(const double dt) noexcept -> void

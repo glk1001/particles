@@ -14,10 +14,11 @@ namespace PARTICLES::EFFECTS
 class AttractorEffect : public IEffect
 {
 public:
-  [[nodiscard]] auto Initialize(size_t numParticles) -> bool override;
-  auto Reset() -> void override;
+  explicit AttractorEffect(size_t numParticles) noexcept;
 
   auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
+
+  auto Reset() -> void override;
 
   auto CpuUpdate(double dt) -> void override;
 

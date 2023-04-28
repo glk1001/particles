@@ -17,7 +17,7 @@ using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
 using UPDATERS::VelColorUpdater;
 
-auto AttractorEffect::Initialize(const size_t numParticles) -> bool
+AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
 {
   //
   // Particles
@@ -110,8 +110,6 @@ auto AttractorEffect::Initialize(const size_t numParticles) -> bool
 
   const auto eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0F, 0.0F, 0.0F, 0.0F});
   m_system->AddUpdater(eulerUpdater);
-
-  return true;
 }
 
 auto AttractorEffect::Update(const double dt) -> void

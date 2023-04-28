@@ -13,7 +13,8 @@ namespace PARTICLES::EFFECTS
 class FountainEffect : public IEffect
 {
 public:
-  [[nodiscard]] auto Initialize(size_t numParticles) -> bool override;
+  explicit FountainEffect(size_t numParticles) noexcept;
+
   auto Reset() -> void override;
 
   auto CpuUpdate(double dt) -> void override;

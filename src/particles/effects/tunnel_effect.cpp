@@ -16,7 +16,7 @@ using UPDATERS::BasicColorUpdater;
 using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
 
-auto TunnelEffect::Initialize(const size_t numParticles) -> bool
+TunnelEffect::TunnelEffect(const size_t numParticles) noexcept
 {
   //
   // Particles
@@ -53,15 +53,13 @@ auto TunnelEffect::Initialize(const size_t numParticles) -> bool
   const auto timeUpdater = std::make_shared<BasicTimeUpdater>();
   m_system->AddUpdater(timeUpdater);
 
-  const auto colorUpdater = std::make_shared<BasicColorUpdater>();
-  //colorUpdater->m_minPos = glm::vec4{ -1.0f };
-  //colorUpdater->m_maxPos = glm::vec4{ +1.0f };
+  //const auto colorUpdater = std::make_shared<BasicColorUpdater>();
+  const auto colorUpdater = std::make_shared<PARTICLES::UPDATERS::PosColorUpdater>(
+      glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F}, glm::vec4{+2.0F, +3.0F, +3.0F, 2.0F});
   m_system->AddUpdater(colorUpdater);
 
   const auto eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0, 0.0, 0.0, 0.0});
   m_system->AddUpdater(eulerUpdater);
-
-  return true;
 }
 
 auto TunnelEffect::Update(const double dt) noexcept -> void
@@ -73,8 +71,8 @@ auto TunnelEffect::Update(const double dt) noexcept -> void
       {0.1F * std::sin(time * 2.5F), 0.1F * std::cos(time * 2.5F), 0.0F, 0.0F},
       0.15F + (0.05F * std::sin(time)),
       0.15F + (0.05F * (std::sin(time) * std::cos(time * 0.5F))));
-//      0.15F + (0.01F * std::sin(time)),
-//      0.15F + (0.01F * std::cos(time)));
+  //      0.15F + (0.01F * std::sin(time)),
+  //      0.15F + (0.01F * std::cos(time)));
 }
 
 } // namespace PARTICLES::EFFECTS

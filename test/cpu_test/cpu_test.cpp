@@ -19,24 +19,26 @@ namespace
 class EffectFactory
 {
 public:
-  [[nodiscard]] static auto create(const char* name) -> std::shared_ptr<IEffect>;
+  [[nodiscard]] static auto create(const char* name, size_t numParticles)
+      -> std::shared_ptr<IEffect>;
 };
 
-auto EffectFactory::create(const char* const name) -> std::shared_ptr<IEffect>
+auto EffectFactory::create(const char* const name, const size_t numParticles)
+    -> std::shared_ptr<IEffect>
 {
   const auto effect = std::string{name};
 
   if ("tunnel" == effect)
   {
-    return std::make_shared<TunnelEffect>();
+    return std::make_shared<TunnelEffect>(numParticles);
   }
   if ("attractors" == effect)
   {
-    return std::make_shared<AttractorEffect>();
+    return std::make_shared<AttractorEffect>(numParticles);
   }
   if ("fountain" == effect)
   {
-    return std::make_shared<FountainEffect>();
+    return std::make_shared<FountainEffect>(numParticles);
   }
 
   throw std::runtime_error("Effect not found.");
@@ -104,8 +106,7 @@ int main()
 
     for (const auto& n : s_EFFECTS_NAME)
     {
-      const auto effect = EffectFactory::create(n.c_str());
-      effect->Initialize(numParticles);
+      const auto effect = EffectFactory::create(n.c_str(), numParticles);
 
       timer.begin();
       for (auto frame = 0U; frame < FRAME_COUNT; ++frame)

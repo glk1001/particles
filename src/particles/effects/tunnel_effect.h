@@ -13,7 +13,8 @@ namespace PARTICLES::EFFECTS
 class TunnelEffect : public IEffect
 {
 public:
-  [[nodiscard]] auto Initialize(size_t numParticles) -> bool override;
+  explicit TunnelEffect(size_t numParticles) noexcept;
+
   auto Reset() -> void override;
 
   auto CpuUpdate(double dt) -> void override;

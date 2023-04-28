@@ -20,9 +20,7 @@ public:
   auto operator=(const IEffect&) -> IEffect& = delete;
   auto operator=(IEffect&&) -> IEffect&      = delete;
 
-  // Creates the effect with desired number of PARTICLES, (0 means default for the effect).
-  virtual auto Initialize(size_t numParticles) -> bool = 0;
-  virtual auto Reset() -> void                         = 0;
+  virtual auto Reset() -> void = 0;
 
   virtual auto CpuUpdate(double dt) -> void = 0;
 
