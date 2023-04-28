@@ -35,7 +35,7 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
 
   const auto velGenerator = std::make_shared<SphereVelGen>(0.1F, 0.1F);
 
-  const auto timeGenerator = std::make_shared<BasicTimeGen>(1.6F, 4.0F);
+  const auto timeGenerator = std::make_shared<BasicTimeGen>(1.6F, 114.0F);
 
   //
   // emitter 1:
@@ -43,6 +43,7 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   const auto particleEmitter = std::make_shared<ParticleEmitter>();
   {
     particleEmitter->SetEmitRate(0.1F * static_cast<float>(numParticlesToUse));
+    //particleEmitter->SetMaxNumAliveParticles(200U);
 
     // pos:
     m_posGenerators[0] = std::make_shared<BoxPosGen>(glm::vec4{0.0F, 0.0F, -0.25F, 0.0F},
@@ -104,8 +105,6 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_attractors->Add(glm::vec4{0.0F, +0.00F, -0.75F, 1.0F});
   m_attractors->Add(glm::vec4{0.0F, +0.75F, +0.00F, 1.0F});
   m_attractors->Add(glm::vec4{0.0F, -0.75F, +0.00F, 1.0F});
-//  m_attractors->Add(glm::vec4{+0.75F, 0.0F, +0.00F, 1.0F});
-//  m_attractors->Add(glm::vec4{-0.75F, 0.0F, +0.00F, 1.0F});
   m_system->AddUpdater(m_attractors);
 
   const auto eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0F, 0.0F, 0.0F, 0.0F});
@@ -131,9 +130,9 @@ auto AttractorEffect::Update(const double dt) -> void
                                    m_zScale * 0.25F * std::cos(time * 2.0F),
                                    0.0F});
 
-  m_posGenerators[2]->SetPosition({-r * std::sin(time * 1.5F),
-                                   +r * std::cos(time * 1.5F),
-                                   m_zScale * 0.25F * std::cos(time * 1.5F),
+  m_posGenerators[2]->SetPosition({-r * std::sin(time * 10.5F),
+                                   +r * std::cos(time * 10.5F),
+                                   m_zScale * 0.25F * std::cos(time * 10.5F),
                                    0.0F});
 }
 
