@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/vec4.hpp>
+#include <limits>
 #include <memory>
 #include <vector>
 
@@ -11,11 +12,6 @@ class ParticleData
 {
 public:
   explicit ParticleData(size_t count) noexcept;
-  ParticleData(const ParticleData&)                    = delete;
-  ParticleData(ParticleData&&)                         = delete;
-  ~ParticleData()                                      = default;
-  auto operator=(const ParticleData&) -> ParticleData& = delete;
-  auto operator=(ParticleData&&) -> ParticleData&      = delete;
 
   auto Reset() noexcept -> void;
 
@@ -100,14 +96,20 @@ public:
   ParticleEmitter() = default;
 
   auto SetEmitRate(float emitRate) noexcept -> void;
+  auto SetMaxNumAliveParticles(size_t maxNumAliveParticles) noexcept -> void;
   auto AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept -> void;
 
   // Calls all the generators and at the end it activates (wakes) particle.
   auto Emit(double dt, ParticleData* particleData) noexcept -> void;
 
 private:
-  float m_emitRate = 0.0F;
+  float m_emitRate              = 0.0F;
+  size_t m_maxNumAliveParticles = std::numeric_limits<size_t>::max();
   std::vector<std::shared_ptr<IParticleGenerator>> m_generators{};
+
+  [[nodiscard]] auto GetMaxAllowedNewParticles(double dt,
+                                               const ParticleData& particleData) const noexcept
+      -> size_t;
 };
 
 class ParticleSystem
@@ -247,6 +249,12 @@ inline auto ParticleData::SetTime(const size_t i, const glm::vec4& time) noexcep
 inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
 {
   m_emitRate = emitRate;
+}
+
+inline auto ParticleEmitter::SetMaxNumAliveParticles(const size_t maxNumAliveParticles) noexcept
+    -> void
+{
+  m_maxNumAliveParticles = maxNumAliveParticles;
 }
 
 inline auto ParticleEmitter::AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept

@@ -69,7 +69,7 @@ auto ParticleData::ComputeMemoryUsage(const ParticleData& particleData) -> size_
 
 auto ParticleEmitter::Emit(const double dt, ParticleData* const particleData) noexcept -> void
 {
-  const auto maxNewParticles = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
+  const auto maxNewParticles = GetMaxAllowedNewParticles(dt, *particleData);
   const auto startId         = particleData->GetAliveCount();
   const auto endId           = std::min(startId + maxNewParticles, particleData->GetCount() - 1);
 
@@ -82,6 +82,20 @@ auto ParticleEmitter::Emit(const double dt, ParticleData* const particleData) no
   {
     particleData->Wake(i);
   }
+}
+
+auto ParticleEmitter::GetMaxAllowedNewParticles(const double dt,
+                                                const ParticleData& particleData) const noexcept
+    -> size_t
+{
+  const auto requestedNewParticles  = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
+  const auto newTotalAliveParticles = requestedNewParticles + particleData.GetAliveCount();
+  if (newTotalAliveParticles <= m_maxNumAliveParticles)
+  {
+    return requestedNewParticles;
+  }
+
+  return requestedNewParticles - (newTotalAliveParticles - m_maxNumAliveParticles);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -108,8 +122,6 @@ auto ParticleSystem::Update(const double dt) -> void
   {
     up->Update(dt, &m_particles);
   }
-
-  //ParticleData::CopyOnlyAlive(&m_particles, &m_aliveParticles);
 }
 
 auto ParticleSystem::Reset() -> void
