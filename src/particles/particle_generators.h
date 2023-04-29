@@ -7,10 +7,10 @@
 namespace PARTICLES::GENERATORS
 {
 
-class BoxPosGen : public IParticleGenerator
+class BoxPositionGenerator : public IParticleGenerator
 {
 public:
-  BoxPosGen(const glm::vec4& position, const glm::vec4& maxStartPosOffset) noexcept;
+  BoxPositionGenerator(const glm::vec4& position, const glm::vec4& maxStartPositionOffset) noexcept;
 
   auto SetPosition(const glm::vec4& position) noexcept -> void;
 
@@ -18,74 +18,75 @@ public:
       -> void override;
 
 private:
-  glm::vec4 m_pos;
-  glm::vec4 m_maxStartPosOffset;
+  glm::vec4 m_position;
+  glm::vec4 m_maxStartPositionOffset;
 };
 
-class RoundPosGen : public IParticleGenerator
+class RoundPositionGenerator : public IParticleGenerator
 {
 public:
-  RoundPosGen(const glm::vec4& center, double radX, double radY) noexcept;
+  RoundPositionGenerator(const glm::vec4& center, double xRadius, double yRadius) noexcept;
 
-  auto SetCentreAndRadius(const glm::vec4& center, float radX, float radY) noexcept -> void;
+  auto SetCentreAndRadius(const glm::vec4& center, float xRadius, float yRadius) noexcept -> void;
 
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
   glm::vec4 m_center;
-  float m_radX;
-  float m_radY;
+  float m_xRadius;
+  float m_yRadius;
 };
 
-class BasicColorGen : public IParticleGenerator
+class BasicColorGenerator : public IParticleGenerator
 {
 public:
-  BasicColorGen(const glm::vec4& minStartColor,
-                const glm::vec4& maxStartColor,
-                const glm::vec4& minEndColor,
-                const glm::vec4& maxEndColor) noexcept;
+  BasicColorGenerator(const glm::vec4& minStartColor,
+                      const glm::vec4& maxStartColor,
+                      const glm::vec4& minEndColor,
+                      const glm::vec4& maxEndColor) noexcept;
 
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
-  glm::vec4 m_minStartCol;
-  glm::vec4 m_maxStartCol;
-  glm::vec4 m_minEndCol;
-  glm::vec4 m_maxEndCol;
+  glm::vec4 m_minStartColor;
+  glm::vec4 m_maxStartColor;
+  glm::vec4 m_minEndColor;
+  glm::vec4 m_maxEndColor;
 };
 
-class BasicVelGen : public IParticleGenerator
+class BasicVelocityGenerator : public IParticleGenerator
 {
 public:
-  BasicVelGen(const glm::vec4& minStartVelocity, const glm::vec4& maxStartVelocity) noexcept;
+  BasicVelocityGenerator(const glm::vec4& minStartVelocity,
+                         const glm::vec4& maxStartVelocity) noexcept;
 
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
-  glm::vec4 m_minStartVel;
-  glm::vec4 m_maxStartVel;
+  glm::vec4 m_minStartVelocity;
+  glm::vec4 m_maxStartVelocity;
 };
 
-class SphereVelGen : public IParticleGenerator
+class SphereVelocityGenerator : public IParticleGenerator
 {
 public:
-  SphereVelGen(float minVelocity, float maxVelocity) noexcept;
+  SphereVelocityGenerator(float minVelocity, float maxVelocity) noexcept;
 
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
 
 private:
-  float m_minVel;
-  float m_maxVel;
+  float m_minVelocity;
+  float m_maxVelocity;
 };
 
-class VelFromPosGen : public IParticleGenerator
+class VelocityFromPositionGenerator : public IParticleGenerator
 {
 public:
-  VelFromPosGen(const glm::vec4& offset, float minScale, float maxScale) noexcept;
+  VelocityFromPositionGenerator(const glm::vec4& offset, float minScale, float maxScale) noexcept;
 
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
@@ -96,10 +97,10 @@ private:
   float m_maxScale;
 };
 
-class BasicTimeGen : public IParticleGenerator
+class BasicTimeGenerator : public IParticleGenerator
 {
 public:
-  BasicTimeGen(float minTime, float maxTime) noexcept;
+  BasicTimeGenerator(float minTime, float maxTime) noexcept;
 
   auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
       -> void override;
@@ -109,18 +110,18 @@ private:
   float m_maxTime;
 };
 
-inline auto BoxPosGen::SetPosition(const glm::vec4& position) noexcept -> void
+inline auto BoxPositionGenerator::SetPosition(const glm::vec4& position) noexcept -> void
 {
-  m_pos = position;
+  m_position = position;
 }
 
-inline auto RoundPosGen::SetCentreAndRadius(const glm::vec4& center,
-                                            const float radX,
-                                            const float radY) noexcept -> void
+inline auto RoundPositionGenerator::SetCentreAndRadius(const glm::vec4& center,
+                                                       const float xRadius,
+                                                       const float yRadius) noexcept -> void
 {
-  m_center = center;
-  m_radX   = radX;
-  m_radY   = radY;
+  m_center  = center;
+  m_xRadius = xRadius;
+  m_yRadius = yRadius;
 }
 
 } // namespace PARTICLES::GENERATORS

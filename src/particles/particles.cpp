@@ -8,12 +8,12 @@ namespace PARTICLES
 
 ParticleData::ParticleData(const size_t count) noexcept
   : m_count{count},
-    m_pos(count, glm::vec4{0.0F}),
-    m_vel(count, glm::vec4{0.0F}),
-    m_acc(count, glm::vec4{0.0F}),
-    m_col(count, glm::vec4{0.0F}),
-    m_startCol(count, glm::vec4{0.0F}),
-    m_endCol(count, glm::vec4{0.0F}),
+    m_position(count, glm::vec4{0.0F}),
+    m_velocity(count, glm::vec4{0.0F}),
+    m_acceleration(count, glm::vec4{0.0F}),
+    m_color(count, glm::vec4{0.0F}),
+    m_startColor(count, glm::vec4{0.0F}),
+    m_endColor(count, glm::vec4{0.0F}),
     m_time(count, glm::vec4{0.0F}),
     m_alive(count, false)
 {
@@ -49,13 +49,13 @@ auto ParticleData::SwapData(const size_t a, const size_t b) -> void
     std::swap(m_acc[a], m_acc[b]);
     std::swap(m_time[a], m_time[b]);
     std::swap(m_alive[a], m_alive[b]);*/
-  m_pos[a]      = m_pos[b];
-  m_col[a]      = m_col[b];
-  m_startCol[a] = m_startCol[b];
-  m_endCol[a]   = m_endCol[b];
-  m_vel[a]      = m_vel[b];
-  m_acc[a]      = m_acc[b];
-  m_time[a]     = m_time[b];
+  m_position[a]     = m_position[b];
+  m_color[a]        = m_color[b];
+  m_startColor[a]   = m_startColor[b];
+  m_endColor[a]     = m_endColor[b];
+  m_velocity[a]     = m_velocity[b];
+  m_acceleration[a] = m_acceleration[b];
+  m_time[a]         = m_time[b];
   //m_alive[a] = m_alive[b];*/
 }
 

@@ -17,7 +17,7 @@ public:
 
   auto Reset() -> void override;
 
-  auto CpuUpdate(double dt) -> void override;
+  auto Update(double dt) -> void override;
 
   [[nodiscard]] auto GetNumAllParticles() -> size_t override;
   [[nodiscard]] auto GetNumAliveParticles() -> size_t override;
@@ -25,12 +25,13 @@ public:
 
 private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
-  std::shared_ptr<PARTICLES::GENERATORS::BoxPosGen> m_posGenerator{};
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
+  std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator> m_positionGenerator{};
+  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
   std::shared_ptr<PARTICLES::UPDATERS::EulerUpdater> m_eulerUpdater{};
   std::shared_ptr<PARTICLES::UPDATERS::FloorUpdater> m_floorUpdater{};
+  static constexpr auto FLOOR_Y = -0.25F;
 
-  auto Update(double dt) noexcept -> void;
+  auto UpdateEffect(double dt) noexcept -> void;
 };
 
 inline auto FountainEffect::Reset() -> void
@@ -38,9 +39,9 @@ inline auto FountainEffect::Reset() -> void
   m_system->Reset();
 }
 
-inline auto FountainEffect::CpuUpdate(const double dt) -> void
+inline auto FountainEffect::Update(const double dt) -> void
 {
-  Update(dt);
+  UpdateEffect(dt);
   m_system->Update(dt);
 }
 

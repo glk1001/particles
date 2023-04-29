@@ -8,10 +8,10 @@
 namespace PARTICLES::EFFECTS
 {
 
-using GENERATORS::BasicColorGen;
-using GENERATORS::BasicTimeGen;
-using GENERATORS::BasicVelGen;
-using GENERATORS::RoundPosGen;
+using GENERATORS::BasicColorGenerator;
+using GENERATORS::BasicTimeGenerator;
+using GENERATORS::BasicVelocityGenerator;
+using GENERATORS::RoundPositionGenerator;
 using UPDATERS::BasicColorUpdater;
 using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
@@ -27,52 +27,77 @@ TunnelEffect::TunnelEffect(const size_t numParticles) noexcept
   //
   // emitter:
   //
-  const auto particleEmitter = std::make_shared<ParticleEmitter>();
-  {
-    particleEmitter->SetEmitRate(0.45F * static_cast<float>(numParticlesToUse));
+  const auto particleEmitter             = std::make_shared<ParticleEmitter>();
+  static constexpr auto EMIT_RATE_FACTOR = 0.45F;
+  particleEmitter->SetEmitRate(EMIT_RATE_FACTOR * static_cast<float>(numParticlesToUse));
 
-    // pos:
-    m_posGenerator = std::make_shared<RoundPosGen>(glm::vec4{0.0, 0.0, 0.0, 0.0}, 0.15F, 0.15F);
-    particleEmitter->AddGenerator(m_posGenerator);
+  // pos:
+  static constexpr auto ROUND_POS_CENTER = glm::vec4{0.0, 0.0, 0.0, 0.0};
+  static constexpr auto X_RADIUS         = 0.15F;
+  static constexpr auto Y_RADIUS         = 0.15F;
+  m_positionGenerator =
+      std::make_shared<RoundPositionGenerator>(ROUND_POS_CENTER, X_RADIUS, Y_RADIUS);
+  particleEmitter->AddGenerator(m_positionGenerator);
 
-    m_colGenerator = std::make_shared<BasicColorGen>(glm::vec4{0.7, 0.0, 0.7, 1.0},
-                                                     glm::vec4{1.0, 1.0, 1.0, 1.0},
-                                                     glm::vec4{0.5, 0.0, 0.6, 0.0},
-                                                     glm::vec4{0.7, 0.5, 1.0, 0.0});
-    particleEmitter->AddGenerator(m_colGenerator);
+  static constexpr auto MIN_START_COLOR = glm::vec4{0.7F, 0.0F, 0.7F, 1.0F};
+  static constexpr auto MAX_START_COLOR = glm::vec4{1.0F, 1.0F, 1.0F, 1.0F};
+  static constexpr auto MIN_END_COLOR   = glm::vec4{0.5F, 0.0F, 0.6F, 0.0F};
+  static constexpr auto MAX_END_COLOR   = glm::vec4{0.7F, 0.5F, 1.0F, 0.0F};
+  m_colorGenerator                      = std::make_shared<BasicColorGenerator>(
+      MIN_START_COLOR, MAX_START_COLOR, MIN_END_COLOR, MAX_END_COLOR);
+  particleEmitter->AddGenerator(m_colorGenerator);
 
-    const auto velGenerator = std::make_shared<BasicVelGen>(glm::vec4{0.0F, 0.0F, 0.15F, 0.0F},
-                                                            glm::vec4{0.0F, 0.0F, 0.45F, 0.0F});
-    particleEmitter->AddGenerator(velGenerator);
+  static constexpr auto MIN_START_VELOCITY = glm::vec4{0.0F, 0.0F, 0.15F, 0.0F};
+  static constexpr auto MAX_START_VELOCITY = glm::vec4{0.0F, 0.0F, 0.45F, 0.0F};
+  const auto velocityGenerator =
+      std::make_shared<BasicVelocityGenerator>(MIN_START_VELOCITY, MAX_START_VELOCITY);
+  particleEmitter->AddGenerator(velocityGenerator);
 
-    const auto timeGenerator = std::make_shared<BasicTimeGen>(1.0, 3.5);
-    particleEmitter->AddGenerator(timeGenerator);
-  }
+  static constexpr auto MIN_LIFETIME = 1.0F;
+  static constexpr auto MAX_LIFETIME = 3.5F;
+  const auto timeGenerator = std::make_shared<BasicTimeGenerator>(MIN_LIFETIME, MAX_LIFETIME);
+  particleEmitter->AddGenerator(timeGenerator);
+
   m_system->AddEmitter(particleEmitter);
 
   const auto timeUpdater = std::make_shared<BasicTimeUpdater>();
   m_system->AddUpdater(timeUpdater);
 
   //const auto colorUpdater = std::make_shared<BasicColorUpdater>();
-  const auto colorUpdater = std::make_shared<PARTICLES::UPDATERS::PosColorUpdater>(
-      glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F}, glm::vec4{+2.0F, +3.0F, +3.0F, 2.0F});
+  static constexpr auto MIN_COLOR_POSITION = glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F};
+  static constexpr auto MAX_COLOR_POSITION = glm::vec4{+2.0F, +3.0F, +3.0F, 2.0F};
+  const auto colorUpdater = std::make_shared<PARTICLES::UPDATERS::PositionColorUpdater>(
+      MIN_COLOR_POSITION, MAX_COLOR_POSITION);
   m_system->AddUpdater(colorUpdater);
 
-  const auto eulerUpdater = std::make_shared<EulerUpdater>(glm::vec4{0.0, 0.0, 0.0, 0.0});
+  static constexpr auto EULER_ACCELERATION = glm::vec4{0.0F, 0.0F, 0.0F, 0.0F};
+  const auto eulerUpdater                  = std::make_shared<EulerUpdater>(EULER_ACCELERATION);
   m_system->AddUpdater(eulerUpdater);
 }
 
-auto TunnelEffect::Update(const double dt) noexcept -> void
+auto TunnelEffect::UpdateEffect(const double dt) noexcept -> void
 {
-  static auto time = 0.0F;
-  time += static_cast<float>(dt);
+  static auto s_lifetime = 0.0F;
+  s_lifetime += static_cast<float>(dt);
 
-  m_posGenerator->SetCentreAndRadius(
-      {0.1F * std::sin(time * 2.5F), 0.1F * std::cos(time * 2.5F), 0.0F, 0.0F},
-      0.15F + (0.05F * std::sin(time)),
-      0.15F + (0.05F * (std::sin(time) * std::cos(time * 0.5F))));
+  static constexpr auto LIFETIME_FACTOR = 2.5F;
+  static constexpr auto CENTRE_FACTOR   = 0.1F;
+  const auto centre = glm::vec4{CENTRE_FACTOR * std::sin(s_lifetime * LIFETIME_FACTOR),
+                                CENTRE_FACTOR * std::cos(s_lifetime * LIFETIME_FACTOR),
+                                0.0F,
+                                0.0F};
+
+  static constexpr auto MIN_RADIUS          = 0.15F;
+  static constexpr auto RADIUS_FACTOR       = 0.05F;
+  static constexpr auto Y_RADIUS_COS_FACTOR = 0.5F;
+  const auto xRadius                        = MIN_RADIUS + (RADIUS_FACTOR * std::sin(s_lifetime));
   //      0.15F + (0.01F * std::sin(time)),
+  const auto yRadius =
+      MIN_RADIUS +
+      (RADIUS_FACTOR * (std::sin(s_lifetime) * std::cos(s_lifetime * Y_RADIUS_COS_FACTOR)));
   //      0.15F + (0.01F * std::cos(time)));
+
+  m_positionGenerator->SetCentreAndRadius(centre, xRadius, yRadius);
 }
 
 } // namespace PARTICLES::EFFECTS

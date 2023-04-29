@@ -22,7 +22,7 @@ public:
 
   virtual auto Reset() -> void = 0;
 
-  virtual auto CpuUpdate(double dt) -> void = 0;
+  virtual auto Update(double dt) -> void = 0;
 
   [[nodiscard]] virtual auto GetNumAllParticles() -> size_t                        = 0;
   [[nodiscard]] virtual auto GetNumAliveParticles() -> size_t                      = 0;

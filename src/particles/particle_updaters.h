@@ -36,18 +36,13 @@ class AttractorUpdater : public IParticleUpdater
 public:
   AttractorUpdater() noexcept = default;
 
-  auto Add(const glm::vec4& attr) noexcept -> void;
+  auto AddAttractorPosition(const glm::vec4& attractorPosition) noexcept -> void;
 
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 
 private:
-  std::vector<glm::vec4> m_attractors{}; // .w is force
+  std::vector<glm::vec4> m_attractorPositions{}; // .w is force
 };
-
-inline auto AttractorUpdater::Add(const glm::vec4& attr) noexcept -> void
-{
-  m_attractors.push_back(attr);
-}
 
 class BasicColorUpdater : public IParticleUpdater
 {
@@ -55,28 +50,28 @@ public:
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 };
 
-class PosColorUpdater : public IParticleUpdater
+class PositionColorUpdater : public IParticleUpdater
 {
 public:
-  PosColorUpdater(const glm::vec4& minPos, const glm::vec4& maxPos) noexcept;
+  PositionColorUpdater(const glm::vec4& minPosition, const glm::vec4& maxPosition) noexcept;
 
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 
 private:
-  glm::vec4 m_minPos;
-  glm::vec4 m_maxPos;
+  glm::vec4 m_minPosition;
+  glm::vec4 m_maxPosition;
 };
 
-class VelColorUpdater : public IParticleUpdater
+class VelocityColorUpdater : public IParticleUpdater
 {
 public:
-  VelColorUpdater(const glm::vec4& minVel, const glm::vec4& maxVel) noexcept;
+  VelocityColorUpdater(const glm::vec4& minVelocity, const glm::vec4& maxVelocity) noexcept;
 
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 
 private:
-  glm::vec4 m_minVel;
-  glm::vec4 m_maxVel;
+  glm::vec4 m_minVelocity;
+  glm::vec4 m_maxVelocity;
 };
 
 class BasicTimeUpdater : public IParticleUpdater
@@ -84,5 +79,11 @@ class BasicTimeUpdater : public IParticleUpdater
 public:
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 };
+
+inline auto AttractorUpdater::AddAttractorPosition(const glm::vec4& attractorPosition) noexcept
+    -> void
+{
+  m_attractorPositions.push_back(attractorPosition);
+}
 
 } // namespace PARTICLES::UPDATERS

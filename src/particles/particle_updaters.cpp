@@ -77,14 +77,14 @@ auto AttractorUpdater::Update([[maybe_unused]] const double dt,
   for (auto i = 0U; i < endId; ++i)
   {
     const auto particlePosition = particleData->GetPosition(i);
-    for (const auto& attractor : m_attractors)
+    for (const auto& attractorPosition : m_attractorPositions)
     {
-      const auto offset = glm::vec4{attractor.x - particlePosition.x,
-                                    attractor.y - particlePosition.y,
-                                    attractor.z - particlePosition.z,
+      const auto offset = glm::vec4{attractorPosition.x - particlePosition.x,
+                                    attractorPosition.y - particlePosition.y,
+                                    attractorPosition.z - particlePosition.z,
                                     0.0F};
       const auto distSq = glm::dot(offset, offset);
-      const auto force  = attractor.w / distSq;
+      const auto force  = attractorPosition.w / distSq;
 
       particleData->IncAcceleration(i, offset * force);
     }
@@ -105,60 +105,62 @@ auto BasicColorUpdater::Update([[maybe_unused]] const double dt,
   }
 }
 
-PosColorUpdater::PosColorUpdater(const glm::vec4& minPos, const glm::vec4& maxPos) noexcept
-  : m_minPos{minPos}, m_maxPos{maxPos}
+PositionColorUpdater::PositionColorUpdater(const glm::vec4& minPosition,
+                                           const glm::vec4& maxPosition) noexcept
+  : m_minPosition{minPosition}, m_maxPosition{maxPosition}
 {
 }
 
-auto PosColorUpdater::Update([[maybe_unused]] const double dt,
-                             ParticleData* const particleData) noexcept -> void
+auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
+                                  ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
-  const auto diffr = m_maxPos.x - m_minPos.x;
-  const auto diffg = m_maxPos.y - m_minPos.y;
-  const auto diffb = m_maxPos.z - m_minPos.z;
+  const auto diffR = m_maxPosition.x - m_minPosition.x;
+  const auto diffG = m_maxPosition.y - m_minPosition.y;
+  const auto diffB = m_maxPosition.z - m_minPosition.z;
 
   for (auto i = 0U; i < endId; ++i)
   {
-    const auto scaler = (particleData->GetPosition(i).x - m_minPos.x) / diffr;
-    const auto scaleg = (particleData->GetPosition(i).y - m_minPos.y) / diffg;
-    const auto scaleb = (particleData->GetPosition(i).z - m_minPos.z) / diffb;
+    const auto scaleR = (particleData->GetPosition(i).x - m_minPosition.x) / diffR;
+    const auto scaleG = (particleData->GetPosition(i).y - m_minPosition.y) / diffG;
+    const auto scaleB = (particleData->GetPosition(i).z - m_minPosition.z) / diffB;
 
     particleData->SetColor(
         i,
-        {scaler, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
-         scaleg, // glm::mix(particleData->m_startCol[i].g, particleData->m_endCol[i].g, scaleg);
-         scaleb, // glm::mix(particleData->m_startCol[i].b, particleData->m_endCol[i].b, scaleb);
+        {scaleR, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
+         scaleG, // glm::mix(particleData->m_startCol[i].g, particleData->m_endCol[i].g, scaleg);
+         scaleB, // glm::mix(particleData->m_startCol[i].b, particleData->m_endCol[i].b, scaleb);
          glm::mix(particleData->GetStartColor(i).a,
                   particleData->GetEndColor(i).a,
                   particleData->GetTime(i).z)});
   }
 }
 
-VelColorUpdater::VelColorUpdater(const glm::vec4& minVel, const glm::vec4& maxVel) noexcept
-  : m_minVel{minVel}, m_maxVel{maxVel}
+VelocityColorUpdater::VelocityColorUpdater(const glm::vec4& minVelocity,
+                                           const glm::vec4& maxVelocity) noexcept
+  : m_minVelocity{minVelocity}, m_maxVelocity{maxVelocity}
 {
 }
 
-auto VelColorUpdater::Update([[maybe_unused]] const double dt,
-                             ParticleData* const particleData) noexcept -> void
+auto VelocityColorUpdater::Update([[maybe_unused]] const double dt,
+                                  ParticleData* const particleData) noexcept -> void
 {
   const auto endId = particleData->GetAliveCount();
-  const auto diffr = m_maxVel.x - m_minVel.x;
-  const auto diffg = m_maxVel.y - m_minVel.y;
-  const auto diffb = m_maxVel.z - m_minVel.z;
+  const auto diffR = m_maxVelocity.x - m_minVelocity.x;
+  const auto diffG = m_maxVelocity.y - m_minVelocity.y;
+  const auto diffB = m_maxVelocity.z - m_minVelocity.z;
 
   for (auto i = 0U; i < endId; ++i)
   {
-    const auto scaler = (particleData->GetVelocity(i).x - m_minVel.x) / diffr;
-    const auto scaleg = (particleData->GetVelocity(i).y - m_minVel.y) / diffg;
-    const auto scaleb = (particleData->GetVelocity(i).z - m_minVel.z) / diffb;
+    const auto scaleR = (particleData->GetVelocity(i).x - m_minVelocity.x) / diffR;
+    const auto scaleG = (particleData->GetVelocity(i).y - m_minVelocity.y) / diffG;
+    const auto scaleB = (particleData->GetVelocity(i).z - m_minVelocity.z) / diffB;
 
     particleData->SetColor(
         i,
-        {scaler, // glm::mix(particleData->GetStartColor(i).r, particleData->GetEndColor(i).r, scaler),
-         scaleg, // glm::mix(particleData->GetStartColor(i).g, particleData->GetEndColor(i).g, scaleg),
-         scaleb, // glm::mix(particleData->GetStartColor(i).b, particleData->GetEndColor(i).b, scaleb),
+        {scaleR, // glm::mix(particleData->GetStartColor(i).r, particleData->GetEndColor(i).r, scaleR),
+         scaleG, // glm::mix(particleData->GetStartColor(i).g, particleData->GetEndColor(i).g, scaleG),
+         scaleB, // glm::mix(particleData->GetStartColor(i).b, particleData->GetEndColor(i).b, scaleB),
          glm::mix(particleData->GetStartColor(i).a,
                   particleData->GetEndColor(i).a,
                   particleData->GetTime(i).z)});

@@ -111,7 +111,7 @@ int main()
       timer.begin();
       for (auto frame = 0U; frame < FRAME_COUNT; ++frame)
       {
-        effect->CpuUpdate(DELTA_TIME);
+        effect->Update(DELTA_TIME);
       }
       timer.end();
 

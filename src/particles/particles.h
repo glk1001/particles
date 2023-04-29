@@ -53,12 +53,12 @@ private:
   size_t m_count;
   size_t m_countAlive = 0U;
 
-  std::vector<glm::vec4> m_pos;
-  std::vector<glm::vec4> m_vel;
-  std::vector<glm::vec4> m_acc;
-  std::vector<glm::vec4> m_col;
-  std::vector<glm::vec4> m_startCol;
-  std::vector<glm::vec4> m_endCol;
+  std::vector<glm::vec4> m_position;
+  std::vector<glm::vec4> m_velocity;
+  std::vector<glm::vec4> m_acceleration;
+  std::vector<glm::vec4> m_color;
+  std::vector<glm::vec4> m_startColor;
+  std::vector<glm::vec4> m_endColor;
   std::vector<glm::vec4> m_time;
   std::vector<bool> m_alive;
 };
@@ -156,84 +156,84 @@ inline auto ParticleData::GetAliveCount() const noexcept -> size_t
 
 inline auto ParticleData::GetPosition(const size_t i) const noexcept -> const glm::vec4&
 {
-  return m_pos[i];
+  return m_position[i];
 }
 
 inline auto ParticleData::SetPosition(const size_t i, const glm::vec4& position) noexcept -> void
 {
-  m_pos[i] = position;
+  m_position[i] = position;
 }
 
 inline auto ParticleData::IncPosition(const size_t i, const glm::vec4& amount) noexcept -> void
 {
-  m_pos[i] += amount;
+  m_position[i] += amount;
 }
 
 inline auto ParticleData::GetVelocity(const size_t i) const noexcept -> const glm::vec4&
 {
-  return m_vel[i];
+  return m_velocity[i];
 }
 
 inline auto ParticleData::SetVelocity(const size_t i, const glm::vec4& velocity) noexcept -> void
 {
-  m_vel[i] = velocity;
+  m_velocity[i] = velocity;
 }
 
 inline auto ParticleData::IncVelocity(const size_t i, const glm::vec4& amount) noexcept -> void
 {
-  m_vel[i] += amount;
+  m_velocity[i] += amount;
 }
 
 inline auto ParticleData::DecVelocity(const size_t i, const glm::vec4& amount) noexcept -> void
 {
-  m_vel[i] -= amount;
+  m_velocity[i] -= amount;
 }
 
 inline auto ParticleData::GetAcceleration(const size_t i) const noexcept -> const glm::vec4&
 {
-  return m_acc[i];
+  return m_acceleration[i];
 }
 
 inline auto ParticleData::SetAcceleration(const size_t i, const glm::vec4& acceleration) noexcept
     -> void
 {
-  m_acc[i] = acceleration;
+  m_acceleration[i] = acceleration;
 }
 
 inline auto ParticleData::IncAcceleration(const size_t i, const glm::vec4& amount) noexcept -> void
 {
-  m_acc[i] += amount;
+  m_acceleration[i] += amount;
 }
 
 inline auto ParticleData::GetColor(const size_t i) const noexcept -> const glm::vec4&
 {
-  return m_col[i];
+  return m_color[i];
 }
 
 inline auto ParticleData::SetColor(const size_t i, const glm::vec4& color) noexcept -> void
 {
-  m_col[i] = color;
+  m_color[i] = color;
 }
 
 inline auto ParticleData::GetStartColor(const size_t i) const noexcept -> const glm::vec4&
 {
-  return m_startCol[i];
+  return m_startColor[i];
 }
 
 inline auto ParticleData::SetStartColor(const size_t i, const glm::vec4& startColor) noexcept
     -> void
 {
-  m_startCol[i] = startColor;
+  m_startColor[i] = startColor;
 }
 
 inline auto ParticleData::GetEndColor(const size_t i) const noexcept -> const glm::vec4&
 {
-  return m_endCol[i];
+  return m_endColor[i];
 }
 
 inline auto ParticleData::SetEndColor(const size_t i, const glm::vec4& endColor) noexcept -> void
 {
-  m_endCol[i] = endColor;
+  m_endColor[i] = endColor;
 }
 
 inline auto ParticleData::GetTime(const size_t i) const noexcept -> const glm::vec4&

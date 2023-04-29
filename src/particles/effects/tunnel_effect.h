@@ -17,7 +17,7 @@ public:
 
   auto Reset() -> void override;
 
-  auto CpuUpdate(double dt) -> void override;
+  auto Update(double dt) -> void override;
 
   [[nodiscard]] auto GetNumAllParticles() -> size_t override;
   [[nodiscard]] auto GetNumAliveParticles() -> size_t override;
@@ -25,10 +25,10 @@ public:
 
 private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
-  std::shared_ptr<PARTICLES::GENERATORS::RoundPosGen> m_posGenerator{};
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
+  std::shared_ptr<PARTICLES::GENERATORS::RoundPositionGenerator> m_positionGenerator{};
+  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
 
-  auto Update(double dt) noexcept -> void;
+  auto UpdateEffect(double dt) noexcept -> void;
 };
 
 inline auto TunnelEffect::Reset() -> void
@@ -36,9 +36,9 @@ inline auto TunnelEffect::Reset() -> void
   m_system->Reset();
 }
 
-inline auto TunnelEffect::CpuUpdate(const double dt) -> void
+inline auto TunnelEffect::Update(const double dt) -> void
 {
-  Update(dt);
+  UpdateEffect(dt);
   m_system->Update(dt);
 }
 

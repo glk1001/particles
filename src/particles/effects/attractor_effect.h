@@ -20,7 +20,7 @@ public:
 
   auto Reset() -> void override;
 
-  auto CpuUpdate(double dt) -> void override;
+  auto Update(double dt) -> void override;
 
   [[nodiscard]] auto GetNumAllParticles() -> size_t override;
   [[nodiscard]] auto GetNumAliveParticles() -> size_t override;
@@ -28,13 +28,18 @@ public:
 
 private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
-  static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
-  std::array<std::shared_ptr<PARTICLES::GENERATORS::BoxPosGen>, NUM_BOX_POS_GENERATORS>
-      m_posGenerators{};
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGen> m_colGenerator{};
-  std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractors{};
 
-  auto Update(double dt) -> void;
+  static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
+  std::array<std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator>, NUM_BOX_POS_GENERATORS>
+      m_positionGenerators{};
+  static constexpr auto Z_GEN_POS1 = -0.25F;
+  static constexpr auto Z_GEN_POS2 = +0.25F;
+  static constexpr auto Z_GEN_POS3 = +0.25F;
+
+  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
+  std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractorUpdater{};
+
+  auto UpdateEffect(double dt) -> void;
 };
 
 inline auto AttractorEffect::Reset() -> void
@@ -48,9 +53,9 @@ inline auto AttractorEffect::AddUpdater(const std::shared_ptr<IParticleUpdater>&
   m_system->AddUpdater(updater);
 }
 
-inline auto AttractorEffect::CpuUpdate(const double dt) -> void
+inline auto AttractorEffect::Update(const double dt) -> void
 {
-  Update(dt);
+  UpdateEffect(dt);
   m_system->Update(dt);
 }
 
