@@ -111,6 +111,23 @@ PositionColorUpdater::PositionColorUpdater(const glm::vec4& minPosition,
 {
 }
 
+namespace
+{
+
+[[nodiscard]] inline auto GetScaledValue(const float value,
+                                         const float minValue,
+                                         const float maxMinusMin) noexcept -> float
+{
+  if (value < minValue)
+  {
+    return 0.0F;
+  }
+
+  return (value - minValue) / maxMinusMin;
+}
+
+} // namespace
+
 auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
                                   ParticleData* const particleData) noexcept -> void
 {
@@ -121,9 +138,9 @@ auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
 
   for (auto i = 0U; i < endId; ++i)
   {
-    const auto scaleR = (particleData->GetPosition(i).x - m_minPosition.x) / diffR;
-    const auto scaleG = (particleData->GetPosition(i).y - m_minPosition.y) / diffG;
-    const auto scaleB = (particleData->GetPosition(i).z - m_minPosition.z) / diffB;
+    const auto scaleR = GetScaledValue(particleData->GetPosition(i).x, m_minPosition.x, diffR);
+    const auto scaleG = GetScaledValue(particleData->GetPosition(i).y, m_minPosition.y, diffG);
+    const auto scaleB = GetScaledValue(particleData->GetPosition(i).z, m_minPosition.z, diffB);
 
     particleData->SetColor(
         i,
@@ -152,9 +169,9 @@ auto VelocityColorUpdater::Update([[maybe_unused]] const double dt,
 
   for (auto i = 0U; i < endId; ++i)
   {
-    const auto scaleR = (particleData->GetVelocity(i).x - m_minVelocity.x) / diffR;
-    const auto scaleG = (particleData->GetVelocity(i).y - m_minVelocity.y) / diffG;
-    const auto scaleB = (particleData->GetVelocity(i).z - m_minVelocity.z) / diffB;
+    const auto scaleR = GetScaledValue(particleData->GetVelocity(i).x, m_minVelocity.x, diffR);
+    const auto scaleG = GetScaledValue(particleData->GetVelocity(i).y, m_minVelocity.y, diffG);
+    const auto scaleB = GetScaledValue(particleData->GetVelocity(i).z, m_minVelocity.z, diffB);
 
     particleData->SetColor(
         i,
