@@ -2,6 +2,7 @@
 
 #include "particles.h"
 
+#include <glm/vec4.hpp>
 #include <vector>
 
 namespace PARTICLES::GENERATORS

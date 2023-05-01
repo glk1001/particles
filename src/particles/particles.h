@@ -63,6 +63,60 @@ private:
   std::vector<bool> m_alive;
 };
 
+class ParticleEmitter;
+class IParticleUpdater;
+
+class ParticleSystem
+{
+public:
+  explicit ParticleSystem(size_t maxCount);
+
+  auto AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept -> void;
+  auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
+
+  auto Reset() -> void;
+
+  auto Update(double dt) -> void;
+
+  [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t;
+  [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t;
+  [[nodiscard]] auto GetFinalData() const noexcept -> const ParticleData*;
+
+  [[nodiscard]] static auto ComputeMemoryUsage(const ParticleSystem& particleSystem) noexcept
+      -> size_t;
+
+private:
+  size_t m_count;
+  ParticleData m_particles;
+
+  std::vector<std::shared_ptr<ParticleEmitter>> m_emitters{};
+  std::vector<std::shared_ptr<IParticleUpdater>> m_updaters{};
+};
+
+class IParticleGenerator;
+
+class ParticleEmitter
+{
+public:
+  ParticleEmitter() = default;
+
+  auto SetEmitRate(float emitRate) noexcept -> void;
+  auto SetMaxNumAliveParticles(size_t maxNumAliveParticles) noexcept -> void;
+  auto AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept -> void;
+
+  // Calls all the generators and at the end it activates (wakes) particle.
+  auto Emit(double dt, ParticleData* particleData) noexcept -> void;
+
+private:
+  float m_emitRate              = 0.0F;
+  size_t m_maxNumAliveParticles = std::numeric_limits<size_t>::max();
+  std::vector<std::shared_ptr<IParticleGenerator>> m_generators{};
+
+  [[nodiscard]] auto GetMaxAllowedNewParticles(double dt,
+                                               const ParticleData& particleData) const noexcept
+      -> size_t;
+};
+
 class IParticleGenerator
 {
 public:
@@ -88,55 +142,6 @@ public:
   auto operator=(IParticleUpdater&&) -> IParticleUpdater&      = delete;
 
   virtual auto Update(double dt, ParticleData* particleData) noexcept -> void = 0;
-};
-
-class ParticleEmitter
-{
-public:
-  ParticleEmitter() = default;
-
-  auto SetEmitRate(float emitRate) noexcept -> void;
-  auto SetMaxNumAliveParticles(size_t maxNumAliveParticles) noexcept -> void;
-  auto AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept -> void;
-
-  // Calls all the generators and at the end it activates (wakes) particle.
-  auto Emit(double dt, ParticleData* particleData) noexcept -> void;
-
-private:
-  float m_emitRate              = 0.0F;
-  size_t m_maxNumAliveParticles = std::numeric_limits<size_t>::max();
-  std::vector<std::shared_ptr<IParticleGenerator>> m_generators{};
-
-  [[nodiscard]] auto GetMaxAllowedNewParticles(double dt,
-                                               const ParticleData& particleData) const noexcept
-      -> size_t;
-};
-
-class ParticleSystem
-{
-public:
-  explicit ParticleSystem(size_t maxCount);
-
-  auto Update(double dt) -> void;
-  auto Reset() -> void;
-
-  [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t;
-  [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t;
-
-  auto AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept -> void;
-  auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
-
-  [[nodiscard]] auto GetFinalData() const noexcept -> const ParticleData*;
-
-  [[nodiscard]] static auto ComputeMemoryUsage(const ParticleSystem& particleSystem) noexcept
-      -> size_t;
-
-private:
-  size_t m_count;
-  ParticleData m_particles;
-
-  std::vector<std::shared_ptr<ParticleEmitter>> m_emitters{};
-  std::vector<std::shared_ptr<IParticleUpdater>> m_updaters{};
 };
 
 inline auto ParticleData::Reset() noexcept -> void
@@ -246,23 +251,6 @@ inline auto ParticleData::SetTime(const size_t i, const glm::vec4& time) noexcep
   m_time[i] = time;
 }
 
-inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
-{
-  m_emitRate = emitRate;
-}
-
-inline auto ParticleEmitter::SetMaxNumAliveParticles(const size_t maxNumAliveParticles) noexcept
-    -> void
-{
-  m_maxNumAliveParticles = maxNumAliveParticles;
-}
-
-inline auto ParticleEmitter::AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept
-    -> void
-{
-  m_generators.push_back(gen);
-}
-
 inline auto ParticleSystem::GetNumAllParticles() const noexcept -> size_t
 {
   return m_particles.GetCount();
@@ -288,6 +276,23 @@ inline auto ParticleSystem::AddUpdater(const std::shared_ptr<IParticleUpdater>& 
 inline auto ParticleSystem::GetFinalData() const noexcept -> const ParticleData*
 {
   return &m_particles;
+}
+
+inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
+{
+  m_emitRate = emitRate;
+}
+
+inline auto ParticleEmitter::SetMaxNumAliveParticles(const size_t maxNumAliveParticles) noexcept
+    -> void
+{
+  m_maxNumAliveParticles = maxNumAliveParticles;
+}
+
+inline auto ParticleEmitter::AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept
+    -> void
+{
+  m_generators.push_back(gen);
 }
 
 } // namespace PARTICLES
