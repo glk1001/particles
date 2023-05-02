@@ -1,4 +1,4 @@
-#include "particle_generators.h"
+#include "particles/particle_generators.h"
 
 #include <glm/common.hpp>
 #include <glm/gtc/random.hpp>

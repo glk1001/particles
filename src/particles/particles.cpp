@@ -1,4 +1,4 @@
-#include "particles.h"
+#include "particles/particles.h"
 
 #include <algorithm>
 #include <cassert>

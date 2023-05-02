@@ -7,7 +7,7 @@ set(no_group_source_files
 source_group("" FILES ${no_group_source_files})
 
 set(effects
-        "${SRC_DIR}/particles/effects/effect.h"
+        "${INC_DIR}/particles/effects/effect.h"
         "${SRC_DIR}/particles/effects/attractor_effect.cpp"
         "${SRC_DIR}/particles/effects/fountain_effect.cpp"
         "${SRC_DIR}/particles/effects/tunnel_effect.cpp"
@@ -35,7 +35,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
-        "${SRC_DIR}"
+        "${INC_DIR}"
         )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -54,3 +54,6 @@ target_link_libraries(${PROJECT_NAME}
         )
 
 set_project_warnings(cpuTest)
+
+message(STATUS "CpuTest: INC_DIR = \"${INC_DIR}\".")
+message(STATUS "CpuTest: SRC_DIR = \"${SRC_DIR}\".")

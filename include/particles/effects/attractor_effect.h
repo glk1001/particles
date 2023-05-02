@@ -1,6 +1,6 @@
 #pragma once
 
-#include "effect.h"
+#include "particles/effects/effect.h"
 #include "particles/particle_generators.h"
 #include "particles/particle_updaters.h"
 #include "particles/particles.h"

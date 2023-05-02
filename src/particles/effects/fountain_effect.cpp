@@ -1,4 +1,4 @@
-#include "fountain_effect.h"
+#include "particles/effects/fountain_effect.h"
 
 #include "particles/particle_generators.h"
 #include "particles/particle_updaters.h"

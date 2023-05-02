@@ -1,6 +1,6 @@
 #pragma once
 
-#include "effect.h"
+#include "particles/effects/effect.h"
 #include "particles/particle_generators.h"
 #include "particles/particle_updaters.h"
 #include "particles/particles.h"
@@ -10,10 +10,10 @@
 namespace PARTICLES::EFFECTS
 {
 
-class FountainEffect : public IEffect
+class TunnelEffect : public IEffect
 {
 public:
-  explicit FountainEffect(size_t numParticles) noexcept;
+  explicit TunnelEffect(size_t numParticles) noexcept;
 
   auto Reset() -> void override;
 
@@ -25,37 +25,34 @@ public:
 
 private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
-  std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator> m_positionGenerator{};
+  std::shared_ptr<PARTICLES::GENERATORS::RoundPositionGenerator> m_positionGenerator{};
   std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
-  std::shared_ptr<PARTICLES::UPDATERS::EulerUpdater> m_eulerUpdater{};
-  std::shared_ptr<PARTICLES::UPDATERS::FloorUpdater> m_floorUpdater{};
-  static constexpr auto FLOOR_Y = -0.25F;
 
   auto UpdateEffect(double dt) noexcept -> void;
 };
 
-inline auto FountainEffect::Reset() -> void
+inline auto TunnelEffect::Reset() -> void
 {
   m_system->Reset();
 }
 
-inline auto FountainEffect::Update(const double dt) -> void
+inline auto TunnelEffect::Update(const double dt) -> void
 {
   UpdateEffect(dt);
   m_system->Update(dt);
 }
 
-inline auto FountainEffect::GetNumAllParticles() -> size_t
+inline auto TunnelEffect::GetNumAllParticles() -> size_t
 {
   return m_system->GetNumAllParticles();
 }
 
-inline auto FountainEffect::GetNumAliveParticles() -> size_t
+inline auto TunnelEffect::GetNumAliveParticles() -> size_t
 {
   return m_system->GetNumAliveParticles();
 }
 
-inline auto FountainEffect::GetSystem() const -> const PARTICLES::ParticleSystem*
+inline auto TunnelEffect::GetSystem() const -> const PARTICLES::ParticleSystem*
 {
   return m_system.get();
 }

@@ -21,6 +21,7 @@ include_directories(BEFORE
         src/glm
         )
 
+set(INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 add_subdirectory(test/cpu_test)
