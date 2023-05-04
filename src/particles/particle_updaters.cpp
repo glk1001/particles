@@ -175,9 +175,21 @@ auto VelocityColorUpdater::Update([[maybe_unused]] const double dt,
 
     particleData->SetColor(
         i,
-        {scaleR, // glm::mix(particleData->GetStartColor(i).r, particleData->GetEndColor(i).r, scaleR),
-         scaleG, // glm::mix(particleData->GetStartColor(i).g, particleData->GetEndColor(i).g, scaleG),
-         scaleB, // glm::mix(particleData->GetStartColor(i).b, particleData->GetEndColor(i).b, scaleB),
+        {glm::mix(
+             m_tintColor.r,
+             scaleR,
+             particleData->GetTime(i)
+                 .z), // glm::mix(particleData->GetStartColor(i).r, particleData->GetEndColor(i).r, scaleR),
+         glm::mix(
+             m_tintColor.g,
+             scaleG,
+             particleData->GetTime(i)
+                 .z), // glm::mix(particleData->GetStartColor(i).g, particleData->GetEndColor(i).g, scaleG),
+         glm::mix(
+             m_tintColor.b,
+             scaleB,
+             particleData->GetTime(i)
+                 .z), // glm::mix(particleData->GetStartColor(i).b, particleData->GetEndColor(i).b, scaleB),
          glm::mix(particleData->GetStartColor(i).a,
                   particleData->GetEndColor(i).a,
                   particleData->GetTime(i).z)});

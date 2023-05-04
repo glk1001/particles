@@ -6,6 +6,7 @@
 #include "particles/particles.h"
 
 #include <array>
+#include <glm/vec4.hpp>
 #include <memory>
 
 namespace PARTICLES::EFFECTS
@@ -19,6 +20,8 @@ public:
   auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
 
   auto Reset() -> void override;
+  auto SetTintColor(const glm::vec4& tintColor) noexcept -> void override;
+  auto SetEffectCentre(const glm::vec4& effectCentre) noexcept -> void override;
 
   auto Update(double dt) -> void override;
 
@@ -38,13 +41,25 @@ private:
 
   std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
   std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractorUpdater{};
+  std::shared_ptr<PARTICLES::UPDATERS::VelocityColorUpdater> m_colorUpdater{};
 
+  glm::vec4 m_effectCentre{0.0F};
   auto UpdateEffect(double dt) -> void;
 };
 
 inline auto AttractorEffect::Reset() -> void
 {
   m_system->Reset();
+}
+
+inline auto AttractorEffect::SetTintColor(const glm::vec4& tintColor) noexcept -> void
+{
+  m_colorUpdater->SetTintColor(tintColor);
+}
+
+inline auto AttractorEffect::SetEffectCentre(const glm::vec4& effectCentre) noexcept -> void
+{
+  m_effectCentre = effectCentre;
 }
 
 inline auto AttractorEffect::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept

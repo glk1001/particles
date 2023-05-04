@@ -105,8 +105,8 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
 
   static constexpr auto MIN_VELOCITY = glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F};
   static constexpr auto MAX_VELOCITY = glm::vec4{+2.0F, +2.0F, +2.0F, 2.0F};
-  const auto colorUpdater = std::make_shared<VelocityColorUpdater>(MIN_VELOCITY, MAX_VELOCITY);
-  m_system->AddUpdater(colorUpdater);
+  m_colorUpdater = std::make_shared<VelocityColorUpdater>(MIN_VELOCITY, MAX_VELOCITY);
+  m_system->AddUpdater(m_colorUpdater);
 
   static constexpr auto ATTRACTOR_POSITION1 = glm::vec4{0.0F, +0.00F, +0.75F, 1.0F};
   static constexpr auto ATTRACTOR_POSITION2 = glm::vec4{0.0F, +0.00F, -0.75F, 1.0F};
@@ -135,23 +135,23 @@ auto AttractorEffect::UpdateEffect(const double dt) -> void
 
   static constexpr auto LIFETIME_FACTOR1 = 2.5F;
   m_positionGenerators[0]->SetPosition(
-      {+RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR1),
-       +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR1),
-       m_zScale * Z_GEN_POS1 * std::cos(s_lifetime * LIFETIME_FACTOR1),
+      {m_effectCentre.x + RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR1),
+       m_effectCentre.y + RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR1),
+       m_effectCentre.z + m_zScale * Z_GEN_POS1 * std::cos(s_lifetime * LIFETIME_FACTOR1),
        0.0F});
 
   static constexpr auto LIFETIME_FACTOR2 = 2.0F;
   m_positionGenerators[1]->SetPosition(
-      {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR2),
-       +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR2),
-       m_zScale * Z_GEN_POS2 * std::cos(s_lifetime * LIFETIME_FACTOR2),
+      {m_effectCentre.x - RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR2),
+       m_effectCentre.y + RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR2),
+       m_effectCentre.z + m_zScale * Z_GEN_POS2 * std::cos(s_lifetime * LIFETIME_FACTOR2),
        0.0F});
 
   static constexpr auto LIFETIME_FACTOR3 = 10.5F;
   m_positionGenerators[2]->SetPosition(
-      {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR3),
-       +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR3),
-       m_zScale * Z_GEN_POS3 * std::cos(s_lifetime * LIFETIME_FACTOR3),
+      {m_effectCentre.x - RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR3),
+       m_effectCentre.y + RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR3),
+       m_effectCentre.z + m_zScale * Z_GEN_POS3 * std::cos(s_lifetime * LIFETIME_FACTOR3),
        0.0F});
 }
 

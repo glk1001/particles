@@ -68,11 +68,14 @@ class VelocityColorUpdater : public IParticleUpdater
 public:
   VelocityColorUpdater(const glm::vec4& minVelocity, const glm::vec4& maxVelocity) noexcept;
 
+  auto SetTintColor(const glm::vec4& tintColor) noexcept -> void;
+
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 
 private:
   glm::vec4 m_minVelocity;
   glm::vec4 m_maxVelocity;
+  glm::vec4 m_tintColor{1.0F};
 };
 
 class BasicTimeUpdater : public IParticleUpdater
@@ -85,6 +88,11 @@ inline auto AttractorUpdater::AddAttractorPosition(const glm::vec4& attractorPos
     -> void
 {
   m_attractorPositions.push_back(attractorPosition);
+}
+
+inline auto VelocityColorUpdater::SetTintColor(const glm::vec4& tintColor) noexcept -> void
+{
+  m_tintColor = tintColor;
 }
 
 } // namespace PARTICLES::UPDATERS

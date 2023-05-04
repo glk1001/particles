@@ -5,6 +5,7 @@
 #include "particles/particle_updaters.h"
 #include "particles/particles.h"
 
+#include <glm/vec4.hpp>
 #include <memory>
 
 namespace PARTICLES::EFFECTS
@@ -16,6 +17,8 @@ public:
   explicit FountainEffect(size_t numParticles) noexcept;
 
   auto Reset() -> void override;
+  auto SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void override {}
+  auto SetEffectCentre([[maybe_unused]] const glm::vec4& effectCentre) noexcept -> void override {}
 
   auto Update(double dt) -> void override;
 

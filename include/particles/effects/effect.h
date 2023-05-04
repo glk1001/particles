@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <glm/vec4.hpp>
 
 namespace PARTICLES
 {
@@ -21,6 +22,8 @@ public:
   auto operator=(IEffect&&) -> IEffect&      = delete;
 
   virtual auto Reset() -> void = 0;
+  virtual auto SetTintColor(const glm::vec4& tintColor) noexcept -> void = 0;
+  virtual auto SetEffectCentre(const glm::vec4& effectCentre) noexcept -> void = 0;
 
   virtual auto Update(double dt) -> void = 0;
 
