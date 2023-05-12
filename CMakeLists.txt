@@ -21,8 +21,33 @@ include_directories(BEFORE
         src/glm
         )
 
-set(INC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
-set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
+set(TARGET_LIB "particles")
+
+add_library(${TARGET_LIB}
+        STATIC
+        "include/particles/effects/effect.h"
+        "src/particles/effects/attractor_effect.cpp"
+        "src/particles/effects/fountain_effect.cpp"
+        "src/particles/effects/tunnel_effect.cpp"
+        "src/particles/particle_generators.cpp"
+        "src/particles/particle_updaters.cpp"
+        "src/particles/particles.cpp"
+        )
+
+add_library(particles::lib ALIAS ${TARGET_LIB})
+
+target_include_directories(${TARGET_LIB}
+        PUBLIC
+        include
+        )
+
+set(POS_INDEP_CODE "ON")
+set_target_properties(${TARGET_LIB}
+        PROPERTIES
+        POSITION_INDEPENDENT_CODE ${POS_INDEP_CODE}
+        )
+
+set_project_warnings(${TARGET_LIB} ${TARGET_APP})
 
 add_subdirectory(test/cpu_test)
 
