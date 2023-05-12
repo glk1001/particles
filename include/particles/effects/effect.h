@@ -21,9 +21,11 @@ public:
   auto operator=(const IEffect&) -> IEffect& = delete;
   auto operator=(IEffect&&) -> IEffect&      = delete;
 
-  virtual auto Reset() -> void = 0;
+  virtual auto Reset() -> void                                           = 0;
   virtual auto SetTintColor(const glm::vec4& tintColor) noexcept -> void = 0;
-  virtual auto SetEffectCentre(const glm::vec4& effectCentre) noexcept -> void = 0;
+  virtual auto SetTintMixAmount(float mixAmount) noexcept -> void        = 0;
+  //   Higher mix amount for more tint.
+  virtual auto SetMaxNumAliveParticles(size_t maxNumAliveParticles) noexcept -> void = 0;
 
   virtual auto Update(double dt) -> void = 0;
 

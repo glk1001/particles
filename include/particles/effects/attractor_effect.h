@@ -21,7 +21,8 @@ public:
 
   auto Reset() -> void override;
   auto SetTintColor(const glm::vec4& tintColor) noexcept -> void override;
-  auto SetEffectCentre(const glm::vec4& effectCentre) noexcept -> void override;
+  auto SetTintMixAmount(float mixAmount) noexcept -> void override;
+  auto SetMaxNumAliveParticles(size_t maxNumAliveParticles) noexcept -> void override;
 
   auto Update(double dt) -> void override;
 
@@ -31,6 +32,9 @@ public:
 
 private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
+
+  static constexpr auto NUM_EMITTERS = 3U;
+  std::array<std::shared_ptr<PARTICLES::ParticleEmitter>, NUM_EMITTERS> m_particleEmitters{};
 
   static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
   std::array<std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator>, NUM_BOX_POS_GENERATORS>
@@ -43,7 +47,6 @@ private:
   std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractorUpdater{};
   std::shared_ptr<PARTICLES::UPDATERS::VelocityColorUpdater> m_colorUpdater{};
 
-  glm::vec4 m_effectCentre{0.0F};
   auto UpdateEffect(double dt) -> void;
 };
 
@@ -57,9 +60,9 @@ inline auto AttractorEffect::SetTintColor(const glm::vec4& tintColor) noexcept -
   m_colorUpdater->SetTintColor(tintColor);
 }
 
-inline auto AttractorEffect::SetEffectCentre(const glm::vec4& effectCentre) noexcept -> void
+inline auto AttractorEffect::SetTintMixAmount(const float mixAmount) noexcept -> void
 {
-  m_effectCentre = effectCentre;
+  m_colorUpdater->SetTintMixAmount(mixAmount);
 }
 
 inline auto AttractorEffect::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept

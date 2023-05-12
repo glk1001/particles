@@ -61,6 +61,7 @@ public:
 private:
   glm::vec4 m_minPosition;
   glm::vec4 m_maxPosition;
+  glm::vec4 m_diffMinMaxPosition = m_maxPosition - m_minPosition;
 };
 
 class VelocityColorUpdater : public IParticleUpdater
@@ -69,13 +70,16 @@ public:
   VelocityColorUpdater(const glm::vec4& minVelocity, const glm::vec4& maxVelocity) noexcept;
 
   auto SetTintColor(const glm::vec4& tintColor) noexcept -> void;
+  auto SetTintMixAmount(float mixAmount) noexcept -> void; // higher mix amount for more tint
 
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 
 private:
   glm::vec4 m_minVelocity;
   glm::vec4 m_maxVelocity;
+  glm::vec4 m_diffMinMaxVelocity = m_maxVelocity - m_minVelocity;
   glm::vec4 m_tintColor{1.0F};
+  float m_mixAmount = 0.0F;
 };
 
 class BasicTimeUpdater : public IParticleUpdater
@@ -93,6 +97,11 @@ inline auto AttractorUpdater::AddAttractorPosition(const glm::vec4& attractorPos
 inline auto VelocityColorUpdater::SetTintColor(const glm::vec4& tintColor) noexcept -> void
 {
   m_tintColor = tintColor;
+}
+
+inline auto VelocityColorUpdater::SetTintMixAmount(const float mixAmount) noexcept -> void
+{
+  m_mixAmount = mixAmount;
 }
 
 } // namespace PARTICLES::UPDATERS
