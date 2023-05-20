@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.20)
+
 set(PROJECT_NAME cpuTest)
 
 add_executable(${PROJECT_NAME}
@@ -28,4 +30,4 @@ target_link_libraries(${PROJECT_NAME}
         stdc++
         )
 
-set_project_warnings(cpuTest)
+particles_set_project_warnings(${particles_WARNINGS_AS_ERRORS} cpuTest)

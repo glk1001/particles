@@ -1,5 +1,6 @@
-project(particles C CXX)
 cmake_minimum_required(VERSION 3.20)
+
+project(particles C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,6 +13,7 @@ include(${CMAKE_SCRIPTS_PATH}/PreventInSourceBuilds.cmake)
 include(${CMAKE_SCRIPTS_PATH}/Cache.cmake)
 include(${CMAKE_SCRIPTS_PATH}/Linker.cmake)
 include(${CMAKE_SCRIPTS_PATH}/CompilerWarnings.cmake)
+include(${CMAKE_SCRIPTS_PATH}/Hardening.cmake)
 include(${CMAKE_SCRIPTS_PATH}/Sanitizers.cmake)
 include(${CMAKE_SCRIPTS_PATH}/StaticAnalyzers.cmake)
 include(${CMAKE_SCRIPTS_PATH}/CheckMinimumToolRequirements.cmake)
@@ -47,7 +49,9 @@ set_target_properties(${TARGET_LIB}
         POSITION_INDEPENDENT_CODE ${POS_INDEP_CODE}
         )
 
-set_project_warnings(${TARGET_LIB} ${TARGET_APP})
+include(ProjectOptions.cmake)
+particles_set_project_warnings(${particles_WARNINGS_AS_ERRORS} ${TARGET_LIB})
+particles_enable_hardening(global ON ${ENABLE_UBSAN_MINIMAL_RUNTIME})
 
 add_subdirectory(test/cpu_test)
 
