@@ -57,7 +57,6 @@ public:
   }
 
   [[nodiscard]] auto GetTimeInMilliseconds() const -> double { return m_time; }
-  [[nodiscard]] auto GetTimeInSeconds() const -> double { return m_time * 0.001; }
 
 private:
   double m_time{};
