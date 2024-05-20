@@ -1,11 +1,12 @@
-#pragma once
-
-#include "particles.h"
+module;
 
 #include <glm/vec4.hpp>
-#include <vector>
 
-namespace PARTICLES::GENERATORS
+export module Particles.ParticleGenerators;
+
+import Particles.Particles;
+
+export namespace PARTICLES::GENERATORS
 {
 
 class BoxPositionGenerator : public IParticleGenerator
@@ -110,6 +111,11 @@ private:
   float m_minTime;
   float m_maxTime;
 };
+
+} // namespace PARTICLES::GENERATORS
+
+namespace PARTICLES::GENERATORS
+{
 
 inline auto BoxPositionGenerator::SetPosition(const glm::vec4& position) noexcept -> void
 {

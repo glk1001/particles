@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-project(particles C CXX)
+project(particles CXX)
 
 set(CMAKE_SCRIPTS_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
@@ -16,40 +16,47 @@ include(${CMAKE_SCRIPTS_PATH}/Linker.cmake)
 include(${CMAKE_SCRIPTS_PATH}/CheckMinimumToolRequirements.cmake)
 
 include_directories(BEFORE
-        SYSTEM
-        src/glm
-        )
+                    SYSTEM
+                    src/glm
+)
 
 set(TARGET_LIB "particles")
 
 add_library(${TARGET_LIB}
-        STATIC
-        "include/particles/effects/effect.h"
-        "src/particles/effects/attractor_effect.cpp"
-        "src/particles/effects/fountain_effect.cpp"
-        "src/particles/effects/tunnel_effect.cpp"
-        "src/particles/particle_generators.cpp"
-        "src/particles/particle_updaters.cpp"
-        "src/particles/particles.cpp"
-        )
+            STATIC
+            "src/particles/effects/attractor_effect.cpp"
+            "src/particles/effects/fountain_effect.cpp"
+            "src/particles/effects/tunnel_effect.cpp"
+            "src/particles/particle_generators.cpp"
+            "src/particles/particle_updaters.cpp"
+            "src/particles/particles.cpp"
+)
+
+target_sources(${TARGET_LIB}
+               PUBLIC
+               FILE_SET CXX_MODULES FILES
+               "include/particles/effects/effect.cppm"
+               "include/particles/effects/attractor_effect.cppm"
+               "include/particles/effects/fountain_effect.cppm"
+               "include/particles/effects/tunnel_effect.cppm"
+               "include/particles/particle_generators.cppm"
+               "include/particles/particle_updaters.cppm"
+               "include/particles/particles.cppm"
+)
 
 add_library(particles::lib ALIAS ${TARGET_LIB})
 
-target_include_directories(${TARGET_LIB}
-        PUBLIC
-        include
-        )
-
 set(POS_INDEP_CODE "ON")
 set_target_properties(${TARGET_LIB}
-        PROPERTIES
-        POSITION_INDEPENDENT_CODE ${POS_INDEP_CODE}
-        )
+                      PROPERTIES
+                      POSITION_INDEPENDENT_CODE ${POS_INDEP_CODE}
+)
 
 include(ProjectOptions.cmake)
 particles_set_project_warnings(${particles_WARNINGS_AS_ERRORS} ${TARGET_LIB})
 
 add_subdirectory(test/cpu_test)
+
 
 message(STATUS "Particles: CMAKE_CXX_COMPILER_ID          = \"${CMAKE_CXX_COMPILER_ID}\".")
 message(STATUS "Particles: CMAKE_CXX_COMPILER_VERSION     = \"${CMAKE_CXX_COMPILER_VERSION}\".")

@@ -1,11 +1,13 @@
-#pragma once
+module;
 
 #include <glm/vec4.hpp>
 #include <limits>
 #include <memory>
 #include <vector>
 
-namespace PARTICLES
+export module Particles.Particles;
+
+export namespace PARTICLES
 {
 
 class ParticleData
@@ -83,7 +85,7 @@ public:
   [[nodiscard]] auto GetFinalData() const noexcept -> const ParticleData*;
 
   [[nodiscard]] static auto ComputeMemoryUsage(const ParticleSystem& particleSystem) noexcept
-      -> size_t;
+    -> size_t;
 
 private:
   size_t m_count;
@@ -114,7 +116,7 @@ private:
 
   [[nodiscard]] auto GetMaxAllowedNewParticles(double dt,
                                                const ParticleData& particleData) const noexcept
-      -> size_t;
+    -> size_t;
 };
 
 class IParticleGenerator
@@ -127,8 +129,11 @@ public:
   auto operator=(const IParticleGenerator&) -> IParticleGenerator& = delete;
   auto operator=(IParticleGenerator&&) -> IParticleGenerator&      = delete;
 
-  virtual auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
-      -> void = 0;
+  virtual auto Generate(double dt,
+                        ParticleData* particleData,
+                        size_t startId,
+                        size_t endId)
+    -> void = 0;
 };
 
 class IParticleUpdater
@@ -143,6 +148,11 @@ public:
 
   virtual auto Update(double dt, ParticleData* particleData) noexcept -> void = 0;
 };
+
+} // namespace PARTICLES
+
+namespace PARTICLES
+{
 
 inline auto ParticleData::Reset() noexcept -> void
 {
@@ -199,8 +209,9 @@ inline auto ParticleData::GetAcceleration(const size_t i) const noexcept -> cons
   return m_acceleration[i];
 }
 
-inline auto ParticleData::SetAcceleration(const size_t i, const glm::vec4& acceleration) noexcept
-    -> void
+inline auto ParticleData::SetAcceleration(const size_t i,
+                                          const glm::vec4& acceleration) noexcept
+  -> void
 {
   m_acceleration[i] = acceleration;
 }
@@ -225,8 +236,9 @@ inline auto ParticleData::GetStartColor(const size_t i) const noexcept -> const 
   return m_startColor[i];
 }
 
-inline auto ParticleData::SetStartColor(const size_t i, const glm::vec4& startColor) noexcept
-    -> void
+inline auto ParticleData::SetStartColor(const size_t i,
+                                        const glm::vec4& startColor) noexcept
+  -> void
 {
   m_startColor[i] = startColor;
 }
@@ -262,13 +274,13 @@ inline auto ParticleSystem::GetNumAliveParticles() const noexcept -> size_t
 }
 
 inline auto ParticleSystem::AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept
-    -> void
+  -> void
 {
   m_emitters.push_back(emitter);
 }
 
 inline auto ParticleSystem::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept
-    -> void
+  -> void
 {
   m_updaters.push_back(updater);
 }
@@ -284,13 +296,13 @@ inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
 }
 
 inline auto ParticleEmitter::SetMaxNumAliveParticles(const size_t maxNumAliveParticles) noexcept
-    -> void
+  -> void
 {
   m_maxNumAliveParticles = maxNumAliveParticles;
 }
 
 inline auto ParticleEmitter::AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept
-    -> void
+  -> void
 {
   m_generators.push_back(gen);
 }

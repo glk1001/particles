@@ -1,12 +1,12 @@
-#include "particles/effects/attractor_effect.h"
-#include "particles/effects/effect.h"
-#include "particles/effects/fountain_effect.h"
-#include "particles/effects/tunnel_effect.h"
-#include "particles/particles.h"
-
 #include <chrono>
 #include <iostream>
 #include <stdexcept>
+
+import Particles.Effects.Effect;
+import Particles.Effects.Attractor;
+import Particles.Effects.Fountain;
+import Particles.Effects.Tunnel;
+import Particles.Particles;
 
 using PARTICLES::EFFECTS::AttractorEffect;
 using PARTICLES::EFFECTS::FountainEffect;
@@ -19,12 +19,14 @@ namespace
 class EffectFactory
 {
 public:
-  [[nodiscard]] static auto create(const char* name, size_t numParticles)
-      -> std::shared_ptr<IEffect>;
+  [[nodiscard]] static auto create(const char* name,
+                                   size_t numParticles)
+    -> std::shared_ptr<IEffect>;
 };
 
-auto EffectFactory::create(const char* const name, const size_t numParticles)
-    -> std::shared_ptr<IEffect>
+auto EffectFactory::create(const char* const name,
+                           const size_t numParticles)
+  -> std::shared_ptr<IEffect>
 {
   const auto effect = std::string{name};
 
@@ -72,7 +74,7 @@ int main()
   static constexpr auto START_NUM_PARTICLES = 1000U;
   static constexpr auto END_NUM_PARTICLES   = 301000U;
   static constexpr auto PARTICLES_NUM_STEPS = 30U;
-  static constexpr auto NUM_PARTICLES_STEP =
+  static constexpr auto NUM_PARTICLES_STEP  =
       (END_NUM_PARTICLES - START_NUM_PARTICLES) / PARTICLES_NUM_STEPS;
 
   static constexpr auto DELTA_TIME  = 1.0 / 60.0; // 60 fps

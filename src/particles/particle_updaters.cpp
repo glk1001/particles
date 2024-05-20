@@ -1,7 +1,10 @@
-#include "particles/particle_updaters.h"
+module;
 
 #include <glm/common.hpp>
 #include <glm/gtc/random.hpp>
+#include <glm/vec4.hpp>
+
+module Particles.ParticleUpdaters;
 
 namespace PARTICLES::UPDATERS
 {
@@ -38,7 +41,8 @@ auto EulerUpdater::Update(const double dt, ParticleData* const particleData) noe
 }
 
 FloorUpdater::FloorUpdater(const float floorY, const float bounceFactor) noexcept
-  : m_floorY{floorY}, m_bounceFactor{bounceFactor}
+  : m_floorY{floorY},
+    m_bounceFactor{bounceFactor}
 {
 }
 
@@ -53,7 +57,7 @@ auto FloorUpdater::Update([[maybe_unused]] const double dt,
     {
       auto force = glm::vec4{particleData->GetAcceleration(i)};
       if (const auto normalFactor = glm::dot(force, glm::vec4(0.0F, 1.0F, 0.0F, 0.0F));
-          normalFactor < 0.0F)
+        normalFactor < 0.0F)
       {
         force -= glm::vec4(0.0F, 1.0F, 0.0F, 0.0F) * normalFactor;
       }
@@ -62,7 +66,8 @@ auto FloorUpdater::Update([[maybe_unused]] const double dt,
           glm::dot(particleData->GetVelocity(i), glm::vec4(0.0F, 1.0F, 0.0F, 0.0F));
       //if (velFactor < 0.0)
       particleData->DecVelocity(
-          i, glm::vec4(0.0F, 1.0F, 0.0F, 0.0F) * (1.0F + m_bounceFactor) * velFactor);
+          i,
+          glm::vec4(0.0F, 1.0F, 0.0F, 0.0F) * (1.0F + m_bounceFactor) * velFactor);
 
       particleData->SetAcceleration(i, force);
     }
@@ -107,7 +112,8 @@ auto BasicColorUpdater::Update([[maybe_unused]] const double dt,
 
 PositionColorUpdater::PositionColorUpdater(const glm::vec4& minPosition,
                                            const glm::vec4& maxPosition) noexcept
-  : m_minPosition{minPosition}, m_maxPosition{maxPosition}
+  : m_minPosition{minPosition},
+    m_maxPosition{maxPosition}
 {
 }
 
@@ -150,11 +156,11 @@ auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
     particleData->SetColor(
         i,
         {scaledPositions
-             .r, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
+         .r, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
          scaledPositions
-             .g, // glm::mix(particleData->m_startCol[i].g, particleData->m_endCol[i].g, scaleg);
+         .g, // glm::mix(particleData->m_startCol[i].g, particleData->m_endCol[i].g, scaleg);
          scaledPositions
-             .b, // glm::mix(particleData->m_startCol[i].b, particleData->m_endCol[i].b, scaleb);
+         .b, // glm::mix(particleData->m_startCol[i].b, particleData->m_endCol[i].b, scaleb);
          glm::mix(particleData->GetStartColor(i).a,
                   particleData->GetEndColor(i).a,
                   particleData->GetTime(i).z)});
@@ -163,7 +169,8 @@ auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
 
 VelocityColorUpdater::VelocityColorUpdater(const glm::vec4& minVelocity,
                                            const glm::vec4& maxVelocity) noexcept
-  : m_minVelocity{minVelocity}, m_maxVelocity{maxVelocity}
+  : m_minVelocity{minVelocity},
+    m_maxVelocity{maxVelocity}
 {
 }
 
@@ -226,14 +233,15 @@ auto BasicTimeUpdater::Update(const double dt, ParticleData* const particleData)
         1.0F - (particleData->GetTime(i).x * particleData->GetTime(i).w); // .w is 1.0/max lifetime
 
     particleData->SetTime(
-        i, {newXTime, particleData->GetTime(i).y, newZTime, particleData->GetTime(i).w});
+        i,
+        {newXTime, particleData->GetTime(i).y, newZTime, particleData->GetTime(i).w});
 
     if (newXTime < 0.0F)
     {
       particleData->Kill(i);
       endId = particleData->GetAliveCount() < particleData->GetCount()
-                  ? particleData->GetAliveCount()
-                  : particleData->GetCount();
+                ? particleData->GetAliveCount()
+                : particleData->GetCount();
     }
   }
 }

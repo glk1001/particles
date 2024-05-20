@@ -1,15 +1,17 @@
-#pragma once
-
-#include "particles/effects/effect.h"
-#include "particles/particle_generators.h"
-#include "particles/particle_updaters.h"
-#include "particles/particles.h"
+module;
 
 #include <array>
 #include <glm/vec4.hpp>
 #include <memory>
 
-namespace PARTICLES::EFFECTS
+export module Particles.Effects.Attractor;
+
+import Particles.Effects.Effect;
+import Particles.ParticleGenerators;
+import Particles.ParticleUpdaters;
+import Particles.Particles;
+
+export namespace PARTICLES::EFFECTS
 {
 
 class AttractorEffect : public IEffect
@@ -38,7 +40,7 @@ private:
 
   static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
   std::array<std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator>, NUM_BOX_POS_GENERATORS>
-      m_positionGenerators{};
+  m_positionGenerators{};
   static constexpr auto Z_GEN_POS1 = -0.25F;
   static constexpr auto Z_GEN_POS2 = +0.25F;
   static constexpr auto Z_GEN_POS3 = +0.25F;
@@ -49,6 +51,11 @@ private:
 
   auto UpdateEffect(double dt) -> void;
 };
+
+} // namespace PARTICLES::EFFECTS
+
+namespace PARTICLES::EFFECTS
+{
 
 inline auto AttractorEffect::Reset() -> void
 {
@@ -66,7 +73,7 @@ inline auto AttractorEffect::SetTintMixAmount(const float mixAmount) noexcept ->
 }
 
 inline auto AttractorEffect::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept
-    -> void
+  -> void
 {
   m_system->AddUpdater(updater);
 }

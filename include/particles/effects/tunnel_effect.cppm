@@ -1,14 +1,16 @@
-#pragma once
-
-#include "particles/effects/effect.h"
-#include "particles/particle_generators.h"
-#include "particles/particle_updaters.h"
-#include "particles/particles.h"
+module;
 
 #include <glm/vec4.hpp>
 #include <memory>
 
-namespace PARTICLES::EFFECTS
+export module Particles.Effects.Tunnel;
+
+import Particles.Effects.Effect;
+import Particles.ParticleGenerators;
+import Particles.ParticleUpdaters;
+import Particles.Particles;
+
+export namespace PARTICLES::EFFECTS
 {
 
 class TunnelEffect : public IEffect
@@ -17,10 +19,17 @@ public:
   explicit TunnelEffect(size_t numParticles) noexcept;
 
   auto Reset() -> void override;
-  auto SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void override {}
-  auto SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept -> void override {}
+
+  auto SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void override
+  {
+  }
+
+  auto SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept -> void override
+  {
+  }
+
   auto SetMaxNumAliveParticles([[maybe_unused]] const size_t maxNumAliveParticles) noexcept
-      -> void override
+    -> void override
   {
   }
 
@@ -37,6 +46,11 @@ private:
 
   auto UpdateEffect(double dt) noexcept -> void;
 };
+
+} // namespace PARTICLES::EFFECTS
+
+namespace PARTICLES::EFFECTS
+{
 
 inline auto TunnelEffect::Reset() -> void
 {

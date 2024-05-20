@@ -1,11 +1,13 @@
-#pragma once
-
-#include "particles.h"
+module;
 
 #include <glm/vec4.hpp>
 #include <vector>
 
-namespace PARTICLES::UPDATERS
+export module Particles.ParticleUpdaters;
+
+import Particles.Particles;
+
+export namespace PARTICLES::UPDATERS
 {
 
 class EulerUpdater : public IParticleUpdater
@@ -87,6 +89,11 @@ class BasicTimeUpdater : public IParticleUpdater
 public:
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 };
+
+} // namespace PARTICLES::UPDATERS
+
+namespace PARTICLES::UPDATERS
+{
 
 inline auto AttractorUpdater::AddAttractorPosition(const glm::vec4& attractorPosition) noexcept
     -> void

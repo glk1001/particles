@@ -1,9 +1,13 @@
-#include "particles/effects/tunnel_effect.h"
-
-#include "particles/particle_generators.h"
-#include "particles/particle_updaters.h"
+module;
 
 #include <cmath>
+#include <glm/vec4.hpp>
+#include <memory>
+
+module Particles.Effects.Tunnel;
+
+import Particles.ParticleGenerators;
+import Particles.ParticleUpdaters;
 
 namespace PARTICLES::EFFECTS
 {

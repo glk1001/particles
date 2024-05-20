@@ -2,7 +2,8 @@
 <project version="4">
   <component name="CMakeSharedSettings">
     <configurations>
-      <configuration PROFILE_NAME="docker-clang-18-RelWithDebInfo" ENABLED="true" GENERATION_DIR="build-clion-docker-clang-18-RelWithDebInfo" CONFIG_NAME="RelWithDebInfo" TOOLCHAIN_NAME="docker-clang-18" />
+      <configuration PROFILE_NAME="docker-clang-18-RelWithDebInfo" ENABLED="true" GENERATION_DIR="build-clion-docker-clang-18-RelWithDebInfo" CONFIG_NAME="RelWithDebInfo" TOOLCHAIN_NAME="docker-clang-18" GENERATION_OPTIONS="-G Ninja" />
+      <configuration PROFILE_NAME="clang-18-RelWithDebInfo" ENABLED="true" GENERATION_DIR="build-clion-clang-18-RelWithDebInfo" CONFIG_NAME="RelWithDebInfo" TOOLCHAIN_NAME="clang-18" GENERATION_OPTIONS="-G Ninja" />
     </configurations>
   </component>
 </project>

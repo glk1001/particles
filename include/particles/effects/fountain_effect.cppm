@@ -1,14 +1,16 @@
-#pragma once
-
-#include "particles/effects/effect.h"
-#include "particles/particle_generators.h"
-#include "particles/particle_updaters.h"
-#include "particles/particles.h"
+module;
 
 #include <glm/vec4.hpp>
 #include <memory>
 
-namespace PARTICLES::EFFECTS
+export module Particles.Effects.Fountain;
+
+import Particles.Effects.Effect;
+import Particles.ParticleGenerators;
+import Particles.ParticleUpdaters;
+import Particles.Particles;
+
+export namespace PARTICLES::EFFECTS
 {
 
 class FountainEffect : public IEffect
@@ -40,6 +42,11 @@ private:
 
   auto UpdateEffect(double dt) noexcept -> void;
 };
+
+} // namespace PARTICLES::EFFECTS
+
+namespace PARTICLES::EFFECTS
+{
 
 inline auto FountainEffect::Reset() -> void
 {

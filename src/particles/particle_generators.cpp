@@ -1,11 +1,14 @@
-#include "particles/particle_generators.h"
+module;
 
 #include <glm/common.hpp>
 #include <glm/gtc/random.hpp>
+#include <glm/vec4.hpp>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846 /* pi */
 #endif
+
+module Particles.ParticleGenerators;
 
 namespace PARTICLES::GENERATORS
 {

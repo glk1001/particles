@@ -1,14 +1,13 @@
-#pragma once
+module;
 
 #include <cstddef>
 #include <glm/vec4.hpp>
 
-namespace PARTICLES
-{
-class ParticleSystem;
-}
+export module Particles.Effects.Effect;
 
-namespace PARTICLES::EFFECTS
+import Particles.Particles;
+
+export namespace PARTICLES::EFFECTS
 {
 
 class IEffect
