@@ -16,40 +16,34 @@ include(${CMAKE_SCRIPTS_PATH}/Linker.cmake)
 include(${CMAKE_SCRIPTS_PATH}/CheckMinimumToolRequirements.cmake)
 
 include_directories(BEFORE
-                    SYSTEM
-                    src/glm
+        SYSTEM
+        src/glm
 )
 
 set(TARGET_LIB "particles")
 
+include(${CMAKE_SCRIPTS_PATH}/GetParticlesSources.cmake)
+set(Particles_SOURCE_DIR "")
+Particles_get_modules("${Particles_SOURCE_DIR}" Particles_modules)
+Particles_get_source_files("${Particles_SOURCE_DIR}" Particles_source_files)
+
 add_library(${TARGET_LIB}
-            STATIC
-            "src/particles/effects/attractor_effect.cpp"
-            "src/particles/effects/fountain_effect.cpp"
-            "src/particles/effects/tunnel_effect.cpp"
-            "src/particles/particle_generators.cpp"
-            "src/particles/particle_updaters.cpp"
-            "src/particles/particles.cpp"
+        STATIC
+        ${Particles_source_files}
 )
 
 target_sources(${TARGET_LIB}
-               PUBLIC
-               FILE_SET CXX_MODULES FILES
-               "include/particles/effects/effect.cppm"
-               "include/particles/effects/attractor_effect.cppm"
-               "include/particles/effects/fountain_effect.cppm"
-               "include/particles/effects/tunnel_effect.cppm"
-               "include/particles/particle_generators.cppm"
-               "include/particles/particle_updaters.cppm"
-               "include/particles/particles.cppm"
+        PUBLIC
+        FILE_SET CXX_MODULES FILES
+        ${Particles_modules}
 )
 
 add_library(particles::lib ALIAS ${TARGET_LIB})
 
 set(POS_INDEP_CODE "ON")
 set_target_properties(${TARGET_LIB}
-                      PROPERTIES
-                      POSITION_INDEPENDENT_CODE ${POS_INDEP_CODE}
+        PROPERTIES
+        POSITION_INDEPENDENT_CODE ${POS_INDEP_CODE}
 )
 
 include(ProjectOptions.cmake)
