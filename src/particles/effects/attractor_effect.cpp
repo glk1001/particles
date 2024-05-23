@@ -37,14 +37,11 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   static constexpr auto MIN_END_COLOR   = glm::vec4{0.09F, 0.09F, 0.09F, 0.00F};
   static constexpr auto MAX_END_COLOR   = glm::vec4{0.39F, 0.39F, 0.39F, 0.25F};
   m_colorGenerator                      = std::make_shared<BasicColorGenerator>(
-      MIN_START_COLOR,
-      MAX_START_COLOR,
-      MIN_END_COLOR,
-      MAX_END_COLOR);
+      MIN_START_COLOR, MAX_START_COLOR, MIN_END_COLOR, MAX_END_COLOR);
 
   static constexpr auto MIN_SPHERE_VELOCITY = 0.1F;
   static constexpr auto MAX_SPHERE_VELOCITY = 0.1F;
-  const auto velocityGenerator              =
+  const auto velocityGenerator =
       std::make_shared<SphereVelocityGenerator>(MIN_SPHERE_VELOCITY, MAX_SPHERE_VELOCITY);
 
   static constexpr auto MIN_LIFETIME = 2.0F;
@@ -59,7 +56,7 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_particleEmitters[0]->SetEmitRate(EMIT_RATE_FACTOR * static_cast<float>(numParticlesToUse));
 
   // pos:
-  static constexpr auto GEN_POS1 = glm::vec4{0.0F, 0.0F, Z_GEN_POS1, 0.0F};
+  static constexpr auto GEN_POS1              = glm::vec4{0.0F, 0.0F, Z_GEN_POS1, 0.0F};
   static constexpr auto MAX_START_POS_OFFSET1 = glm::vec4{0.0F, 0.0F, 0.00F, 0.0F};
   m_positionGenerators[0] = std::make_shared<BoxPositionGenerator>(GEN_POS1, MAX_START_POS_OFFSET1);
   m_particleEmitters[0]->AddGenerator(m_positionGenerators[0]);
@@ -75,7 +72,7 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_particleEmitters[1] = std::make_shared<ParticleEmitter>();
   m_particleEmitters[1]->SetEmitRate(EMIT_RATE_FACTOR * static_cast<float>(numParticlesToUse));
 
-  static constexpr auto GEN_POS2 = glm::vec4{0.0F, 0.0F, Z_GEN_POS2, 0.0F};
+  static constexpr auto GEN_POS2              = glm::vec4{0.0F, 0.0F, Z_GEN_POS2, 0.0F};
   static constexpr auto MAX_START_POS_OFFSET2 = glm::vec4{0.0F, 0.0F, 0.00F, 0.0F};
   m_positionGenerators[1] = std::make_shared<BoxPositionGenerator>(GEN_POS2, MAX_START_POS_OFFSET2);
   m_particleEmitters[1]->AddGenerator(m_positionGenerators[1]);
@@ -91,7 +88,7 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_particleEmitters[2] = std::make_shared<ParticleEmitter>();
   m_particleEmitters[2]->SetEmitRate(EMIT_RATE_FACTOR * static_cast<float>(numParticlesToUse));
 
-  static constexpr auto GEN_POS3 = glm::vec4{0.0F, 0.0F, Z_GEN_POS3, 0.0F};
+  static constexpr auto GEN_POS3              = glm::vec4{0.0F, 0.0F, Z_GEN_POS3, 0.0F};
   static constexpr auto MAX_START_POS_OFFSET3 = glm::vec4{0.0F, 0.0F, 0.00F, 0.0F};
   m_positionGenerators[2] = std::make_shared<BoxPositionGenerator>(GEN_POS3, MAX_START_POS_OFFSET3);
   m_particleEmitters[2]->AddGenerator(m_positionGenerators[2]);
@@ -147,24 +144,24 @@ auto AttractorEffect::UpdateEffect(const double dt) -> void
 
   static constexpr auto LIFETIME_FACTOR1 = 2.5F;
   m_positionGenerators[0]->SetPosition(
-  {+RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR1),
-   +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR1),
-   m_zScale * Z_GEN_POS1 * std::cos(s_lifetime * LIFETIME_FACTOR1),
-   0.0F});
+      {+RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR1),
+       +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR1),
+       m_zScale * Z_GEN_POS1 * std::cos(s_lifetime * LIFETIME_FACTOR1),
+       0.0F});
 
   static constexpr auto LIFETIME_FACTOR2 = 2.0F;
   m_positionGenerators[1]->SetPosition(
-  {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR2),
-   +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR2),
-   m_zScale * Z_GEN_POS2 * std::cos(s_lifetime * LIFETIME_FACTOR2),
-   0.0F});
+      {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR2),
+       +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR2),
+       m_zScale * Z_GEN_POS2 * std::cos(s_lifetime * LIFETIME_FACTOR2),
+       0.0F});
 
   static constexpr auto LIFETIME_FACTOR3 = 6.0F;
   m_positionGenerators[2]->SetPosition(
-  {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR3),
-   +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR3),
-   m_zScale * Z_GEN_POS3 * std::cos(s_lifetime * LIFETIME_FACTOR3),
-   0.0F});
+      {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR3),
+       +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR3),
+       m_zScale * Z_GEN_POS3 * std::cos(s_lifetime * LIFETIME_FACTOR3),
+       0.0F});
 }
 
 } // namespace PARTICLES::EFFECTS

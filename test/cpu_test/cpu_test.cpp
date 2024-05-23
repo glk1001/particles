@@ -19,14 +19,12 @@ namespace
 class EffectFactory
 {
 public:
-  [[nodiscard]] static auto create(const char* name,
-                                   size_t numParticles)
-    -> std::shared_ptr<IEffect>;
+  [[nodiscard]] static auto create(const char* name, size_t numParticles)
+      -> std::shared_ptr<IEffect>;
 };
 
-auto EffectFactory::create(const char* const name,
-                           const size_t numParticles)
-  -> std::shared_ptr<IEffect>
+auto EffectFactory::create(const char* const name, const size_t numParticles)
+    -> std::shared_ptr<IEffect>
 {
   const auto effect = std::string{name};
 
@@ -74,7 +72,7 @@ int main()
   static constexpr auto START_NUM_PARTICLES = 1000U;
   static constexpr auto END_NUM_PARTICLES   = 301000U;
   static constexpr auto PARTICLES_NUM_STEPS = 30U;
-  static constexpr auto NUM_PARTICLES_STEP  =
+  static constexpr auto NUM_PARTICLES_STEP =
       (END_NUM_PARTICLES - START_NUM_PARTICLES) / PARTICLES_NUM_STEPS;
 
   static constexpr auto DELTA_TIME  = 1.0 / 60.0; // 60 fps

@@ -1,8 +1,8 @@
 module;
 
 #include <algorithm>
-#include <glm/vec4.hpp>
 #include <cassert>
+#include <glm/vec4.hpp>
 
 module Particles.Particles;
 
@@ -89,7 +89,7 @@ auto ParticleEmitter::Emit(const double dt, ParticleData* const particleData) no
 
 auto ParticleEmitter::GetMaxAllowedNewParticles(const double dt,
                                                 const ParticleData& particleData) const noexcept
-  -> size_t
+    -> size_t
 {
   const auto requestedNewParticles  = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
   const auto newTotalAliveParticles = requestedNewParticles + particleData.GetAliveCount();
@@ -105,9 +105,7 @@ auto ParticleEmitter::GetMaxAllowedNewParticles(const double dt,
 // ParticleSystem class
 
 ////////////////////////////////////////////////////////////////////////////////
-ParticleSystem::ParticleSystem(const size_t maxCount)
-  : m_count{maxCount},
-    m_particles{maxCount}
+ParticleSystem::ParticleSystem(const size_t maxCount) : m_count{maxCount}, m_particles{maxCount}
 {
 }
 
