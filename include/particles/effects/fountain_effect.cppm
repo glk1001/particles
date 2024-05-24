@@ -33,11 +33,11 @@ public:
   [[nodiscard]] auto GetSystem() const -> const PARTICLES::ParticleSystem* override;
 
 private:
-  std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
-  std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator> m_positionGenerator{};
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
-  std::shared_ptr<PARTICLES::UPDATERS::EulerUpdater> m_eulerUpdater{};
-  std::shared_ptr<PARTICLES::UPDATERS::FloorUpdater> m_floorUpdater{};
+  std::shared_ptr<PARTICLES::ParticleSystem> m_system;
+  std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator> m_positionGenerator;
+  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator;
+  std::shared_ptr<PARTICLES::UPDATERS::EulerUpdater> m_eulerUpdater;
+  std::shared_ptr<PARTICLES::UPDATERS::FloorUpdater> m_floorUpdater;
   static constexpr auto FLOOR_Y = -0.25F;
 
   auto UpdateEffect(double dt) noexcept -> void;

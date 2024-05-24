@@ -44,7 +44,7 @@ public:
   auto Update(double dt, ParticleData* particleData) noexcept -> void override;
 
 private:
-  std::vector<glm::vec4> m_attractorPositions{}; // .w is force
+  std::vector<glm::vec4> m_attractorPositions; // .w is force
 };
 
 class BasicColorUpdater : public IParticleUpdater

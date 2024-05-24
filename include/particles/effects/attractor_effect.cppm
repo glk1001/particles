@@ -1,7 +1,8 @@
 module;
 
 #include <array>
-#include <glm/vec4.hpp>
+#include <cstdlib>
+#include <glm/fwd.hpp>
 #include <memory>
 
 export module Particles.Effects.Attractor;
@@ -33,21 +34,21 @@ public:
   [[nodiscard]] auto GetSystem() const -> const PARTICLES::ParticleSystem* override;
 
 private:
-  std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
+  std::shared_ptr<PARTICLES::ParticleSystem> m_system;
 
   static constexpr auto NUM_EMITTERS = 3U;
-  std::array<std::shared_ptr<PARTICLES::ParticleEmitter>, NUM_EMITTERS> m_particleEmitters{};
+  std::array<std::shared_ptr<PARTICLES::ParticleEmitter>, NUM_EMITTERS> m_particleEmitters;
 
   static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
   std::array<std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator>, NUM_BOX_POS_GENERATORS>
-  m_positionGenerators{};
+  m_positionGenerators;
   static constexpr auto Z_GEN_POS1 = -0.25F;
   static constexpr auto Z_GEN_POS2 = +0.25F;
   static constexpr auto Z_GEN_POS3 = +0.25F;
 
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
-  std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractorUpdater{};
-  std::shared_ptr<PARTICLES::UPDATERS::VelocityColorUpdater> m_colorUpdater{};
+  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator;
+  std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractorUpdater;
+  std::shared_ptr<PARTICLES::UPDATERS::VelocityColorUpdater> m_colorUpdater;
 
   auto UpdateEffect(double dt) -> void;
 };

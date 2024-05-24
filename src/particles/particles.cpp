@@ -62,11 +62,6 @@ auto ParticleData::SwapData(const size_t a, const size_t b) -> void
   //m_alive[a] = m_alive[b];*/
 }
 
-auto ParticleData::ComputeMemoryUsage(const ParticleData& particleData) -> size_t
-{
-  return particleData.m_count * ((7 * sizeof(glm::vec4)) + (sizeof(bool)) + (sizeof(size_t) * 2));
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 // ParticleEmitter class
 

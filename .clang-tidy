@@ -22,7 +22,10 @@ Checks: >
   portability-*,
   readability-*,
   zircon-*,
-  -llvm-header-guard
+  -misc-include-cleaner,
+  -llvm-header-guard,
+  -readability-redundant-declaration,
+  -abseil-string-find-str-contains
 
 # Turn all the warnings from the checks above into errors.
 WarningsAsErrors: '*'
@@ -48,12 +51,12 @@ CheckOptions:
   - { key: readability-identifier-naming.GlobalFunctionCase,                value: CamelCase }
   - { key: readability-identifier-naming.GlobalFunctionIgnoredRegexp,       value: 'lerp' }
   - { key: readability-identifier-length.MinimumVariableNameLength,         value: 3 }
-  - { key: readability-identifier-length.IgnoredVariableNames,              value: 'a|b|t|x.*|X.*|y.*|Y.*|z.*|Z.*|u.*|v.*|i.*|j.*|k.*|m.*|n.*|N.*' }
+  - { key: readability-identifier-length.IgnoredVariableNames,              value: 'a|b|c|d|t|x.*|X.*|y.*|Y.*|z.*|Z.*|u.*|v.*|i.*|j.*|k.*|m.*|n.*|N.*' }
   - { key: readability-identifier-length.MinimumParameterNameLength,        value: 3 }
   - { key: readability-identifier-length.IgnoredParameterNames,             value: 'a|b|t|x.*|y.*|z.*|i|m|n|k.*' }
   - { key: readability-identifier-length.MinimumLoopCounterNameLength,      value: 3 }
   - { key: readability-identifier-length.IgnoredLoopCounterNames,           value: 'x|y|i|j|k' }
-  - { key: readability-identifier-naming.FunctionIgnoredRegexp,             value: 'lerp' }
+  - { key: readability-identifier-naming.FunctionIgnoredRegexp,             value: 'lerp|at' }
   - { key: readability-identifier-naming.LocalConstantCase,                 value: camelBack }
   - { key: readability-identifier-naming.MacroDefinitionCase,               value: UPPER_CASE }
   - { key: readability-identifier-naming.MethodCase,                        value: CamelCase }
@@ -64,7 +67,6 @@ CheckOptions:
   - { key: readability-identifier-naming.PublicMemberPrefix,                value: '' }
   - { key: readability-identifier-naming.ScopedEnumConstantCase,            value: UPPER_CASE }
   - { key: readability-identifier-naming.ScopedEnumConstantPrefix,          value: '' }
-  - { key: readability-identifier-naming.ScopedEnumConstantIgnoredRegexp,   value: '\_num' }
   - { key: readability-identifier-naming.StaticConstantCase,                value: UPPER_CASE }
   - { key: readability-identifier-naming.StaticConstantPrefix,              value: 's_' }
   - { key: readability-identifier-naming.StaticVariableCase,                value: camelBack }
@@ -84,9 +86,11 @@ CheckOptions:
   - { key: google-readability-function-size.StatementThreshold,             value: '800' }
   - { key: google-readability-namespace-comments.ShortNamespaceLines,       value: '10' }
   - { key: llvm-namespace-comment.ShortNamespaceLines,                      value: '10' }
-  - { key: google-readability-namespace-comments.SpacesBeforeComments,      value: '2' }
+  - { key: google-readability-namespace-comments.SpacesBeforeComments,      value: '1' }
+  - { key: llvm-namespace-comment.SpacesBeforeComments,                     value: '1' }
   - { key: modernize-loop-convert.MaxCopySize,                              value: '16' }
   - { key: modernize-loop-convert.MinConfidence,                            value: reasonable }
   - { key: modernize-loop-convert.NamingStyle,                              value: CamelCase }
   - { key: modernize-pass-by-value.IncludeStyle,                            value: llvm }
   - { key: modernize-replace-auto-ptr.IncludeStyle,                         value: llvm }
+  - { key: misc-include-cleaner.IgnoreHeaders,                              value: 'GL/.*;vivid/.*;goom_config\.h' }

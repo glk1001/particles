@@ -8,6 +8,7 @@ module Particles.ParticleUpdaters;
 
 namespace PARTICLES::UPDATERS
 {
+// NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
 
 EulerUpdater::EulerUpdater(const glm::vec4& globalAcceleration) noexcept
   : m_globalAcceleration{globalAcceleration}
@@ -40,6 +41,7 @@ auto EulerUpdater::Update(const double dt, ParticleData* const particleData) noe
   }
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 FloorUpdater::FloorUpdater(const float floorY, const float bounceFactor) noexcept
   : m_floorY{floorY}, m_bounceFactor{bounceFactor}
 {
@@ -108,6 +110,7 @@ auto BasicColorUpdater::Update([[maybe_unused]] const double dt,
   }
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 PositionColorUpdater::PositionColorUpdater(const glm::vec4& minPosition,
                                            const glm::vec4& maxPosition) noexcept
   : m_minPosition{minPosition}, m_maxPosition{maxPosition}
@@ -117,6 +120,7 @@ PositionColorUpdater::PositionColorUpdater(const glm::vec4& minPosition,
 namespace
 {
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 [[nodiscard]] inline auto GetScaledValues(const glm::vec4& values,
                                           const glm::vec4& minValues,
                                           const glm::vec4& diffsMinMax) noexcept -> glm::vec4
@@ -164,6 +168,7 @@ auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
   }
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 VelocityColorUpdater::VelocityColorUpdater(const glm::vec4& minVelocity,
                                            const glm::vec4& maxVelocity) noexcept
   : m_minVelocity{minVelocity}, m_maxVelocity{maxVelocity}
@@ -240,5 +245,7 @@ auto BasicTimeUpdater::Update(const double dt, ParticleData* const particleData)
     }
   }
 }
+
+// NOLINTEND(cppcoreguidelines-pro-type-union-access)
 
 } // namespace PARTICLES::UPDATERS

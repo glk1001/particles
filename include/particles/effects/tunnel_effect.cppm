@@ -20,16 +20,12 @@ public:
 
   auto Reset() -> void override;
 
-  auto SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void override
-  {
-  }
+  auto SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void override {}
 
-  auto SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept -> void override
-  {
-  }
+  auto SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept -> void override {}
 
   auto SetMaxNumAliveParticles([[maybe_unused]] const size_t maxNumAliveParticles) noexcept
-    -> void override
+      -> void override
   {
   }
 
@@ -40,9 +36,9 @@ public:
   [[nodiscard]] auto GetSystem() const -> const PARTICLES::ParticleSystem* override;
 
 private:
-  std::shared_ptr<PARTICLES::ParticleSystem> m_system{};
-  std::shared_ptr<PARTICLES::GENERATORS::RoundPositionGenerator> m_positionGenerator{};
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator{};
+  std::shared_ptr<ParticleSystem> m_system;
+  std::shared_ptr<GENERATORS::RoundPositionGenerator> m_positionGenerator;
+  std::shared_ptr<GENERATORS::BasicColorGenerator> m_colorGenerator;
 
   auto UpdateEffect(double dt) noexcept -> void;
 };

@@ -16,7 +16,6 @@ using GENERATORS::BasicColorGenerator;
 using GENERATORS::BasicTimeGenerator;
 using GENERATORS::BasicVelocityGenerator;
 using GENERATORS::BoxPositionGenerator;
-using UPDATERS::BasicColorUpdater;
 using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
 using UPDATERS::FloorUpdater;

@@ -63,6 +63,8 @@ private:
   std::vector<glm::vec4> m_endColor;
   std::vector<glm::vec4> m_time;
   std::vector<bool> m_alive;
+
+  static constexpr auto MEM_BYTES = +(2 * sizeof(size_t)) + (7 * sizeof(glm::vec4)) + sizeof(bool);
 };
 
 class ParticleEmitter;
@@ -85,14 +87,14 @@ public:
   [[nodiscard]] auto GetFinalData() const noexcept -> const ParticleData*;
 
   [[nodiscard]] static auto ComputeMemoryUsage(const ParticleSystem& particleSystem) noexcept
-    -> size_t;
+      -> size_t;
 
 private:
   size_t m_count;
   ParticleData m_particles;
 
-  std::vector<std::shared_ptr<ParticleEmitter>> m_emitters{};
-  std::vector<std::shared_ptr<IParticleUpdater>> m_updaters{};
+  std::vector<std::shared_ptr<ParticleEmitter>> m_emitters;
+  std::vector<std::shared_ptr<IParticleUpdater>> m_updaters;
 };
 
 class IParticleGenerator;
@@ -112,11 +114,11 @@ public:
 private:
   float m_emitRate              = 0.0F;
   size_t m_maxNumAliveParticles = std::numeric_limits<size_t>::max();
-  std::vector<std::shared_ptr<IParticleGenerator>> m_generators{};
+  std::vector<std::shared_ptr<IParticleGenerator>> m_generators;
 
   [[nodiscard]] auto GetMaxAllowedNewParticles(double dt,
                                                const ParticleData& particleData) const noexcept
-    -> size_t;
+      -> size_t;
 };
 
 class IParticleGenerator
@@ -129,11 +131,8 @@ public:
   auto operator=(const IParticleGenerator&) -> IParticleGenerator& = delete;
   auto operator=(IParticleGenerator&&) -> IParticleGenerator&      = delete;
 
-  virtual auto Generate(double dt,
-                        ParticleData* particleData,
-                        size_t startId,
-                        size_t endId)
-    -> void = 0;
+  virtual auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
+      -> void = 0;
 };
 
 class IParticleUpdater
@@ -162,6 +161,12 @@ inline auto ParticleData::Reset() noexcept -> void
 inline auto ParticleData::GetCount() const noexcept -> size_t
 {
   return m_count;
+}
+
+inline auto ParticleData::ComputeMemoryUsage([[maybe_unused]] const ParticleData& particleData)
+    -> size_t
+{
+  return MEM_BYTES;
 }
 
 inline auto ParticleData::GetAliveCount() const noexcept -> size_t
@@ -209,9 +214,8 @@ inline auto ParticleData::GetAcceleration(const size_t i) const noexcept -> cons
   return m_acceleration[i];
 }
 
-inline auto ParticleData::SetAcceleration(const size_t i,
-                                          const glm::vec4& acceleration) noexcept
-  -> void
+inline auto ParticleData::SetAcceleration(const size_t i, const glm::vec4& acceleration) noexcept
+    -> void
 {
   m_acceleration[i] = acceleration;
 }
@@ -236,9 +240,8 @@ inline auto ParticleData::GetStartColor(const size_t i) const noexcept -> const 
   return m_startColor[i];
 }
 
-inline auto ParticleData::SetStartColor(const size_t i,
-                                        const glm::vec4& startColor) noexcept
-  -> void
+inline auto ParticleData::SetStartColor(const size_t i, const glm::vec4& startColor) noexcept
+    -> void
 {
   m_startColor[i] = startColor;
 }
@@ -274,13 +277,13 @@ inline auto ParticleSystem::GetNumAliveParticles() const noexcept -> size_t
 }
 
 inline auto ParticleSystem::AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept
-  -> void
+    -> void
 {
   m_emitters.push_back(emitter);
 }
 
 inline auto ParticleSystem::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept
-  -> void
+    -> void
 {
   m_updaters.push_back(updater);
 }
@@ -296,13 +299,13 @@ inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void
 }
 
 inline auto ParticleEmitter::SetMaxNumAliveParticles(const size_t maxNumAliveParticles) noexcept
-  -> void
+    -> void
 {
   m_maxNumAliveParticles = maxNumAliveParticles;
 }
 
 inline auto ParticleEmitter::AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept
-  -> void
+    -> void
 {
   m_generators.push_back(gen);
 }

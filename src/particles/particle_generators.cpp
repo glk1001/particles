@@ -13,12 +13,15 @@ module Particles.ParticleGenerators;
 namespace PARTICLES::GENERATORS
 {
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 BoxPositionGenerator::BoxPositionGenerator(const glm::vec4& position,
                                            const glm::vec4& maxStartPositionOffset) noexcept
   : m_position{position}, m_maxStartPositionOffset{maxStartPositionOffset}
 {
 }
 
+// NOLINTBEGIN(bugprone-easily-swappable-parameters,
+//             cppcoreguidelines-pro-type-union-access)
 auto BoxPositionGenerator::Generate([[maybe_unused]] const double dt,
                                     ParticleData* const particleData,
                                     const size_t startId,
@@ -38,7 +41,9 @@ auto BoxPositionGenerator::Generate([[maybe_unused]] const double dt,
     particleData->SetPosition(i, glm::linearRand(posMin, posMax));
   }
 }
+// NOLINTEND
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 RoundPositionGenerator::RoundPositionGenerator(const glm::vec4& center,
                                                const double xRadius,
                                                const double yRadius) noexcept
@@ -48,6 +53,7 @@ RoundPositionGenerator::RoundPositionGenerator(const glm::vec4& center,
 
 auto RoundPositionGenerator::Generate([[maybe_unused]] const double dt,
                                       ParticleData* const particleData,
+                                      // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
                                       const size_t startId,
                                       const size_t endId) noexcept -> void
 {
@@ -63,6 +69,7 @@ auto RoundPositionGenerator::Generate([[maybe_unused]] const double dt,
   }
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 BasicColorGenerator::BasicColorGenerator(const glm::vec4& minStartColor,
                                          const glm::vec4& maxStartColor,
                                          const glm::vec4& minEndColor,
@@ -76,6 +83,7 @@ BasicColorGenerator::BasicColorGenerator(const glm::vec4& minStartColor,
 
 auto BasicColorGenerator::Generate([[maybe_unused]] const double dt,
                                    ParticleData* const particleData,
+                                   // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
                                    const size_t startId,
                                    const size_t endId) noexcept -> void
 {
@@ -86,6 +94,7 @@ auto BasicColorGenerator::Generate([[maybe_unused]] const double dt,
   }
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 BasicVelocityGenerator::BasicVelocityGenerator(const glm::vec4& minStartVelocity,
                                                const glm::vec4& maxStartVelocity) noexcept
   : m_minStartVelocity{minStartVelocity}, m_maxStartVelocity{maxStartVelocity}
@@ -94,6 +103,7 @@ BasicVelocityGenerator::BasicVelocityGenerator(const glm::vec4& minStartVelocity
 
 auto BasicVelocityGenerator::Generate([[maybe_unused]] const double dt,
                                       ParticleData* const particleData,
+                                      // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
                                       const size_t startId,
                                       const size_t endId) noexcept -> void
 {
@@ -103,6 +113,7 @@ auto BasicVelocityGenerator::Generate([[maybe_unused]] const double dt,
   }
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 SphereVelocityGenerator::SphereVelocityGenerator(const float minVelocity,
                                                  const float maxVelocity) noexcept
   : m_minVelocity{minVelocity}, m_maxVelocity{maxVelocity}
@@ -111,33 +122,38 @@ SphereVelocityGenerator::SphereVelocityGenerator(const float minVelocity,
 
 auto SphereVelocityGenerator::Generate([[maybe_unused]] const double dt,
                                        ParticleData* const particleData,
+                                       // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
                                        const size_t startId,
                                        const size_t endId) noexcept -> void
 {
   for (auto i = startId; i < endId; ++i)
   {
-    const auto phi   = static_cast<float>(glm::linearRand(-M_PI, M_PI));
-    const auto theta = static_cast<float>(glm::linearRand(-M_PI, M_PI));
-    const auto v     = glm::linearRand(m_minVelocity, m_maxVelocity);
-    const auto r     = v * std::sin(phi);
+    const auto phi      = static_cast<float>(glm::linearRand(-M_PI, M_PI));
+    const auto theta    = static_cast<float>(glm::linearRand(-M_PI, M_PI));
+    const auto velocity = glm::linearRand(m_minVelocity, m_maxVelocity);
+    const auto radius   = velocity * std::sin(phi);
 
     particleData->SetVelocity(i,
-                              {r * std::cos(theta),
-                               r * std::sin(theta),
+                              {radius * std::cos(theta),
+                               radius * std::sin(theta),
                                0.0F, //v * std::cos(phi),
+                               // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
                                particleData->GetVelocity(i).w});
   }
 }
 
-VelocityFromPositionGenerator::VelocityFromPositionGenerator(const glm::vec4& offset,
-                                                             const float minScale,
-                                                             const float maxScale) noexcept
+VelocityFromPositionGenerator::VelocityFromPositionGenerator(
+    const glm::vec4& offset,
+    // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
+    const float minScale,
+    const float maxScale) noexcept
   : m_offset{offset}, m_minScale{minScale}, m_maxScale{maxScale}
 {
 }
 
 auto VelocityFromPositionGenerator::Generate([[maybe_unused]] const double dt,
                                              ParticleData* const particleData,
+                                             // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
                                              const size_t startId,
                                              const size_t endId) noexcept -> void
 {
@@ -149,6 +165,7 @@ auto VelocityFromPositionGenerator::Generate([[maybe_unused]] const double dt,
   }
 }
 
+// NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 BasicTimeGenerator::BasicTimeGenerator(const float minTime, const float maxTime) noexcept
   : m_minTime{minTime}, m_maxTime{maxTime}
 {
@@ -156,6 +173,7 @@ BasicTimeGenerator::BasicTimeGenerator(const float minTime, const float maxTime)
 
 auto BasicTimeGenerator::Generate([[maybe_unused]] const double dt,
                                   ParticleData* const particleData,
+                                  // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
                                   const size_t startId,
                                   const size_t endId) noexcept -> void
 {

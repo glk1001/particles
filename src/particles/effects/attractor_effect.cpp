@@ -140,27 +140,27 @@ auto AttractorEffect::UpdateEffect(const double dt) -> void
 
   static constexpr auto RADIUS = 0.55F;
 
-  const auto m_zScale = 1.0F;
+  const auto zScale = 1.0F;
 
   static constexpr auto LIFETIME_FACTOR1 = 2.5F;
   m_positionGenerators[0]->SetPosition(
       {+RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR1),
        +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR1),
-       m_zScale * Z_GEN_POS1 * std::cos(s_lifetime * LIFETIME_FACTOR1),
+       zScale * Z_GEN_POS1 * std::cos(s_lifetime * LIFETIME_FACTOR1),
        0.0F});
 
   static constexpr auto LIFETIME_FACTOR2 = 2.0F;
   m_positionGenerators[1]->SetPosition(
       {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR2),
        +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR2),
-       m_zScale * Z_GEN_POS2 * std::cos(s_lifetime * LIFETIME_FACTOR2),
+       zScale * Z_GEN_POS2 * std::cos(s_lifetime * LIFETIME_FACTOR2),
        0.0F});
 
   static constexpr auto LIFETIME_FACTOR3 = 6.0F;
   m_positionGenerators[2]->SetPosition(
       {-RADIUS * std::sin(s_lifetime * LIFETIME_FACTOR3),
        +RADIUS * std::cos(s_lifetime * LIFETIME_FACTOR3),
-       m_zScale * Z_GEN_POS3 * std::cos(s_lifetime * LIFETIME_FACTOR3),
+       zScale * Z_GEN_POS3 * std::cos(s_lifetime * LIFETIME_FACTOR3),
        0.0F});
 }
 
