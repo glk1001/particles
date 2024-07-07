@@ -82,9 +82,8 @@ auto ParticleEmitter::Emit(const double dt, ParticleData* const particleData) no
   }
 }
 
-auto ParticleEmitter::GetMaxAllowedNewParticles(const double dt,
-                                                const ParticleData& particleData) const noexcept
-    -> size_t
+auto ParticleEmitter::GetMaxAllowedNewParticles(
+    const double dt, const ParticleData& particleData) const noexcept -> size_t
 {
   const auto requestedNewParticles  = static_cast<size_t>(dt * static_cast<double>(m_emitRate));
   const auto newTotalAliveParticles = requestedNewParticles + particleData.GetAliveCount();

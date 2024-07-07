@@ -19,12 +19,12 @@ namespace
 class EffectFactory
 {
 public:
-  [[nodiscard]] static auto create(const char* name, size_t numParticles)
-      -> std::shared_ptr<IEffect>;
+  [[nodiscard]] static auto create(const char* name,
+                                   size_t numParticles) -> std::shared_ptr<IEffect>;
 };
 
-auto EffectFactory::create(const char* const name, const size_t numParticles)
-    -> std::shared_ptr<IEffect>
+auto EffectFactory::create(const char* const name,
+                           const size_t numParticles) -> std::shared_ptr<IEffect>
 {
   const auto effect = std::string{name};
 

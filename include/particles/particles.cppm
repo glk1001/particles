@@ -116,9 +116,8 @@ private:
   size_t m_maxNumAliveParticles = std::numeric_limits<size_t>::max();
   std::vector<std::shared_ptr<IParticleGenerator>> m_generators;
 
-  [[nodiscard]] auto GetMaxAllowedNewParticles(double dt,
-                                               const ParticleData& particleData) const noexcept
-      -> size_t;
+  [[nodiscard]] auto GetMaxAllowedNewParticles(
+      double dt, const ParticleData& particleData) const noexcept -> size_t;
 };
 
 class IParticleGenerator
@@ -131,8 +130,10 @@ public:
   auto operator=(const IParticleGenerator&) -> IParticleGenerator& = delete;
   auto operator=(IParticleGenerator&&) -> IParticleGenerator&      = delete;
 
-  virtual auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId)
-      -> void = 0;
+  virtual auto Generate(double dt,
+                        ParticleData* particleData,
+                        size_t startId,
+                        size_t endId) -> void = 0;
 };
 
 class IParticleUpdater
@@ -214,8 +215,8 @@ inline auto ParticleData::GetAcceleration(const size_t i) const noexcept -> cons
   return m_acceleration[i];
 }
 
-inline auto ParticleData::SetAcceleration(const size_t i, const glm::vec4& acceleration) noexcept
-    -> void
+inline auto ParticleData::SetAcceleration(const size_t i,
+                                          const glm::vec4& acceleration) noexcept -> void
 {
   m_acceleration[i] = acceleration;
 }
@@ -240,8 +241,8 @@ inline auto ParticleData::GetStartColor(const size_t i) const noexcept -> const 
   return m_startColor[i];
 }
 
-inline auto ParticleData::SetStartColor(const size_t i, const glm::vec4& startColor) noexcept
-    -> void
+inline auto ParticleData::SetStartColor(const size_t i,
+                                        const glm::vec4& startColor) noexcept -> void
 {
   m_startColor[i] = startColor;
 }

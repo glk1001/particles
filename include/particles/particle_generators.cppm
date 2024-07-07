@@ -16,8 +16,10 @@ public:
 
   auto SetPosition(const glm::vec4& position) noexcept -> void;
 
-  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
-      -> void override;
+  auto Generate(double dt,
+                ParticleData* particleData,
+                size_t startId,
+                size_t endId) noexcept -> void override;
 
 private:
   glm::vec4 m_position;
@@ -31,8 +33,10 @@ public:
 
   auto SetCentreAndRadius(const glm::vec4& center, float xRadius, float yRadius) noexcept -> void;
 
-  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
-      -> void override;
+  auto Generate(double dt,
+                ParticleData* particleData,
+                size_t startId,
+                size_t endId) noexcept -> void override;
 
 private:
   glm::vec4 m_center;
@@ -48,8 +52,10 @@ public:
                       const glm::vec4& minEndColor,
                       const glm::vec4& maxEndColor) noexcept;
 
-  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
-      -> void override;
+  auto Generate(double dt,
+                ParticleData* particleData,
+                size_t startId,
+                size_t endId) noexcept -> void override;
 
 private:
   glm::vec4 m_minStartColor;
@@ -64,8 +70,10 @@ public:
   BasicVelocityGenerator(const glm::vec4& minStartVelocity,
                          const glm::vec4& maxStartVelocity) noexcept;
 
-  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
-      -> void override;
+  auto Generate(double dt,
+                ParticleData* particleData,
+                size_t startId,
+                size_t endId) noexcept -> void override;
 
 private:
   glm::vec4 m_minStartVelocity;
@@ -77,8 +85,10 @@ class SphereVelocityGenerator : public IParticleGenerator
 public:
   SphereVelocityGenerator(float minVelocity, float maxVelocity) noexcept;
 
-  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
-      -> void override;
+  auto Generate(double dt,
+                ParticleData* particleData,
+                size_t startId,
+                size_t endId) noexcept -> void override;
 
 private:
   float m_minVelocity;
@@ -90,8 +100,10 @@ class VelocityFromPositionGenerator : public IParticleGenerator
 public:
   VelocityFromPositionGenerator(const glm::vec4& offset, float minScale, float maxScale) noexcept;
 
-  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
-      -> void override;
+  auto Generate(double dt,
+                ParticleData* particleData,
+                size_t startId,
+                size_t endId) noexcept -> void override;
 
 private:
   glm::vec4 m_offset;
@@ -104,8 +116,10 @@ class BasicTimeGenerator : public IParticleGenerator
 public:
   BasicTimeGenerator(float minTime, float maxTime) noexcept;
 
-  auto Generate(double dt, ParticleData* particleData, size_t startId, size_t endId) noexcept
-      -> void override;
+  auto Generate(double dt,
+                ParticleData* particleData,
+                size_t startId,
+                size_t endId) noexcept -> void override;
 
 private:
   float m_minTime;
