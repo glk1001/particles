@@ -1,3 +1,5 @@
+// FROM: https://www.cppstories.com/2015/04/flexible-particle-system-summary/
+
 module;
 
 #include <glm/vec4.hpp>
@@ -17,9 +19,9 @@ public:
 
   auto Reset() noexcept -> void;
 
-  auto Kill(size_t id) -> void;
-  auto Wake(size_t id) -> void;
-  auto SwapData(size_t a, size_t b) -> void;
+  auto Kill(size_t id) noexcept -> void;
+  auto Wake(size_t id) noexcept -> void;
+  auto SwapData(size_t a, size_t b) noexcept -> void;
 
   [[nodiscard]] auto GetCount() const noexcept -> size_t;
   [[nodiscard]] auto GetAliveCount() const noexcept -> size_t;
@@ -49,7 +51,7 @@ public:
   [[nodiscard]] auto GetTime(size_t i) const noexcept -> const glm::vec4&;
   auto SetTime(size_t i, const glm::vec4& time) noexcept -> void;
 
-  [[nodiscard]] static auto ComputeMemoryUsage(const ParticleData& particleData) -> size_t;
+  [[nodiscard]] static auto ComputeMemoryUsage(const ParticleData& particleData) noexcept -> size_t;
 
 private:
   size_t m_count;
@@ -78,9 +80,9 @@ public:
   auto AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept -> void;
   auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
 
-  auto Reset() -> void;
+  auto Reset() noexcept -> void;
 
-  auto Update(double dt) -> void;
+  auto Update(double dt) noexcept -> void;
 
   [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t;
   [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t;
@@ -133,7 +135,7 @@ public:
   virtual auto Generate(double dt,
                         ParticleData* particleData,
                         size_t startId,
-                        size_t endId) -> void = 0;
+                        size_t endId) noexcept -> void = 0;
 };
 
 class IParticleUpdater
@@ -164,8 +166,8 @@ inline auto ParticleData::GetCount() const noexcept -> size_t
   return m_count;
 }
 
-inline auto ParticleData::ComputeMemoryUsage([[maybe_unused]] const ParticleData& particleData)
-    -> size_t
+inline auto ParticleData::ComputeMemoryUsage(
+    [[maybe_unused]] const ParticleData& particleData) noexcept -> size_t
 {
   return MEM_BYTES;
 }

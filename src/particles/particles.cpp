@@ -22,7 +22,7 @@ ParticleData::ParticleData(const size_t count) noexcept
 {
 }
 
-auto ParticleData::Kill(const size_t id) -> void
+auto ParticleData::Kill(const size_t id) noexcept -> void
 {
   //if (m_countAlive > 0) // maybe this if can be removed?
   {
@@ -32,7 +32,7 @@ auto ParticleData::Kill(const size_t id) -> void
   }
 }
 
-auto ParticleData::Wake(const size_t id) -> void
+auto ParticleData::Wake(const size_t id) noexcept -> void
 {
   //if (m_countAlive < m_count) // maybe this 'if' can be removed?
   {
@@ -42,7 +42,7 @@ auto ParticleData::Wake(const size_t id) -> void
   }
 }
 
-auto ParticleData::SwapData(const size_t a, const size_t b) -> void
+auto ParticleData::SwapData(const size_t a, const size_t b) noexcept -> void
 {
   /*std::swap(m_pos[a], m_pos[b]);
     std::swap(m_col[a], m_col[b]);
@@ -103,7 +103,7 @@ ParticleSystem::ParticleSystem(const size_t maxCount) : m_count{maxCount}, m_par
 {
 }
 
-auto ParticleSystem::Update(const double dt) -> void
+auto ParticleSystem::Update(const double dt) noexcept -> void
 {
   for (auto& em : m_emitters)
   {
@@ -121,7 +121,7 @@ auto ParticleSystem::Update(const double dt) -> void
   }
 }
 
-auto ParticleSystem::Reset() -> void
+auto ParticleSystem::Reset() noexcept -> void
 {
   m_particles.Reset();
 }

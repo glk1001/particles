@@ -22,16 +22,16 @@ public:
 
   auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
 
-  auto Reset() -> void override;
+  auto Reset() noexcept -> void override;
   auto SetTintColor(const glm::vec4& tintColor) noexcept -> void override;
   auto SetTintMixAmount(float mixAmount) noexcept -> void override;
   auto SetMaxNumAliveParticles(size_t maxNumAliveParticles) noexcept -> void override;
 
-  auto Update(double dt) -> void override;
+  auto Update(double dt) noexcept -> void override;
 
-  [[nodiscard]] auto GetNumAllParticles() -> size_t override;
-  [[nodiscard]] auto GetNumAliveParticles() -> size_t override;
-  [[nodiscard]] auto GetSystem() const -> const PARTICLES::ParticleSystem* override;
+  [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t override;
+  [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t override;
+  [[nodiscard]] auto GetSystem() const noexcept -> const PARTICLES::ParticleSystem& override;
 
 private:
   std::shared_ptr<PARTICLES::ParticleSystem> m_system;
@@ -58,7 +58,7 @@ private:
 namespace PARTICLES::EFFECTS
 {
 
-inline auto AttractorEffect::Reset() -> void
+inline auto AttractorEffect::Reset() noexcept -> void
 {
   m_system->Reset();
 }
@@ -79,25 +79,25 @@ inline auto AttractorEffect::AddUpdater(const std::shared_ptr<IParticleUpdater>&
   m_system->AddUpdater(updater);
 }
 
-inline auto AttractorEffect::Update(const double dt) -> void
+inline auto AttractorEffect::Update(const double dt) noexcept -> void
 {
   UpdateEffect(dt);
   m_system->Update(dt);
 }
 
-inline auto AttractorEffect::GetNumAllParticles() -> size_t
+inline auto AttractorEffect::GetNumAllParticles() const noexcept -> size_t
 {
   return m_system->GetNumAllParticles();
 }
 
-inline auto AttractorEffect::GetNumAliveParticles() -> size_t
+inline auto AttractorEffect::GetNumAliveParticles() const noexcept -> size_t
 {
   return m_system->GetNumAliveParticles();
 }
 
-inline auto AttractorEffect::GetSystem() const -> const PARTICLES::ParticleSystem*
+inline auto AttractorEffect::GetSystem() const noexcept -> const PARTICLES::ParticleSystem&
 {
-  return m_system.get();
+  return *m_system;
 }
 
 } // namespace PARTICLES::EFFECTS

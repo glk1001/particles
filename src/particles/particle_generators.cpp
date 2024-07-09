@@ -10,6 +10,8 @@ module;
 
 module Particles.ParticleGenerators;
 
+import Particles.Particles;
+
 namespace PARTICLES::GENERATORS
 {
 
