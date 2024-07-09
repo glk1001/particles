@@ -29,6 +29,7 @@ auto BoxPositionGenerator::Generate([[maybe_unused]] const double dt,
                                     const size_t startId,
                                     const size_t endId) noexcept -> void
 {
+  // NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
   const auto posMin = glm::vec4{m_position.x - m_maxStartPositionOffset.x,
                                 m_position.y - m_maxStartPositionOffset.y,
                                 m_position.z - m_maxStartPositionOffset.z,
@@ -37,6 +38,7 @@ auto BoxPositionGenerator::Generate([[maybe_unused]] const double dt,
                                 m_position.y + m_maxStartPositionOffset.y,
                                 m_position.z + m_maxStartPositionOffset.z,
                                 1.0};
+  // NOLINTEND(cppcoreguidelines-pro-type-union-access)
 
   for (auto i = startId; i < endId; ++i)
   {

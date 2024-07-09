@@ -20,12 +20,9 @@ using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
 
 TunnelEffect::TunnelEffect(const size_t numParticles) noexcept
+  : m_system{0 == numParticles ? 10000 : numParticles}
 {
-  //
-  // Particles
-  //
-  const auto numParticlesToUse = 0 == numParticles ? 10000 : numParticles;
-  m_system                     = std::make_shared<ParticleSystem>(numParticlesToUse);
+  const auto numParticlesToUse = m_system.GetNumAllParticles();
 
   //
   // emitter:
@@ -61,21 +58,21 @@ TunnelEffect::TunnelEffect(const size_t numParticles) noexcept
   const auto timeGenerator = std::make_shared<BasicTimeGenerator>(MIN_LIFETIME, MAX_LIFETIME);
   particleEmitter->AddGenerator(timeGenerator);
 
-  m_system->AddEmitter(particleEmitter);
+  m_system.AddEmitter(particleEmitter);
 
   const auto timeUpdater = std::make_shared<BasicTimeUpdater>();
-  m_system->AddUpdater(timeUpdater);
+  m_system.AddUpdater(timeUpdater);
 
   //const auto colorUpdater = std::make_shared<BasicColorUpdater>();
   static constexpr auto MIN_COLOR_POSITION = glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F};
   static constexpr auto MAX_COLOR_POSITION = glm::vec4{+2.0F, +3.0F, +3.0F, 2.0F};
   const auto colorUpdater = std::make_shared<PARTICLES::UPDATERS::PositionColorUpdater>(
       MIN_COLOR_POSITION, MAX_COLOR_POSITION);
-  m_system->AddUpdater(colorUpdater);
+  m_system.AddUpdater(colorUpdater);
 
   static constexpr auto EULER_ACCELERATION = glm::vec4{0.0F, 0.0F, 0.0F, 0.0F};
   const auto eulerUpdater                  = std::make_shared<EulerUpdater>(EULER_ACCELERATION);
-  m_system->AddUpdater(eulerUpdater);
+  m_system.AddUpdater(eulerUpdater);
 }
 
 auto TunnelEffect::UpdateEffect(const double dt) noexcept -> void

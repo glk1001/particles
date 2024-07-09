@@ -22,21 +22,18 @@ using UPDATERS::EulerUpdater;
 using UPDATERS::VelocityColorUpdater;
 
 AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
+  : m_system{0 == numParticles ? 250000 : numParticles}
 {
-  //
-  // Particles
-  //
-  const auto numParticlesToUse = 0 == numParticles ? 250000 : numParticles;
-  m_system                     = std::make_shared<ParticleSystem>(numParticlesToUse);
-
   //
   // common
   //
+  const auto numParticlesToUse = m_system.GetNumAllParticles();
+
   static constexpr auto MIN_START_COLOR = glm::vec4{0.39F, 0.39F, 0.39F, 1.00F};
   static constexpr auto MAX_START_COLOR = glm::vec4{0.69F, 0.69F, 0.69F, 1.00F};
   static constexpr auto MIN_END_COLOR   = glm::vec4{0.09F, 0.09F, 0.09F, 0.00F};
   static constexpr auto MAX_END_COLOR   = glm::vec4{0.39F, 0.39F, 0.39F, 0.25F};
-  m_colorGenerator                      = std::make_shared<BasicColorGenerator>(
+  m_colorGenerator                      = std::make_unique<BasicColorGenerator>(
       MIN_START_COLOR, MAX_START_COLOR, MIN_END_COLOR, MAX_END_COLOR);
 
   static constexpr auto MIN_SPHERE_VELOCITY = 0.1F;
@@ -64,7 +61,7 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_particleEmitters[0]->AddGenerator(m_colorGenerator);
   m_particleEmitters[0]->AddGenerator(velocityGenerator);
   m_particleEmitters[0]->AddGenerator(timeGenerator);
-  m_system->AddEmitter(m_particleEmitters[0]);
+  m_system.AddEmitter(m_particleEmitters[0]);
 
   //
   // emitter 2:
@@ -80,7 +77,7 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_particleEmitters[1]->AddGenerator(m_colorGenerator);
   m_particleEmitters[1]->AddGenerator(velocityGenerator);
   m_particleEmitters[1]->AddGenerator(timeGenerator);
-  m_system->AddEmitter(m_particleEmitters[1]);
+  m_system.AddEmitter(m_particleEmitters[1]);
 
   //
   // emitter 3:
@@ -96,18 +93,18 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_particleEmitters[2]->AddGenerator(m_colorGenerator);
   m_particleEmitters[2]->AddGenerator(velocityGenerator);
   m_particleEmitters[2]->AddGenerator(timeGenerator);
-  m_system->AddEmitter(m_particleEmitters[2]);
+  m_system.AddEmitter(m_particleEmitters[2]);
 
   //
   // updaters:
   //
   const auto timeUpdater = std::make_shared<BasicTimeUpdater>();
-  m_system->AddUpdater(timeUpdater);
+  m_system.AddUpdater(timeUpdater);
 
   static constexpr auto MIN_VELOCITY = glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F};
   static constexpr auto MAX_VELOCITY = glm::vec4{+2.0F, +2.0F, +2.0F, 2.0F};
   m_colorUpdater = std::make_shared<VelocityColorUpdater>(MIN_VELOCITY, MAX_VELOCITY);
-  m_system->AddUpdater(m_colorUpdater);
+  m_system.AddUpdater(m_colorUpdater);
 
   static constexpr auto ATTRACTOR_POSITION1 = glm::vec4{0.0F, +0.00F, +0.75F, 1.0F};
   static constexpr auto ATTRACTOR_POSITION2 = glm::vec4{0.0F, +0.00F, -0.75F, 1.0F};
@@ -118,11 +115,11 @@ AttractorEffect::AttractorEffect(const size_t numParticles) noexcept
   m_attractorUpdater->AddAttractorPosition(ATTRACTOR_POSITION2);
   m_attractorUpdater->AddAttractorPosition(ATTRACTOR_POSITION3);
   m_attractorUpdater->AddAttractorPosition(ATTRACTOR_POSITION4);
-  m_system->AddUpdater(m_attractorUpdater);
+  m_system.AddUpdater(m_attractorUpdater);
 
   static constexpr auto EULER_ACCELERATION = glm::vec4{0.0F, 0.0F, 0.0F, 0.0F};
   const auto eulerUpdater                  = std::make_shared<EulerUpdater>(EULER_ACCELERATION);
-  m_system->AddUpdater(eulerUpdater);
+  m_system.AddUpdater(eulerUpdater);
 }
 
 auto AttractorEffect::SetMaxNumAliveParticles(const size_t maxNumAliveParticles) noexcept -> void

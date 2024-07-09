@@ -10,6 +10,11 @@ import Particles.ParticleGenerators;
 import Particles.ParticleUpdaters;
 import Particles.Particles;
 
+using PARTICLES::GENERATORS::BasicColorGenerator;
+using PARTICLES::GENERATORS::BoxPositionGenerator;
+using PARTICLES::UPDATERS::EulerUpdater;
+using PARTICLES::UPDATERS::FloorUpdater;
+
 export namespace PARTICLES::EFFECTS
 {
 
@@ -19,25 +24,22 @@ public:
   explicit FountainEffect(size_t numParticles) noexcept;
 
   auto Reset() noexcept -> void override;
-  auto SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void override {}
-  auto SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept -> void override {}
+
+  auto SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void override;
+  auto SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept -> void override;
   auto SetMaxNumAliveParticles([[maybe_unused]] const size_t maxNumAliveParticles) noexcept
-      -> void override
-  {
-  }
+      -> void override;
 
   auto Update(double dt) noexcept -> void override;
 
-  [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t override;
-  [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t override;
-  [[nodiscard]] auto GetSystem() const noexcept -> const PARTICLES::ParticleSystem& override;
+  [[nodiscard]] auto GetSystem() const noexcept -> const ParticleSystem& override;
 
 private:
-  std::shared_ptr<PARTICLES::ParticleSystem> m_system;
-  std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator> m_positionGenerator;
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator;
-  std::shared_ptr<PARTICLES::UPDATERS::EulerUpdater> m_eulerUpdater;
-  std::shared_ptr<PARTICLES::UPDATERS::FloorUpdater> m_floorUpdater;
+  ParticleSystem m_system;
+  std::shared_ptr<BoxPositionGenerator> m_positionGenerator;
+  std::shared_ptr<BasicColorGenerator> m_colorGenerator;
+  std::shared_ptr<EulerUpdater> m_eulerUpdater;
+  std::shared_ptr<FloorUpdater> m_floorUpdater;
   static constexpr auto FLOOR_Y = -0.25F;
 
   auto UpdateEffect(double dt) noexcept -> void;
@@ -50,28 +52,33 @@ namespace PARTICLES::EFFECTS
 
 inline auto FountainEffect::Reset() noexcept -> void
 {
-  m_system->Reset();
+  m_system.Reset();
+}
+
+inline auto FountainEffect::SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept
+    -> void
+{
+}
+
+inline auto FountainEffect::SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept
+    -> void
+{
+}
+
+inline auto FountainEffect::SetMaxNumAliveParticles(
+    [[maybe_unused]] const size_t maxNumAliveParticles) noexcept -> void
+{
 }
 
 inline auto FountainEffect::Update(const double dt) noexcept -> void
 {
   UpdateEffect(dt);
-  m_system->Update(dt);
+  m_system.Update(dt);
 }
 
-inline auto FountainEffect::GetNumAllParticles() const noexcept -> size_t
+inline auto FountainEffect::GetSystem() const noexcept -> const ParticleSystem&
 {
-  return m_system->GetNumAllParticles();
-}
-
-inline auto FountainEffect::GetNumAliveParticles() const noexcept -> size_t
-{
-  return m_system->GetNumAliveParticles();
-}
-
-inline auto FountainEffect::GetSystem() const noexcept -> const PARTICLES::ParticleSystem&
-{
-  return *m_system;
+  return m_system;
 }
 
 } // namespace PARTICLES::EFFECTS

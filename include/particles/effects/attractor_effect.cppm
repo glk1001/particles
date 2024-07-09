@@ -12,6 +12,11 @@ import Particles.ParticleGenerators;
 import Particles.ParticleUpdaters;
 import Particles.Particles;
 
+using PARTICLES::GENERATORS::BasicColorGenerator;
+using PARTICLES::GENERATORS::BoxPositionGenerator;
+using PARTICLES::UPDATERS::AttractorUpdater;
+using PARTICLES::UPDATERS::VelocityColorUpdater;
+
 export namespace PARTICLES::EFFECTS
 {
 
@@ -20,35 +25,31 @@ class AttractorEffect : public IEffect
 public:
   explicit AttractorEffect(size_t numParticles) noexcept;
 
-  auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
-
   auto Reset() noexcept -> void override;
+
   auto SetTintColor(const glm::vec4& tintColor) noexcept -> void override;
   auto SetTintMixAmount(float mixAmount) noexcept -> void override;
   auto SetMaxNumAliveParticles(size_t maxNumAliveParticles) noexcept -> void override;
 
   auto Update(double dt) noexcept -> void override;
 
-  [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t override;
-  [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t override;
-  [[nodiscard]] auto GetSystem() const noexcept -> const PARTICLES::ParticleSystem& override;
+  [[nodiscard]] auto GetSystem() const noexcept -> const ParticleSystem& override;
 
 private:
-  std::shared_ptr<PARTICLES::ParticleSystem> m_system;
+  ParticleSystem m_system;
 
   static constexpr auto NUM_EMITTERS = 3U;
-  std::array<std::shared_ptr<PARTICLES::ParticleEmitter>, NUM_EMITTERS> m_particleEmitters;
+  std::array<std::shared_ptr<ParticleEmitter>, NUM_EMITTERS> m_particleEmitters;
 
   static constexpr auto NUM_BOX_POS_GENERATORS = 3U;
-  std::array<std::shared_ptr<PARTICLES::GENERATORS::BoxPositionGenerator>, NUM_BOX_POS_GENERATORS>
-      m_positionGenerators;
+  std::array<std::shared_ptr<BoxPositionGenerator>, NUM_BOX_POS_GENERATORS> m_positionGenerators;
   static constexpr auto Z_GEN_POS1 = -0.25F;
   static constexpr auto Z_GEN_POS2 = +0.25F;
   static constexpr auto Z_GEN_POS3 = +0.25F;
 
-  std::shared_ptr<PARTICLES::GENERATORS::BasicColorGenerator> m_colorGenerator;
-  std::shared_ptr<PARTICLES::UPDATERS::AttractorUpdater> m_attractorUpdater;
-  std::shared_ptr<PARTICLES::UPDATERS::VelocityColorUpdater> m_colorUpdater;
+  std::shared_ptr<BasicColorGenerator> m_colorGenerator;
+  std::shared_ptr<AttractorUpdater> m_attractorUpdater;
+  std::shared_ptr<VelocityColorUpdater> m_colorUpdater;
 
   auto UpdateEffect(double dt) -> void;
 };
@@ -60,7 +61,7 @@ namespace PARTICLES::EFFECTS
 
 inline auto AttractorEffect::Reset() noexcept -> void
 {
-  m_system->Reset();
+  m_system.Reset();
 }
 
 inline auto AttractorEffect::SetTintColor(const glm::vec4& tintColor) noexcept -> void
@@ -73,31 +74,16 @@ inline auto AttractorEffect::SetTintMixAmount(const float mixAmount) noexcept ->
   m_colorUpdater->SetTintMixAmount(mixAmount);
 }
 
-inline auto AttractorEffect::AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept
-    -> void
-{
-  m_system->AddUpdater(updater);
-}
-
 inline auto AttractorEffect::Update(const double dt) noexcept -> void
 {
   UpdateEffect(dt);
-  m_system->Update(dt);
+  m_system.Update(dt);
 }
 
-inline auto AttractorEffect::GetNumAllParticles() const noexcept -> size_t
+inline auto AttractorEffect::GetSystem() const noexcept -> const ParticleSystem&
 {
-  return m_system->GetNumAllParticles();
+  return m_system;
 }
 
-inline auto AttractorEffect::GetNumAliveParticles() const noexcept -> size_t
-{
-  return m_system->GetNumAliveParticles();
-}
-
-inline auto AttractorEffect::GetSystem() const noexcept -> const PARTICLES::ParticleSystem&
-{
-  return *m_system;
-}
 
 } // namespace PARTICLES::EFFECTS
