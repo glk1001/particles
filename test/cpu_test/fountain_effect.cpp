@@ -4,7 +4,7 @@ module;
 #include <glm/vec4.hpp>
 #include <memory>
 
-module Particles.Effects.Fountain;
+module CpuTest.Particles.FountainEffect;
 
 import Particles.ParticleGenerators;
 import Particles.ParticleUpdaters;

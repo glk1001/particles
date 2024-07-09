@@ -4,7 +4,7 @@ module;
 #include <glm/vec4.hpp>
 #include <memory>
 
-module Particles.Effects.Attractor;
+module CpuTest.Particles.AttractorEffect;
 
 import Particles.ParticleGenerators;
 import Particles.ParticleUpdaters;

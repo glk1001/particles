@@ -5,9 +5,9 @@ module;
 #include <glm/fwd.hpp>
 #include <memory>
 
-export module Particles.Effects.Attractor;
+export module CpuTest.Particles.AttractorEffect;
 
-import Particles.Effects.Effect;
+import Particles.Effect;
 import Particles.ParticleGenerators;
 import Particles.ParticleUpdaters;
 import Particles.Particles;
@@ -84,6 +84,5 @@ inline auto AttractorEffect::GetSystem() const noexcept -> const ParticleSystem&
 {
   return m_system;
 }
-
 
 } // namespace PARTICLES::EFFECTS

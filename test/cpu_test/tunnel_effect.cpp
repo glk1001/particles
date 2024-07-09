@@ -4,7 +4,7 @@ module;
 #include <glm/vec4.hpp>
 #include <memory>
 
-module Particles.Effects.Tunnel;
+module CpuTest.Particles.TunnelEffect;
 
 import Particles.ParticleGenerators;
 import Particles.ParticleUpdaters;
@@ -18,6 +18,7 @@ using GENERATORS::BasicVelocityGenerator;
 using GENERATORS::RoundPositionGenerator;
 using UPDATERS::BasicTimeUpdater;
 using UPDATERS::EulerUpdater;
+using UPDATERS::PositionColorUpdater;
 
 TunnelEffect::TunnelEffect(const size_t numParticles) noexcept
   : m_system{0 == numParticles ? 10000 : numParticles}
@@ -66,8 +67,8 @@ TunnelEffect::TunnelEffect(const size_t numParticles) noexcept
   //const auto colorUpdater = std::make_shared<BasicColorUpdater>();
   static constexpr auto MIN_COLOR_POSITION = glm::vec4{-0.5F, -0.5F, -0.5F, 0.0F};
   static constexpr auto MAX_COLOR_POSITION = glm::vec4{+2.0F, +3.0F, +3.0F, 2.0F};
-  const auto colorUpdater = std::make_shared<PARTICLES::UPDATERS::PositionColorUpdater>(
-      MIN_COLOR_POSITION, MAX_COLOR_POSITION);
+  const auto colorUpdater =
+      std::make_shared<PositionColorUpdater>(MIN_COLOR_POSITION, MAX_COLOR_POSITION);
   m_system.AddUpdater(colorUpdater);
 
   static constexpr auto EULER_ACCELERATION = glm::vec4{0.0F, 0.0F, 0.0F, 0.0F};

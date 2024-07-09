@@ -3,7 +3,7 @@ module;
 #include <cstddef>
 #include <glm/vec4.hpp>
 
-export module Particles.Effects.Effect;
+export module Particles.Effect;
 
 import Particles.Particles;
 
@@ -21,7 +21,7 @@ public:
   auto operator=(IEffect&&) -> IEffect&      = delete;
 
   virtual auto Reset() noexcept -> void = 0;
-  
+
   virtual auto SetTintColor(const glm::vec4& tintColor) noexcept -> void = 0;
   virtual auto SetTintMixAmount(float mixAmount) noexcept -> void        = 0;
   // Higher mix amount for more tint.

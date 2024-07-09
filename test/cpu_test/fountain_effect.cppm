@@ -3,23 +3,25 @@ module;
 #include <glm/vec4.hpp>
 #include <memory>
 
-export module Particles.Effects.Tunnel;
+export module CpuTest.Particles.FountainEffect;
 
-import Particles.Effects.Effect;
+import Particles.Effect;
 import Particles.ParticleGenerators;
 import Particles.ParticleUpdaters;
 import Particles.Particles;
 
 using PARTICLES::GENERATORS::BasicColorGenerator;
-using PARTICLES::GENERATORS::RoundPositionGenerator;
+using PARTICLES::GENERATORS::BoxPositionGenerator;
+using PARTICLES::UPDATERS::EulerUpdater;
+using PARTICLES::UPDATERS::FloorUpdater;
 
 export namespace PARTICLES::EFFECTS
 {
 
-class TunnelEffect : public IEffect
+class FountainEffect : public IEffect
 {
 public:
-  explicit TunnelEffect(size_t numParticles) noexcept;
+  explicit FountainEffect(size_t numParticles) noexcept;
 
   auto Reset() noexcept -> void override;
 
@@ -30,12 +32,15 @@ public:
 
   auto Update(double dt) noexcept -> void override;
 
-  [[nodiscard]] auto GetSystem() const noexcept -> const PARTICLES::ParticleSystem& override;
+  [[nodiscard]] auto GetSystem() const noexcept -> const ParticleSystem& override;
 
 private:
   ParticleSystem m_system;
-  std::shared_ptr<RoundPositionGenerator> m_positionGenerator;
+  std::shared_ptr<BoxPositionGenerator> m_positionGenerator;
   std::shared_ptr<BasicColorGenerator> m_colorGenerator;
+  std::shared_ptr<EulerUpdater> m_eulerUpdater;
+  std::shared_ptr<FloorUpdater> m_floorUpdater;
+  static constexpr auto FLOOR_Y = -0.25F;
 
   auto UpdateEffect(double dt) noexcept -> void;
 };
@@ -45,31 +50,33 @@ private:
 namespace PARTICLES::EFFECTS
 {
 
-inline auto TunnelEffect::Reset() noexcept -> void
+inline auto FountainEffect::Reset() noexcept -> void
 {
   m_system.Reset();
 }
 
-inline auto TunnelEffect::SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept -> void
+inline auto FountainEffect::SetTintColor([[maybe_unused]] const glm::vec4& tintColor) noexcept
+    -> void
 {
 }
 
-inline auto TunnelEffect::SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept -> void
+inline auto FountainEffect::SetTintMixAmount([[maybe_unused]] const float mixAmount) noexcept
+    -> void
 {
 }
 
-inline auto TunnelEffect::SetMaxNumAliveParticles(
+inline auto FountainEffect::SetMaxNumAliveParticles(
     [[maybe_unused]] const size_t maxNumAliveParticles) noexcept -> void
 {
 }
 
-inline auto TunnelEffect::Update(const double dt) noexcept -> void
+inline auto FountainEffect::Update(const double dt) noexcept -> void
 {
   UpdateEffect(dt);
   m_system.Update(dt);
 }
 
-inline auto TunnelEffect::GetSystem() const noexcept -> const PARTICLES::ParticleSystem&
+inline auto FountainEffect::GetSystem() const noexcept -> const ParticleSystem&
 {
   return m_system;
 }

@@ -2,11 +2,11 @@
 #include <iostream>
 #include <stdexcept>
 
-import Particles.Effects.Effect;
-import Particles.Effects.Attractor;
-import Particles.Effects.Fountain;
-import Particles.Effects.Tunnel;
+import Particles.Effect;
 import Particles.Particles;
+import CpuTest.Particles.AttractorEffect;
+import CpuTest.Particles.FountainEffect;
+import CpuTest.Particles.TunnelEffect;
 
 using PARTICLES::EFFECTS::AttractorEffect;
 using PARTICLES::EFFECTS::FountainEffect;
