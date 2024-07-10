@@ -22,12 +22,9 @@ BoxPositionGenerator::BoxPositionGenerator(const glm::vec4& position,
 {
 }
 
-// NOLINTBEGIN(bugprone-easily-swappable-parameters,
-//             cppcoreguidelines-pro-type-union-access)
 auto BoxPositionGenerator::Generate([[maybe_unused]] const double dt,
-                                    ParticleData* const particleData,
-                                    const size_t startId,
-                                    const size_t endId) noexcept -> void
+                                    ParticleData& particleData,
+                                    const IdRange& idRange) noexcept -> void
 {
   // NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
   const auto posMin = glm::vec4{m_position.x - m_maxStartPositionOffset.x,
@@ -40,12 +37,11 @@ auto BoxPositionGenerator::Generate([[maybe_unused]] const double dt,
                                 1.0};
   // NOLINTEND(cppcoreguidelines-pro-type-union-access)
 
-  for (auto i = startId; i < endId; ++i)
+  for (auto i = idRange.start; i < idRange.end; ++i)
   {
-    particleData->SetPosition(i, glm::linearRand(posMin, posMax));
+    particleData.SetPosition(i, glm::linearRand(posMin, posMax));
   }
 }
-// NOLINTEND
 
 // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
 RoundPositionGenerator::RoundPositionGenerator(const glm::vec4& center,
@@ -56,20 +52,18 @@ RoundPositionGenerator::RoundPositionGenerator(const glm::vec4& center,
 }
 
 auto RoundPositionGenerator::Generate([[maybe_unused]] const double dt,
-                                      ParticleData* const particleData,
-                                      // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-                                      const size_t startId,
-                                      const size_t endId) noexcept -> void
+                                      ParticleData& particleData,
+                                      const IdRange& idRange) noexcept -> void
 {
-  for (auto i = startId; i < endId; ++i)
+  for (auto i = idRange.start; i < idRange.end; ++i)
   {
     // TODO(glk) - Need '2.01' instead of '2.0' to cover small radial gap (see tunnel effect).
     const auto ang = glm::linearRand(0.0, M_PI * 2.01);
-    particleData->SetPosition(i,
-                              m_center + glm::vec4(static_cast<double>(m_xRadius) * std::sin(ang),
-                                                   static_cast<double>(m_yRadius) * std::cos(ang),
-                                                   0.0,
-                                                   1.0));
+    particleData.SetPosition(i,
+                             m_center + glm::vec4(static_cast<double>(m_xRadius) * std::sin(ang),
+                                                  static_cast<double>(m_yRadius) * std::cos(ang),
+                                                  0.0,
+                                                  1.0));
   }
 }
 
@@ -86,15 +80,13 @@ BasicColorGenerator::BasicColorGenerator(const glm::vec4& minStartColor,
 }
 
 auto BasicColorGenerator::Generate([[maybe_unused]] const double dt,
-                                   ParticleData* const particleData,
-                                   // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-                                   const size_t startId,
-                                   const size_t endId) noexcept -> void
+                                   ParticleData& particleData,
+                                   const IdRange& idRange) noexcept -> void
 {
-  for (auto i = startId; i < endId; ++i)
+  for (auto i = idRange.start; i < idRange.end; ++i)
   {
-    particleData->SetStartColor(i, glm::linearRand(m_minStartColor, m_maxStartColor));
-    particleData->SetEndColor(i, glm::linearRand(m_minEndColor, m_maxEndColor));
+    particleData.SetStartColor(i, glm::linearRand(m_minStartColor, m_maxStartColor));
+    particleData.SetEndColor(i, glm::linearRand(m_minEndColor, m_maxEndColor));
   }
 }
 
@@ -106,14 +98,12 @@ BasicVelocityGenerator::BasicVelocityGenerator(const glm::vec4& minStartVelocity
 }
 
 auto BasicVelocityGenerator::Generate([[maybe_unused]] const double dt,
-                                      ParticleData* const particleData,
-                                      // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-                                      const size_t startId,
-                                      const size_t endId) noexcept -> void
+                                      ParticleData& particleData,
+                                      const IdRange& idRange) noexcept -> void
 {
-  for (auto i = startId; i < endId; ++i)
+  for (auto i = idRange.start; i < idRange.end; ++i)
   {
-    particleData->SetVelocity(i, glm::linearRand(m_minStartVelocity, m_maxStartVelocity));
+    particleData.SetVelocity(i, glm::linearRand(m_minStartVelocity, m_maxStartVelocity));
   }
 }
 
@@ -125,24 +115,22 @@ SphereVelocityGenerator::SphereVelocityGenerator(const float minVelocity,
 }
 
 auto SphereVelocityGenerator::Generate([[maybe_unused]] const double dt,
-                                       ParticleData* const particleData,
-                                       // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-                                       const size_t startId,
-                                       const size_t endId) noexcept -> void
+                                       ParticleData& particleData,
+                                       const IdRange& idRange) noexcept -> void
 {
-  for (auto i = startId; i < endId; ++i)
+  for (auto i = idRange.start; i < idRange.end; ++i)
   {
     const auto phi      = static_cast<float>(glm::linearRand(-M_PI, M_PI));
     const auto theta    = static_cast<float>(glm::linearRand(-M_PI, M_PI));
     const auto velocity = glm::linearRand(m_minVelocity, m_maxVelocity);
     const auto radius   = velocity * std::sin(phi);
 
-    particleData->SetVelocity(i,
-                              {radius * std::cos(theta),
-                               radius * std::sin(theta),
-                               0.0F, //v * std::cos(phi),
-                               // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
-                               particleData->GetVelocity(i).w});
+    particleData.SetVelocity(i,
+                             {radius * std::cos(theta),
+                              radius * std::sin(theta),
+                              0.0F, //v * std::cos(phi),
+                              // NOLINTNEXTLINE(cppcoreguidelines-pro-type-union-access)
+                              particleData.GetVelocity(i).w});
   }
 }
 
@@ -156,16 +144,14 @@ VelocityFromPositionGenerator::VelocityFromPositionGenerator(
 }
 
 auto VelocityFromPositionGenerator::Generate([[maybe_unused]] const double dt,
-                                             ParticleData* const particleData,
-                                             // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-                                             const size_t startId,
-                                             const size_t endId) noexcept -> void
+                                             ParticleData& particleData,
+                                             const IdRange& idRange) noexcept -> void
 {
-  for (auto i = startId; i < endId; ++i)
+  for (auto i = idRange.start; i < idRange.end; ++i)
   {
     const auto scale = glm::linearRand(m_minScale, m_maxScale);
-    const auto vel   = glm::vec4{particleData->GetPosition(i) - m_offset};
-    particleData->SetVelocity(i, scale * vel);
+    const auto vel   = glm::vec4{particleData.GetPosition(i) - m_offset};
+    particleData.SetVelocity(i, scale * vel);
   }
 }
 
@@ -176,16 +162,14 @@ BasicTimeGenerator::BasicTimeGenerator(const float minTime, const float maxTime)
 }
 
 auto BasicTimeGenerator::Generate([[maybe_unused]] const double dt,
-                                  ParticleData* const particleData,
-                                  // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
-                                  const size_t startId,
-                                  const size_t endId) noexcept -> void
+                                  ParticleData& particleData,
+                                  const IdRange& idRange) noexcept -> void
 {
-  for (auto i = startId; i < endId; ++i)
+  for (auto i = idRange.start; i < idRange.end; ++i)
   {
     const auto xyTime = glm::linearRand(m_minTime, m_maxTime);
 
-    particleData->SetTime(i, {xyTime, xyTime, 0.0F, 1.0F / xyTime});
+    particleData.SetTime(i, {xyTime, xyTime, 0.0F, 1.0F / xyTime});
   }
 }
 

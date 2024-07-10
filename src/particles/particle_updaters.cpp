@@ -6,6 +6,8 @@ module;
 
 module Particles.ParticleUpdaters;
 
+import Particles.Particles;
+
 namespace PARTICLES::UPDATERS
 {
 // NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
@@ -15,7 +17,7 @@ EulerUpdater::EulerUpdater(const glm::vec4& globalAcceleration) noexcept
 {
 }
 
-auto EulerUpdater::Update(const double dt, ParticleData* const particleData) noexcept -> void
+auto EulerUpdater::Update(const double dt, ParticleData& particleData) noexcept -> void
 {
   const auto globalA = glm::vec4{dt * static_cast<double>(m_globalAcceleration.x),
                                  dt * static_cast<double>(m_globalAcceleration.y),
@@ -23,21 +25,21 @@ auto EulerUpdater::Update(const double dt, ParticleData* const particleData) noe
                                  0.0};
 
   const auto localDT = static_cast<float>(dt);
-  const auto endId   = particleData->GetAliveCount();
+  const auto endId   = particleData.GetAliveCount();
 
   for (auto i = 0U; i < endId; ++i)
   {
-    particleData->IncAcceleration(i, globalA);
+    particleData.IncAcceleration(i, globalA);
   }
 
   for (auto i = 0U; i < endId; ++i)
   {
-    particleData->IncVelocity(i, localDT * particleData->GetAcceleration(i));
+    particleData.IncVelocity(i, localDT * particleData.GetAcceleration(i));
   }
 
   for (auto i = 0U; i < endId; ++i)
   {
-    particleData->IncPosition(i, localDT * particleData->GetVelocity(i));
+    particleData.IncPosition(i, localDT * particleData.GetVelocity(i));
   }
 }
 
@@ -48,15 +50,15 @@ FloorUpdater::FloorUpdater(const float floorY, const float bounceFactor) noexcep
 }
 
 auto FloorUpdater::Update([[maybe_unused]] const double dt,
-                          ParticleData* const particleData) noexcept -> void
+                          ParticleData& particleData) noexcept -> void
 {
-  const auto endId = particleData->GetAliveCount();
+  const auto endId = particleData.GetAliveCount();
 
   for (auto i = 0U; i < endId; ++i)
   {
-    if (particleData->GetPosition(i).y < m_floorY)
+    if (particleData.GetPosition(i).y < m_floorY)
     {
-      auto force = glm::vec4{particleData->GetAcceleration(i)};
+      auto force = glm::vec4{particleData.GetAcceleration(i)};
       if (const auto normalFactor = glm::dot(force, glm::vec4(0.0F, 1.0F, 0.0F, 0.0F));
           normalFactor < 0.0F)
       {
@@ -64,24 +66,24 @@ auto FloorUpdater::Update([[maybe_unused]] const double dt,
       }
 
       const auto velFactor =
-          glm::dot(particleData->GetVelocity(i), glm::vec4(0.0F, 1.0F, 0.0F, 0.0F));
+          glm::dot(particleData.GetVelocity(i), glm::vec4(0.0F, 1.0F, 0.0F, 0.0F));
       //if (velFactor < 0.0)
-      particleData->DecVelocity(
+      particleData.DecVelocity(
           i, glm::vec4(0.0F, 1.0F, 0.0F, 0.0F) * (1.0F + m_bounceFactor) * velFactor);
 
-      particleData->SetAcceleration(i, force);
+      particleData.SetAcceleration(i, force);
     }
   }
 }
 
 auto AttractorUpdater::Update([[maybe_unused]] const double dt,
-                              ParticleData* const particleData) noexcept -> void
+                              ParticleData& particleData) noexcept -> void
 {
-  const auto endId = particleData->GetAliveCount();
+  const auto endId = particleData.GetAliveCount();
 
   for (auto i = 0U; i < endId; ++i)
   {
-    const auto particlePosition = particleData->GetPosition(i);
+    const auto particlePosition = particleData.GetPosition(i);
     for (const auto& attractorPosition : m_attractorPositions)
     {
       const auto offset = glm::vec4{attractorPosition.x - particlePosition.x,
@@ -91,22 +93,22 @@ auto AttractorUpdater::Update([[maybe_unused]] const double dt,
       const auto distSq = glm::dot(offset, offset);
       const auto force  = attractorPosition.w / distSq;
 
-      particleData->IncAcceleration(i, offset * force);
+      particleData.IncAcceleration(i, offset * force);
     }
   }
 }
 
 auto BasicColorUpdater::Update([[maybe_unused]] const double dt,
-                               ParticleData* const particleData) noexcept -> void
+                               ParticleData& particleData) noexcept -> void
 {
-  const auto endId = particleData->GetAliveCount();
+  const auto endId = particleData.GetAliveCount();
 
   for (auto i = 0U; i < endId; ++i)
   {
-    particleData->SetColor(i,
-                           glm::mix(particleData->GetStartColor(i),
-                                    particleData->GetEndColor(i),
-                                    particleData->GetTime(i).z));
+    particleData.SetColor(i,
+                          glm::mix(particleData.GetStartColor(i),
+                                   particleData.GetEndColor(i),
+                                   particleData.GetTime(i).z));
   }
 }
 
@@ -145,16 +147,16 @@ namespace
 } // namespace
 
 auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
-                                  ParticleData* const particleData) noexcept -> void
+                                  ParticleData& particleData) noexcept -> void
 {
-  const auto endId = particleData->GetAliveCount();
+  const auto endId = particleData.GetAliveCount();
 
   for (auto i = 0U; i < endId; ++i)
   {
     const auto scaledPositions =
-        GetScaledValues(particleData->GetPosition(i), m_minPosition, m_diffMinMaxPosition);
+        GetScaledValues(particleData.GetPosition(i), m_minPosition, m_diffMinMaxPosition);
 
-    particleData->SetColor(
+    particleData.SetColor(
         i,
         {scaledPositions
              .r, // glm::mix(particleData->m_startCol[i].r, particleData->m_endCol[i].r, scaler);
@@ -162,9 +164,9 @@ auto PositionColorUpdater::Update([[maybe_unused]] const double dt,
              .g, // glm::mix(particleData->m_startCol[i].g, particleData->m_endCol[i].g, scaleg);
          scaledPositions
              .b, // glm::mix(particleData->m_startCol[i].b, particleData->m_endCol[i].b, scaleb);
-         glm::mix(particleData->GetStartColor(i).a,
-                  particleData->GetEndColor(i).a,
-                  particleData->GetTime(i).z)});
+         glm::mix(particleData.GetStartColor(i).a,
+                  particleData.GetEndColor(i).a,
+                  particleData.GetTime(i).z)});
   }
 }
 
@@ -176,21 +178,21 @@ VelocityColorUpdater::VelocityColorUpdater(const glm::vec4& minVelocity,
 }
 
 auto VelocityColorUpdater::Update([[maybe_unused]] const double dt,
-                                  ParticleData* const particleData) noexcept -> void
+                                  ParticleData& particleData) noexcept -> void
 {
-  const auto endId = particleData->GetAliveCount();
+  const auto endId = particleData.GetAliveCount();
 
   for (auto i = 0U; i < endId; ++i)
   {
     const auto scaledVelocities =
-        GetScaledValues(particleData->GetPosition(i), m_minVelocity, m_diffMinMaxVelocity);
-    particleData->SetColor(i,
-                           {glm::mix(m_tintColor.r, scaledVelocities.r, m_mixAmount),
-                            glm::mix(m_tintColor.g, scaledVelocities.g, m_mixAmount),
-                            glm::mix(m_tintColor.b, scaledVelocities.b, m_mixAmount),
-                            glm::mix(particleData->GetStartColor(i).a,
-                                     particleData->GetEndColor(i).a,
-                                     particleData->GetTime(i).z)});
+        GetScaledValues(particleData.GetPosition(i), m_minVelocity, m_diffMinMaxVelocity);
+    particleData.SetColor(i,
+                          {glm::mix(m_tintColor.r, scaledVelocities.r, m_mixAmount),
+                           glm::mix(m_tintColor.g, scaledVelocities.g, m_mixAmount),
+                           glm::mix(m_tintColor.b, scaledVelocities.b, m_mixAmount),
+                           glm::mix(particleData.GetStartColor(i).a,
+                                    particleData.GetEndColor(i).a,
+                                    particleData.GetTime(i).z)});
 
     /**
     particleData->SetColor(
@@ -214,9 +216,9 @@ auto VelocityColorUpdater::Update([[maybe_unused]] const double dt,
   }
 }
 
-auto BasicTimeUpdater::Update(const double dt, ParticleData* const particleData) noexcept -> void
+auto BasicTimeUpdater::Update(const double dt, ParticleData& particleData) noexcept -> void
 {
-  auto endId = particleData->GetAliveCount();
+  auto endId = particleData.GetAliveCount();
 
   if (0 == endId)
   {
@@ -227,21 +229,20 @@ auto BasicTimeUpdater::Update(const double dt, ParticleData* const particleData)
 
   for (auto i = 0U; i < endId; ++i)
   {
-    const auto newXTime = particleData->GetTime(i).x - localDT;
+    const auto newXTime = particleData.GetTime(i).x - localDT;
 
     // Interpolation: From 0 (start of life) till 1 (end of life)
     const auto newZTime =
-        1.0F - (particleData->GetTime(i).x * particleData->GetTime(i).w); // .w is 1.0/max lifetime
+        1.0F - (particleData.GetTime(i).x * particleData.GetTime(i).w); // .w is 1.0/max lifetime
 
-    particleData->SetTime(
-        i, {newXTime, particleData->GetTime(i).y, newZTime, particleData->GetTime(i).w});
+    particleData.SetTime(
+        i, {newXTime, particleData.GetTime(i).y, newZTime, particleData.GetTime(i).w});
 
     if (newXTime < 0.0F)
     {
-      particleData->Kill(i);
-      endId = particleData->GetAliveCount() < particleData->GetCount()
-                  ? particleData->GetAliveCount()
-                  : particleData->GetCount();
+      particleData.Kill(i);
+      endId = particleData.GetAliveCount() < particleData.GetCount() ? particleData.GetAliveCount()
+                                                                     : particleData.GetCount();
     }
   }
 }

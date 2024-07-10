@@ -15,7 +15,7 @@ class EulerUpdater : public IParticleUpdater
 public:
   explicit EulerUpdater(const glm::vec4& globalAcceleration) noexcept;
 
-  auto Update(double dt, ParticleData* particleData) noexcept -> void override;
+  auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 
 private:
   glm::vec4 m_globalAcceleration;
@@ -27,7 +27,7 @@ class FloorUpdater : public IParticleUpdater
 public:
   FloorUpdater(float floorY, float bounceFactor) noexcept;
 
-  auto Update(double dt, ParticleData* particleData) noexcept -> void override;
+  auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 
 private:
   float m_floorY;
@@ -41,7 +41,7 @@ public:
 
   auto AddAttractorPosition(const glm::vec4& attractorPosition) noexcept -> void;
 
-  auto Update(double dt, ParticleData* particleData) noexcept -> void override;
+  auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 
 private:
   std::vector<glm::vec4> m_attractorPositions; // .w is force
@@ -50,7 +50,7 @@ private:
 class BasicColorUpdater : public IParticleUpdater
 {
 public:
-  auto Update(double dt, ParticleData* particleData) noexcept -> void override;
+  auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 };
 
 class PositionColorUpdater : public IParticleUpdater
@@ -58,7 +58,7 @@ class PositionColorUpdater : public IParticleUpdater
 public:
   PositionColorUpdater(const glm::vec4& minPosition, const glm::vec4& maxPosition) noexcept;
 
-  auto Update(double dt, ParticleData* particleData) noexcept -> void override;
+  auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 
 private:
   glm::vec4 m_minPosition;
@@ -74,7 +74,7 @@ public:
   auto SetTintColor(const glm::vec4& tintColor) noexcept -> void;
   auto SetTintMixAmount(float mixAmount) noexcept -> void; // higher mix amount for more tint
 
-  auto Update(double dt, ParticleData* particleData) noexcept -> void override;
+  auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 
 private:
   glm::vec4 m_minVelocity;
@@ -87,7 +87,7 @@ private:
 class BasicTimeUpdater : public IParticleUpdater
 {
 public:
-  auto Update(double dt, ParticleData* particleData) noexcept -> void override;
+  auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 };
 
 } // namespace PARTICLES::UPDATERS

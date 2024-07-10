@@ -86,7 +86,7 @@ public:
 
   [[nodiscard]] auto GetNumAllParticles() const noexcept -> size_t;
   [[nodiscard]] auto GetNumAliveParticles() const noexcept -> size_t;
-  [[nodiscard]] auto GetFinalData() const noexcept -> const ParticleData*;
+  [[nodiscard]] auto GetFinalData() const noexcept -> const ParticleData&;
 
   [[nodiscard]] static auto ComputeMemoryUsage(const ParticleSystem& particleSystem) noexcept
       -> size_t;
@@ -111,7 +111,7 @@ public:
   auto AddGenerator(const std::shared_ptr<IParticleGenerator>& gen) noexcept -> void;
 
   // Calls all the generators and at the end it activates (wakes) particle.
-  auto Emit(double dt, ParticleData* particleData) noexcept -> void;
+  auto Emit(double dt, ParticleData& particleData) noexcept -> void;
 
 private:
   float m_emitRate              = 0.0F;
@@ -132,10 +132,14 @@ public:
   auto operator=(const IParticleGenerator&) -> IParticleGenerator& = delete;
   auto operator=(IParticleGenerator&&) -> IParticleGenerator&      = delete;
 
+  struct IdRange
+  {
+    size_t start;
+    size_t end;
+  };
   virtual auto Generate(double dt,
-                        ParticleData* particleData,
-                        size_t startId,
-                        size_t endId) noexcept -> void = 0;
+                        ParticleData& particleData,
+                        const IdRange& idRange) noexcept -> void = 0;
 };
 
 class IParticleUpdater
@@ -148,7 +152,7 @@ public:
   auto operator=(const IParticleUpdater&) -> IParticleUpdater& = delete;
   auto operator=(IParticleUpdater&&) -> IParticleUpdater&      = delete;
 
-  virtual auto Update(double dt, ParticleData* particleData) noexcept -> void = 0;
+  virtual auto Update(double dt, ParticleData& particleData) noexcept -> void = 0;
 };
 
 } // namespace PARTICLES
@@ -291,9 +295,9 @@ inline auto ParticleSystem::AddUpdater(const std::shared_ptr<IParticleUpdater>& 
   m_updaters.push_back(updater);
 }
 
-inline auto ParticleSystem::GetFinalData() const noexcept -> const ParticleData*
+inline auto ParticleSystem::GetFinalData() const noexcept -> const ParticleData&
 {
-  return &m_particles;
+  return m_particles;
 }
 
 inline auto ParticleEmitter::SetEmitRate(const float emitRate) noexcept -> void

@@ -65,20 +65,20 @@ auto ParticleData::SwapData(const size_t a, const size_t b) noexcept -> void
 ////////////////////////////////////////////////////////////////////////////////
 // ParticleEmitter class
 
-auto ParticleEmitter::Emit(const double dt, ParticleData* const particleData) noexcept -> void
+auto ParticleEmitter::Emit(const double dt, ParticleData& particleData) noexcept -> void
 {
-  const auto maxNewParticles = GetMaxAllowedNewParticles(dt, *particleData);
-  const auto startId         = particleData->GetAliveCount();
-  const auto endId           = std::min(startId + maxNewParticles, particleData->GetCount() - 1);
+  const auto maxNewParticles = GetMaxAllowedNewParticles(dt, particleData);
+  const auto startId         = particleData.GetAliveCount();
+  const auto endId           = std::min(startId + maxNewParticles, particleData.GetCount() - 1);
 
   for (auto& gen : m_generators)
   {
-    gen->Generate(dt, particleData, startId, endId);
+    gen->Generate(dt, particleData, {startId, endId});
   }
 
   for (auto i = startId; i < endId; ++i)
   {
-    particleData->Wake(i);
+    particleData.Wake(i);
   }
 }
 
@@ -107,7 +107,7 @@ auto ParticleSystem::Update(const double dt) noexcept -> void
 {
   for (auto& em : m_emitters)
   {
-    em->Emit(dt, &m_particles);
+    em->Emit(dt, m_particles);
   }
 
   for (auto i = 0U; i < m_count; ++i)
@@ -117,7 +117,7 @@ auto ParticleSystem::Update(const double dt) noexcept -> void
 
   for (auto& up : m_updaters)
   {
-    up->Update(dt, &m_particles);
+    up->Update(dt, m_particles);
   }
 }
 
