@@ -1,5 +1,6 @@
 module;
 
+#include <glm/common.hpp>
 #include <glm/vec4.hpp>
 #include <vector>
 
@@ -80,8 +81,11 @@ private:
   glm::vec4 m_minVelocity;
   glm::vec4 m_maxVelocity;
   glm::vec4 m_diffMinMaxVelocity = m_maxVelocity - m_minVelocity;
-  glm::vec4 m_tintColor{1.0F};
+
+  static constexpr auto ONE_VEC = glm::vec4{1.0F};
+  glm::vec4 m_tintColor = ONE_VEC;
   float m_mixAmount = 0.0F;
+  glm::vec4 m_tintMixedColor{0.0F};
 };
 
 class BasicTimeUpdater : public IParticleUpdater
@@ -104,11 +108,15 @@ inline auto AttractorUpdater::AddAttractorPosition(const glm::vec4& attractorPos
 inline auto VelocityColorUpdater::SetTintColor(const glm::vec4& tintColor) noexcept -> void
 {
   m_tintColor = tintColor;
+
+  m_tintMixedColor = glm::mix(m_tintColor, ONE_VEC, m_mixAmount);
 }
 
 inline auto VelocityColorUpdater::SetTintMixAmount(const float mixAmount) noexcept -> void
 {
   m_mixAmount = mixAmount;
+
+  m_tintMixedColor = glm::mix(m_tintColor, ONE_VEC, m_mixAmount);
 }
 
 } // namespace PARTICLES::UPDATERS
