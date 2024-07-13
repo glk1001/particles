@@ -30,7 +30,7 @@ public:
 
   auto Update(double dt) noexcept -> void override;
 
-  [[nodiscard]] auto GetSystem() const noexcept -> const PARTICLES::ParticleSystem& override;
+  [[nodiscard]] auto GetSystem() const noexcept -> const ParticleSystem& override;
 
 private:
   ParticleSystem m_system;
@@ -69,7 +69,7 @@ inline auto TunnelEffect::Update(const double dt) noexcept -> void
   m_system.Update(dt);
 }
 
-inline auto TunnelEffect::GetSystem() const noexcept -> const PARTICLES::ParticleSystem&
+inline auto TunnelEffect::GetSystem() const noexcept -> const ParticleSystem&
 {
   return m_system;
 }
