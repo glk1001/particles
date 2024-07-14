@@ -2,6 +2,7 @@
 
 module;
 
+#include <algorithm>
 #include <glm/vec4.hpp>
 #include <limits>
 #include <memory>
@@ -78,7 +79,10 @@ public:
   explicit ParticleSystem(size_t maxCount);
 
   auto AddEmitter(const std::shared_ptr<ParticleEmitter>& emitter) noexcept -> void;
+
   auto AddUpdater(const std::shared_ptr<IParticleUpdater>& updater) noexcept -> void;
+  auto ReplaceUpdater(const std::shared_ptr<IParticleUpdater>& oldUpdater,
+                      const std::shared_ptr<IParticleUpdater>& newUpdater) noexcept -> void;
 
   auto Reset() noexcept -> void;
 
@@ -293,6 +297,14 @@ inline auto ParticleSystem::AddUpdater(const std::shared_ptr<IParticleUpdater>& 
     -> void
 {
   m_updaters.push_back(updater);
+}
+
+inline auto ParticleSystem::ReplaceUpdater(
+    // NOLINTNEXTLINE(bugprone-easily-swappable-parameters)
+    const std::shared_ptr<IParticleUpdater>& oldUpdater,
+    const std::shared_ptr<IParticleUpdater>& newUpdater) noexcept -> void
+{
+  std::ranges::replace(m_updaters, oldUpdater, newUpdater);
 }
 
 inline auto ParticleSystem::GetFinalData() const noexcept -> const ParticleData&
