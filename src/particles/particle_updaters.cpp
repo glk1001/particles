@@ -185,7 +185,7 @@ auto VelocityColorUpdater::Update([[maybe_unused]] const double dt,
   for (auto i = 0U; i < endId; ++i)
   {
     const auto scaledVelocities =
-        GetScaledValues(particleData.GetPosition(i), m_minVelocity, m_diffMinMaxVelocity);
+        GetScaledValues(particleData.GetVelocity(i), m_minVelocity, m_diffMinMaxVelocity);
     const auto alpha = glm::mix(
         particleData.GetStartColor(i).a, particleData.GetEndColor(i).a, particleData.GetTime(i).z);
     particleData.SetColor(i,
