@@ -48,13 +48,29 @@ private:
   std::vector<glm::vec4> m_attractorPositions; // .w is force
 };
 
-class BasicColorUpdater : public IParticleUpdater
+class IColorUpdater : public IParticleUpdater
+{
+public:
+  auto SetTintColor(const glm::vec4& tintColor) noexcept -> void;
+  auto SetTintMixAmount(float mixAmount) noexcept -> void; // higher mix amount for more tint
+
+protected:
+  [[nodiscard]] auto GetMixedTintColor() const noexcept -> const glm::vec4&;
+
+private:
+  static constexpr auto ONE_VEC = glm::vec4{1.0F};
+  glm::vec4 m_tintColor         = ONE_VEC;
+  float m_mixAmount             = 0.0F;
+  glm::vec4 m_mixedTintColor    = ONE_VEC;
+};
+
+class BasicColorUpdater : public IColorUpdater
 {
 public:
   auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 };
 
-class PositionColorUpdater : public IParticleUpdater
+class PositionColorUpdater : public IColorUpdater
 {
 public:
   PositionColorUpdater(const glm::vec4& minPosition, const glm::vec4& maxPosition) noexcept;
@@ -67,13 +83,10 @@ private:
   glm::vec4 m_diffMinMaxPosition = m_maxPosition - m_minPosition;
 };
 
-class VelocityColorUpdater : public IParticleUpdater
+class VelocityColorUpdater : public IColorUpdater
 {
 public:
   VelocityColorUpdater(const glm::vec4& minVelocity, const glm::vec4& maxVelocity) noexcept;
-
-  auto SetTintColor(const glm::vec4& tintColor) noexcept -> void;
-  auto SetTintMixAmount(float mixAmount) noexcept -> void; // higher mix amount for more tint
 
   auto Update(double dt, ParticleData& particleData) noexcept -> void override;
 
@@ -81,11 +94,6 @@ private:
   glm::vec4 m_minVelocity;
   glm::vec4 m_maxVelocity;
   glm::vec4 m_diffMinMaxVelocity = m_maxVelocity - m_minVelocity;
-
-  static constexpr auto ONE_VEC = glm::vec4{1.0F};
-  glm::vec4 m_tintColor = ONE_VEC;
-  float m_mixAmount = 0.0F;
-  glm::vec4 m_tintMixedColor{0.0F};
 };
 
 class BasicTimeUpdater : public IParticleUpdater
@@ -105,18 +113,23 @@ inline auto AttractorUpdater::AddAttractorPosition(const glm::vec4& attractorPos
   m_attractorPositions.push_back(attractorPosition);
 }
 
-inline auto VelocityColorUpdater::SetTintColor(const glm::vec4& tintColor) noexcept -> void
+inline auto IColorUpdater::SetTintColor(const glm::vec4& tintColor) noexcept -> void
 {
   m_tintColor = tintColor;
 
-  m_tintMixedColor = glm::mix(m_tintColor, ONE_VEC, m_mixAmount);
+  m_mixedTintColor = glm::mix(m_tintColor, ONE_VEC, m_mixAmount);
 }
 
-inline auto VelocityColorUpdater::SetTintMixAmount(const float mixAmount) noexcept -> void
+inline auto IColorUpdater::SetTintMixAmount(const float mixAmount) noexcept -> void
 {
   m_mixAmount = mixAmount;
 
-  m_tintMixedColor = glm::mix(m_tintColor, ONE_VEC, m_mixAmount);
+  m_mixedTintColor = glm::mix(m_tintColor, ONE_VEC, m_mixAmount);
+}
+
+inline auto IColorUpdater::GetMixedTintColor() const noexcept -> const glm::vec4&
+{
+  return m_mixedTintColor;
 }
 
 } // namespace PARTICLES::UPDATERS
