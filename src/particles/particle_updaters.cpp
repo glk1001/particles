@@ -194,7 +194,7 @@ auto VelocityColorUpdater::Update([[maybe_unused]] const double dt,
   for (auto i = 0U; i < numAlive; ++i)
   {
     const auto scaledVelocity =
-        GetScaledValues(particleData.GetPosition(i), m_minVelocity, m_diffMinMaxVelocity);
+        GetScaledValues(particleData.GetVelocity(i), m_minVelocity, m_diffMinMaxVelocity);
 
     particleData.SetColor(i,
                           {scaledVelocity.r * mixedTintColor.r,
