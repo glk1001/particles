@@ -73,7 +73,7 @@ auto ParticleEmitter::Emit(const double dt, ParticleData& particleData) noexcept
 
   for (auto& gen : m_generators)
   {
-    gen->Generate(dt, particleData, {startId, endId});
+    gen->Generate(dt, particleData, {.start = startId, .end = endId});
   }
 
   for (auto i = startId; i < endId; ++i)
