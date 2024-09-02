@@ -83,8 +83,8 @@ FloorUpdater::FloorUpdater(const float floorY, const float bounceFactor) noexcep
 {
 }
 
-auto FloorUpdater::Update([[maybe_unused]] const double dt,
-                          ParticleData& particleData) noexcept -> void
+auto FloorUpdater::Update([[maybe_unused]] const double dt, ParticleData& particleData) noexcept
+    -> void
 {
   const auto numAlive = particleData.GetAliveCount();
 
@@ -111,8 +111,8 @@ auto FloorUpdater::Update([[maybe_unused]] const double dt,
   }
 }
 
-auto AttractorUpdater::Update([[maybe_unused]] const double dt,
-                              ParticleData& particleData) noexcept -> void
+auto AttractorUpdater::Update([[maybe_unused]] const double dt, ParticleData& particleData) noexcept
+    -> void
 {
   const auto numAlive = particleData.GetAliveCount();
 
